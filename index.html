@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Blessing's HQ">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffe4ee">
+<title>Blessing's Application HQ ♥</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Patrick+Hand&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    min-height:100%;
+    background:#ffe4ee;
+    background-image:radial-gradient(#ffbdd6 1.4px, transparent 1.7px);
+    background-size:22px 22px;
+    padding:24px 12px 64px;
+    font-family:'Patrick Hand','Comic Sans MS',cursive,sans-serif;
+    color:#5a2a3f;
+    -webkit-font-smoothing:antialiased;
+  }
+  #app{
+    --paper:#fff8fb; --ink:#5a2a3f; --ink-2:#90596e; --ink-3:#bd93a4;
+    --rule:#f4c9dc; --rule-2:#fbdcea;
+    --accent:#ff4d94; --accent-deep:#d81b74;
+    --pink:#ffd3e6; --pink-2:#ffe6f1; --note:#ffdcec;
+    --mint:#3fa77f; --gold:#d99a2b; --blue:#6b7fd0; --alarm:#ff3b6b;
+    --w:16px 30px 18px 28px / 28px 18px 30px 16px;
+    --w-lg:38px 20px 42px 22px / 22px 40px 20px 42px;
+    --w-sm:11px 19px 13px 17px / 17px 13px 19px 11px;
+    --pill:40px 34px 38px 32px / 32px 38px 34px 40px;
+    --sh:4px 4px 0 0 var(--ink);
+    --sh-lift:2px 2px 0 0 var(--ink);
+    --sh-soft:3px 3px 0 0 rgba(90,42,63,.13);
+    position:relative;
+    max-width:720px; margin:0 auto;
+    background:var(--paper);
+    color:var(--ink);
+    border:3px solid var(--ink);
+    border-radius:var(--w-lg);
+    box-shadow:9px 9px 0 0 var(--ink);
+    padding:40px 24px 48px;
+    font-size:15px;
+    min-height:640px;
+  }
+  /* a strip of washi tape holding the sheet to the board */
+  #app::before{
+    content:""; position:absolute; top:-15px; left:50%;
+    width:150px; height:30px; transform:translateX(-50%) rotate(-2.5deg);
+    background:repeating-linear-gradient(45deg,rgba(255,120,175,.42) 0 8px,rgba(255,150,195,.42) 8px 16px);
+    border:2px dashed rgba(216,27,116,.4);
+    border-radius:6px 10px 7px 9px;
+  }
+  #app h1,#app h2,#app h3{font-family:'Kalam',cursive;font-weight:700;letter-spacing:0;line-height:1.12;}
+
+  .kicker{display:inline-block;font-family:'Kalam',cursive;font-size:12px;letter-spacing:.06em;color:var(--accent-deep);font-weight:700;background:var(--pink-2);padding:2px 9px;border-radius:20px 8px 18px 10px/10px 18px 8px 20px;transform:rotate(-1deg);}
+
+  /* ── masthead ── */
+  .mast{text-align:center;padding-bottom:20px;margin-bottom:14px;border-bottom:3px dashed var(--rule);position:relative;}
+  .mast h1{font-size:clamp(34px,7.2vw,54px);margin:14px 0 12px;}
+  .mast h1 em{font-style:normal;color:var(--accent);position:relative;display:inline-block;transform:rotate(-2deg);}
+  .mast h1 em::after{content:"";position:absolute;left:2%;right:2%;bottom:2px;height:7px;background:var(--pink);border-radius:60% 40% 55% 45%;z-index:-1;}
+  .mast h1 .bang{display:inline-block;color:var(--accent);transform:rotate(8deg);}
+  .mast .sub{font-size:14px;color:var(--ink-2);letter-spacing:.01em;}
+
+  /* ── stats strip ── */
+  .strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px;}
+  .strip .cell{flex:1 1 96px;text-align:center;padding:14px 6px;background:#fff;border:2.5px solid var(--ink);border-radius:var(--w-sm);box-shadow:var(--sh);transition:transform .1s;}
+  .strip .cell:nth-child(2n){transform:rotate(1.4deg);}
+  .strip .cell:nth-child(3n){transform:rotate(-1.6deg);}
+  .strip .cell:hover{transform:rotate(0) scale(1.03);}
+  .strip .cell .n{font-family:'Kalam',cursive;font-weight:700;font-size:30px;line-height:1;color:var(--accent-deep);}
+  .strip .cell .l{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);margin-top:6px;font-weight:700;}
+
+  /* ── agenda card ── */
+  .agenda{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh);padding:20px 22px 18px;margin-bottom:26px;position:relative;transform:rotate(-.7deg);}
+  .agenda::before{content:"";position:absolute;top:-13px;left:24px;width:96px;height:26px;transform:rotate(-4deg);background:rgba(255,120,175,.4);border:2px dashed rgba(216,27,116,.4);border-radius:6px;}
+  .agenda h3{font-size:23px;margin:8px 0 14px;color:var(--ink);}
+  .agenda ol{list-style:none;counter-reset:ag;}
+  .agenda li{counter-increment:ag;display:flex;gap:13px;align-items:baseline;padding:10px 0;border-bottom:2px dashed var(--rule-2);font-size:14.5px;}
+  .agenda li:last-child{border-bottom:none;}
+  .agenda li::before{content:counter(ag);font-family:'Kalam',cursive;font-weight:700;font-size:15px;color:#fff;background:var(--accent);width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:60% 40% 55% 45%;}
+  .agenda li .nm{flex:1;}
+  .agenda li .dt{font-size:12.5px;color:var(--ink-2);white-space:nowrap;}
+  .agenda li .dt b{color:var(--alarm);font-weight:700;}
+
+  /* ── controls / filters ── */
+  .controls{margin-bottom:24px;}
+  .search{width:100%;padding:13px 16px;border:3px solid var(--ink);border-radius:var(--pill);background:#fff;font-family:'Patrick Hand',cursive;font-size:18px;color:var(--ink);outline:none;margin-bottom:18px;box-shadow:var(--sh);}
+  .search::placeholder{color:var(--ink-3);}
+  .search:focus{border-color:var(--accent);box-shadow:var(--sh-lift);transform:translate(2px,2px);}
+  .fl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-deep);font-weight:700;margin:14px 0 8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{padding:6px 14px;font-size:13.5px;font-weight:400;border:2.5px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;transition:transform .1s,background .1s;font-family:'Patrick Hand',cursive;white-space:nowrap;border-radius:var(--pill);box-shadow:var(--sh-lift);}
+  .chip:hover{transform:rotate(-2deg);background:var(--pink-2);}
+  .chip.on{background:var(--accent);border-color:var(--ink);color:#fff;transform:rotate(1deg);}
+
+  /* ── the register list ── */
+  .list{margin-top:6px;}
+  .entry{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh-soft);margin-bottom:16px;transition:transform .1s,box-shadow .1s;overflow:hidden;}
+  .entry:nth-child(3n){transform:rotate(-.5deg);}
+  .entry:nth-child(3n+1){transform:rotate(.4deg);}
+  .entry:hover{transform:rotate(0);box-shadow:var(--sh);}
+  .entry.dead{opacity:.5;}
+  .head{display:flex;gap:16px;padding:18px;cursor:pointer;align-items:flex-start;}
+  .when{flex-shrink:0;width:64px;text-align:center;padding-top:2px;}
+  .when .big{font-family:'Kalam',cursive;font-weight:700;font-size:30px;line-height:1;}
+  .when .small{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin-top:5px;font-weight:700;}
+  .body{flex:1;min-width:0;}
+  .cl{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+  .cat{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#fff;background:var(--accent);font-weight:700;padding:2px 9px;border-radius:14px 6px 12px 8px/8px 12px 6px 14px;}
+  .cm{font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding:2px 8px;border-radius:12px 6px 10px 7px/7px 10px 6px 12px;border:2px solid;}
+  .cm.y{background:#e4f5ec;color:var(--mint);border-color:var(--mint);}
+  .cm.n{background:#fdf1dc;color:var(--gold);border-color:var(--gold);}
+  .body h3{font-size:21px;line-height:1.2;margin-bottom:5px;color:var(--ink);}
+  .body h3 .star{color:var(--accent);font-size:16px;vertical-align:1px;}
+  .listing{font-size:13px;color:var(--ink-2);margin-bottom:8px;line-height:1.45;}
+  .desc{font-size:14px;color:var(--ink);line-height:1.5;margin-bottom:9px;}
+  .dates{font-size:12px;color:var(--ink-2);background:var(--pink-2);display:inline-block;padding:4px 10px;border-radius:14px 8px 12px 9px/9px 12px 8px 14px;}
+  .dates b{color:var(--accent-deep);font-weight:700;}
+  .sl{display:flex;align-items:center;gap:7px;margin-top:11px;font-size:13.5px;font-weight:400;}
+  .dot{width:12px;height:12px;border-radius:60% 40% 55% 45%;display:inline-block;border:2px solid var(--ink);}
+  .prog{font-size:12px;color:var(--ink-3);margin-left:3px;}
+
+  /* ── expanded detail ── */
+  .detail{padding:2px 18px 24px 82px;}
+  @media(max-width:560px){.detail{padding-left:18px;}}
+  .elig{background:var(--pink-2);border:2.5px dashed var(--accent);border-radius:var(--w);padding:14px 18px;margin-bottom:18px;}
+  .elig .eh{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--accent-deep);margin-bottom:8px;}
+  .elig p{font-size:14px;line-height:1.6;color:var(--ink);}
+  .verdict{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:4px 12px;border-radius:16px 8px 14px 9px/9px 14px 8px 16px;margin-top:10px;border:2px solid;}
+  .verdict.yes{background:#e4f5ec;color:var(--mint);border-color:var(--mint);}
+  .verdict.check{background:#fdf1dc;color:var(--gold);border-color:var(--gold);}
+  .verdict.no{background:#fde3e8;color:#d64b64;border-color:#d64b64;}
+  .brief{font-size:14px;line-height:1.65;color:var(--ink-2);margin-bottom:20px;}
+  .boost{background:var(--note);border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh);padding:16px 18px;margin-bottom:20px;transform:rotate(-.6deg);position:relative;}
+  .boost::before{content:"";position:absolute;top:-11px;left:50%;width:20px;height:20px;transform:translateX(-50%);background:var(--accent);border:2.5px solid var(--ink);border-radius:50%;box-shadow:1px 2px 0 0 rgba(90,42,63,.35);}
+  .boost-h{font-size:13px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--accent-deep);margin-bottom:11px;}
+  .boost p{font-size:13.5px;line-height:1.7;color:var(--ink);}
+  .boost b{color:var(--accent-deep);font-weight:700;}
+  .boost i{color:var(--ink);font-style:italic;}
+
+  /* ── study plan ── */
+  .studyplan{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh);margin-bottom:28px;transform:rotate(.4deg);}
+  .studyplan summary{padding:16px 20px;cursor:pointer;font-family:'Kalam',cursive;font-weight:700;font-size:18px;color:var(--ink);list-style:none;}
+  .studyplan summary::-webkit-details-marker{display:none;}
+  .studyplan summary::before{content:"✎ ";}
+  .studyplan summary .kicker{display:inline;}
+  .studyplan[open] summary{border-bottom:2px dashed var(--rule);}
+  .sp-body{padding:16px 20px;}
+  .sp-intro{font-size:14px;line-height:1.6;color:var(--ink-2);margin-bottom:14px;}
+  .sp-phase{font-size:13.5px;line-height:1.55;color:var(--ink);padding:11px 0;border-bottom:2px dashed var(--rule-2);}
+  .sp-phase b{color:var(--accent-deep);}
+  .sp-skip{font-size:13px;line-height:1.55;color:var(--ink-2);margin-top:14px;padding:12px 14px;background:var(--pink-2);border:2px dashed var(--accent);border-radius:var(--w-sm);}
+  .sp-skip b{color:var(--accent-deep);}
+
+  /* ── view tabs ── */
+  .viewtabs{display:flex;gap:10px;margin-bottom:24px;}
+  .vt{flex:1;padding:12px;font-family:'Kalam',cursive;font-weight:700;font-size:17px;background:#fff;border:3px solid var(--ink);border-radius:var(--pill);cursor:pointer;color:var(--ink-2);transition:transform .1s,background .1s;box-shadow:var(--sh-lift);}
+  .vt.on{color:#fff;background:var(--accent);transform:rotate(-1deg);box-shadow:var(--sh);}
+  .vt:hover{color:var(--ink);background:var(--pink-2);}
+  .vt.on:hover{color:#fff;background:var(--accent);}
+
+  /* ── daily plan ── */
+  .daily-intro{font-size:14px;line-height:1.6;color:var(--ink);background:var(--pink-2);border:2.5px dashed var(--accent);border-radius:var(--w);padding:14px 18px;margin-bottom:24px;}
+  .daily-intro b{color:var(--accent-deep);}
+  .wk-hd{font-family:'Kalam',cursive;font-weight:700;font-size:22px;color:var(--accent-deep);margin:28px 0 14px;display:inline-block;padding:2px 12px;background:var(--pink-2);border-radius:20px 10px 18px 12px/12px 18px 10px 20px;transform:rotate(-1deg);}
+  .wk-hd:first-child{margin-top:0;}
+  .day{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh-soft);margin-bottom:16px;overflow:hidden;}
+  .day.today{box-shadow:var(--sh);position:relative;}
+  .day.today::before{content:"";position:absolute;top:-9px;right:20px;width:18px;height:18px;background:var(--accent);border:2.5px solid var(--ink);border-radius:50%;z-index:2;box-shadow:1px 2px 0 0 rgba(90,42,63,.35);}
+  .day.past{opacity:.5;}
+  .day-h{display:flex;justify-content:space-between;align-items:baseline;padding:13px 18px;background:var(--pink-2);border-bottom:2px dashed var(--rule);}
+  .day-h .dd{font-family:'Kalam',cursive;font-weight:700;font-size:18px;color:var(--ink);}
+  .day-h .dd .todaytag{font-family:'Patrick Hand',cursive;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:400;color:#fff;background:var(--accent);padding:2px 9px;border-radius:12px 6px 10px 7px/7px 10px 6px 12px;margin-left:9px;vertical-align:2px;}
+  .day-h .dc{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-deep);font-weight:700;}
+  .day-tasks{list-style:none;padding:8px 18px 14px;}
+  .day-task{display:flex;gap:11px;align-items:flex-start;padding:9px 0;font-size:14px;line-height:1.45;cursor:pointer;border-bottom:2px dashed var(--rule-2);}
+  .day-task:last-child{border-bottom:none;}
+  .day-task .tb{flex-shrink:0;width:20px;height:20px;margin-top:1px;border:2.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;border-radius:7px 4px 6px 5px/5px 6px 4px 7px;transition:background .1s;}
+  .day-task .tb.on{background:var(--accent);}
+  .day-task.on .tt{text-decoration:line-through;color:var(--ink-3);}
+  .day-task .src{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--accent-deep);font-weight:700;display:block;margin-bottom:2px;}
+  .day-task .pri{color:var(--accent);}
+
+  /* ── overdue / at-risk ── */
+  .overdue{background:#fde3e8;border:3px solid var(--alarm);border-radius:var(--w);margin-bottom:18px;overflow:hidden;box-shadow:4px 4px 0 0 var(--alarm);}
+  .ov-h{background:var(--alarm);color:#fff;font-size:14px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding:11px 18px;font-family:'Kalam',cursive;}
+  .overdue ul{list-style:none;padding:8px 18px 14px;}
+  .ov-task{display:flex;gap:11px;align-items:flex-start;padding:9px 0;font-size:14px;line-height:1.45;cursor:pointer;border-bottom:2px dashed #f6c3ce;}
+  .ov-task:last-child{border-bottom:none;}
+  .ov-task .tb{flex-shrink:0;width:20px;height:20px;margin-top:1px;border:2.5px solid var(--alarm);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;border-radius:7px 4px 6px 5px/5px 6px 4px 7px;}
+  .ov-task .tb.on{background:var(--alarm);}
+  .ov-task.on .tt{text-decoration:line-through;color:var(--ink-3);}
+  .risk{background:#fdf1dc;border:3px solid var(--gold);border-radius:var(--w);margin-bottom:18px;overflow:hidden;box-shadow:4px 4px 0 0 var(--gold);}
+  .risk-h{background:var(--gold);color:#fff;font-size:14px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding:11px 18px;font-family:'Kalam',cursive;}
+  .risk ul{list-style:none;padding:10px 18px 14px;}
+  .risk li{font-size:13.5px;line-height:1.5;color:var(--ink);padding:6px 0;border-bottom:2px dashed #ecd6a6;}
+  .risk li:last-child{border-bottom:none;}
+  .risk li b{color:var(--accent-deep);}
+
+  /* ── done log ── */
+  .donelog{background:#e4f5ec;border:3px solid var(--mint);border-radius:var(--w);margin-top:26px;box-shadow:4px 4px 0 0 var(--mint);}
+  .donelog summary{padding:13px 18px;cursor:pointer;font-family:'Kalam',cursive;font-weight:700;font-size:16px;color:var(--mint);list-style:none;}
+  .donelog summary::-webkit-details-marker{display:none;}
+  .done-body{padding:8px 18px 16px;}
+  .done-app{margin-bottom:13px;}
+  .done-app-h{font-size:13.5px;font-weight:700;color:var(--ink);padding:7px 0 5px;border-bottom:2px dashed #bfe3cd;margin-bottom:5px;}
+  .done-app-h span{float:right;color:var(--mint);}
+  .done-row{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:13.5px;line-height:1.4;cursor:pointer;color:var(--ink-3);}
+  .done-row .tt{text-decoration:line-through;}
+  .done-row .tb{flex-shrink:0;width:18px;height:18px;margin-top:1px;background:var(--mint);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;border-radius:6px 4px 5px 4px/4px 5px 4px 6px;}
+  .done-note{font-size:12px;color:var(--ink-3);font-style:italic;margin-top:9px;}
+
+  /* ── form bits ── */
+  .sec{font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--accent-deep);margin-bottom:10px;padding-bottom:6px;border-bottom:2px dashed var(--rule-2);}
+  .fld{margin-bottom:20px;}
+  select,textarea{width:100%;padding:11px 14px;border:2.5px solid var(--ink);border-radius:var(--w-sm);font-family:'Patrick Hand',cursive;font-size:15px;color:var(--ink);background:#fff;outline:none;box-shadow:var(--sh-lift);}
+  select:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical;min-height:70px;line-height:1.5;}
+  .prep{list-style:none;}
+  .prep li{display:flex;gap:11px;align-items:flex-start;padding:8px 0;font-size:14px;cursor:pointer;line-height:1.45;border-bottom:2px dashed var(--rule-2);}
+  .prep li:last-child{border-bottom:none;}
+  .box{flex-shrink:0;width:20px;height:20px;margin-top:1px;border:2.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;border-radius:7px 4px 6px 5px/5px 6px 4px 7px;transition:background .1s;}
+  .box.on{background:var(--accent);}
+  .prep li.on span:last-child{color:var(--ink-3);text-decoration:line-through;}
+
+  /* ── buttons ── */
+  .btn{display:inline-block;padding:11px 22px;font-size:13px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;background:#fff;color:var(--ink);border:3px solid var(--ink);cursor:pointer;font-family:'Patrick Hand',cursive;border-radius:var(--pill);box-shadow:var(--sh);transition:transform .1s,background .1s,box-shadow .1s;}
+  .btn:hover{background:var(--accent);color:#fff;box-shadow:var(--sh-lift);transform:translate(2px,2px) rotate(-1deg);}
+  .empty{text-align:center;padding:56px 20px;color:var(--ink-2);font-family:'Kalam',cursive;font-size:19px;}
+  .empty::before{content:"✿ ";color:var(--accent);}
+
+  /* ── footer ── */
+  .colophon{margin-top:42px;padding-top:20px;border-top:3px dashed var(--rule);text-align:center;font-size:12.5px;color:var(--ink-2);line-height:1.8;}
+  .colophon strong{color:var(--accent-deep);}
+  .backup{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap;}
+  .bk-btn{padding:11px 18px;font-size:13.5px;font-weight:400;letter-spacing:.02em;border:2.5px solid var(--ink);background:#fff;color:var(--ink);border-radius:var(--pill);cursor:pointer;font-family:'Patrick Hand',cursive;box-shadow:var(--sh-lift);transition:transform .1s,background .1s;}
+  .bk-btn:hover{background:var(--pink-2);transform:rotate(-2deg);}
+  .flash{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) rotate(-2deg);background:var(--accent);color:#fff;padding:11px 22px;font-size:13px;letter-spacing:.05em;text-transform:uppercase;font-weight:400;font-family:'Kalam',cursive;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;border:2.5px solid var(--ink);border-radius:var(--pill);box-shadow:var(--sh);}
+  .flash.show{opacity:1;}
+  .flash::before{content:"♥ ";}
+
+  @media(max-width:560px){
+    body{padding:14px 6px 48px;}
+    #app{padding:34px 15px 40px;box-shadow:6px 6px 0 0 var(--ink);}
+    .strip .cell{flex-basis:78px;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="mast">
+    <div class="rt"><span class="kicker">Blessing's big plan ♥ post-grad adventures</span></div>
+    <h1>My <em>Application</em> HQ <span class="bang">!</span></h1>
+    <div class="sub">Scholarships &middot; Fellowships &middot; Internships &middot; Grad Schemes &nbsp;♥&nbsp; 2026/27 &rarr; 2027/28</div>
+  </div>
+  <div class="strip" id="strip"></div>
+  <div id="agendaBox"></div>
+  <details class="studyplan">
+    <summary><span class="kicker">Booster sequence</span> &nbsp;The learning plan &mdash; tap to open</summary>
+    <div class="sp-body">
+      <p class="sp-intro">At 3&ndash;5 hrs/day this whole set is done before the autumn deadline wave. Do them in this order so each cert is finished (or provably in-progress) before the application that needs it. Everything below is also a dated entry in the register.</p>
+      <div class="sp-phase"><b>Now &middot; weeks 1&ndash;2 (early Aug)</b> &mdash; foundation that gates everything<br>Portfolio + LinkedIn + CV fix &middot; start Google UX Certificate (list as "in progress" immediately, chip away all autumn)</div>
+      <div class="sp-phase"><b>August &middot; the UX&times;AI differentiators</b><br>Generative AI for UI/UX (IBM) &middot; IxDF: AI for Designers &middot; Google AI Essentials &middot; one Figma course</div>
+      <div class="sp-phase"><b>Late Aug&ndash;early Sept &middot; HCI credibility for the scholarships</b><br>IxDF: HCI Foundations (before Cambridge/Saclay proposals) &middot; W3C Accessibility (for JP Morgan DDP) &middot; start CS50 AI with Python</div>
+      <div class="sp-phase"><b>Sept&ndash;Oct &middot; technical heavyweight + polish, alongside applying</b><br>CS50 Intro to CS (the long Harvard one, background) &middot; book &amp; sit French DELF/DALF so the cert lands before Entente Cordiale</div>
+      <div class="sp-skip"><b>Deliberately skipped:</b> IBM UX cert &amp; third UX cert (redundant with Google UX) &middot; Adobe XD (being sunset for Figma) &middot; CS50 Cybersecurity / 2D Games / Scratch (off-target for your applications) &middot; standalone Product Design course (redundant) &middot; the second Figma course (do one only). Doing all UX certs is the "wall of certificates" trap &mdash; one strong one is enough.</div>
+    </div>
+  </details>
+  <div class="viewtabs">
+    <button class="vt on" id="vt-register">The Register</button>
+    <button class="vt" id="vt-daily">Daily Plan</button>
+  </div>
+  <div class="controls" id="controls">
+    <input class="search" id="search" placeholder="Search the register…" />
+    <div class="fl">Category</div><div class="chips" id="catChips"></div>
+    <div class="fl">Status</div><div class="chips" id="statChips"></div>
+    <div class="fl">View</div>
+    <div class="chips">
+      <button class="chip" id="onlyStar">Priority only</button>
+      <button class="chip" id="hideDone">Hide closed</button>
+      <button class="chip" id="hideIneligible">Hide ineligible</button>
+    </div>
+  </div>
+  <div class="list" id="list"></div>
+  <div id="daily" style="display:none"></div>
+  <div class="backup">
+    <button class="bk-btn" id="exportBtn">⬇ Back up my progress</button>
+    <button class="bk-btn" id="importBtn">⬆ Restore from backup</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+  </div>
+  <div class="colophon">
+    <strong>CONFIRMED</strong> — verified against the official source.<br>
+    <strong>ESTIMATED</strong> — projected from the previous published cycle. Verify before relying on it.<br>
+    Progress saves automatically to this device. Back it up now and then, so a browser reset can't wipe it.
+  </div>
+</div>
+<div class="flash" id="flash">Saved</div>
+
+<script>
+(function(){
+  var TODAY=new Date(); TODAY.setHours(0,0,0,0);
+
+  var DATA=[
+  // ══════════ SCHOLARSHIPS — UK ══════════
+  {id:'martingale',n:'Martingale Foundation Scholarship',cat:'Scholarship',o:'2026-08-12',d:'2026-10-16',c:'conf',p:1,
+   li:'Martingale Scholarship — STEM postgraduate, 2027 entry',
+   v:'Full tuition plus a tax-free stipend at the Living Wage Foundation rate, across ten partner universities including Cambridge, Imperial, UCL, Oxford and Edinburgh.',
+   e:'Home fee status. Household income £45,000 or below. A 2:1 is explicitly accepted. Must be studying a STEM subject — maths, AI, data science or engineering — at a partner university. Open to applicants who have already graduated.',ev:'yes',
+   l:'https://www.martingale.foundation/',
+   note:'Opening date of 12 August 2026 is confirmed; the closing date is estimated from the previous cycle. Process runs shortlist, assessment centre, then notification around December. The AI scholarships have run at roughly sixteen applicants per place.',
+   boost:'<b>What the panel actually screens for:</b> the application literally asks "describe the topics or areas that interest you — how have you engaged with them so far and how do you imagine pursuing them further as a Masters student?" plus your motivation for postgraduate <i>research</i> specifically. They prioritise, in order: evidence of financial need, academic potential, and motivation for research. They also assess "how you would contribute to the cohort" — this is a community, not just a cheque.<br><br><b>Be the ideal candidate:</b> Martingale is not screening for polish, it is screening for a genuine research trajectory from a disadvantaged background. Your EMOS redesign is your single strongest asset here — frame it not as "an internship" but as "I identified how materials scientists struggled with the lab OS interface and want to pursue HCI research into how domain experts interact with complex scientific software." That turns you from a design applicant into a research applicant, which is what they fund.<br><br><b>Foreground:</b> the DeepMind Research Ready selection (proves research potential was already recognised), your low-income + first-gen + state-school history (their exact criteria), and a specific master\'s research question, not a vague interest.<br><br><b>Do before applying:</b> read the free eligibility + application guidance PDFs on their site so your answers map exactly to their rubric; line up two referees who can speak to <i>academic ability and suitability for postgraduate study</i> (your Edinburgh supervisor Anastasia is ideal); attend Martingale\'s own free pre-application webinars (they run application-support workshops — join the newsletter to catch them).',
+   prep:['Personal statement mapped to their 3 criteria (need, potential, research motivation)','Degree transcript','Academic reference from Anastasia (Edinburgh)','Household income + state-school evidence','Frame EMOS as a research trajectory, not an internship','Draft a specific master\'s research question','Attend a Martingale pre-application webinar','Assessment centre preparation']},
+
+  {id:'deepmind',n:'Google DeepMind Scholarship',cat:'Scholarship',o:'2026-09-01',d:'2026-10-19',c:'est',p:1,
+   li:'Google DeepMind Scholarship — delivered by the Martingale Foundation (UK) / IIE (international)',
+   v:'Full tuition, £17,000 living allowance, roughly £2,200 travel, roughly £1,700 equipment, plus mentorship from a DeepMind researcher.',
+   e:'UK route runs through Martingale, so Martingale criteria apply: Home fee status, household income under £45,000. Explicitly prioritises women and Black students. Requires an offer for an eligible AI-related course. The IIE-administered international route includes France as a partner country.',ev:'yes',
+   l:'https://deepmind.google/about/education/',
+   note:'The 2026 deadline was 19 October 2025, so mid-October 2026 is the working assumption for 2027 entry. Secure the Edinburgh reference while the internship is recent.',
+   boost:'<b>Your unfair advantage:</b> this scholarship is funded by DeepMind, and you were selected for a DeepMind-affiliated research programme. Almost no other applicant can say that. Do not bury it — make it the spine of your personal statement. The selection weights academic merit AND financial need, and prioritises women and Black students, so you match every axis they optimise for.<br><br><b>Be the ideal candidate:</b> they want people who will strengthen the AI field and its diversity. Connect your EMOS work (making AI/scientific tooling usable for real domain experts) to a research interest in human-centred or responsible AI — that bridges your UX background to their AI mission credibly, rather than pretending to be a pure ML candidate you are not.<br><br><b>Foreground:</b> DeepMind Research Ready selection, French fluency (opens the IIE France route), your widening-participation profile, and any AI-adjacent coursework.<br><br><b>Do before applying:</b> complete a free AI-foundations credential to show technical seriousness alongside the design background — <i>Google AI Essentials</i> or <i>DeepLearning.AI\'s AI For Everyone</i> (both free to audit on Coursera); email GoogleDeepMindScholarships@iie.org (draft already written) to confirm the France route and which French partner university applies; ask Anastasia for the reference now while EMOS is fresh.',
+   prep:['Personal statement built around the DeepMind Research Ready selection','Reference from Edinburgh / APRIL supervisor','Transcript','Free AI-foundations credential (Google AI Essentials / AI For Everyone)','Send the IIE France-route email','Confirm eligible course and university']},
+
+  {id:'blackheart',n:'Black Heart Foundation',cat:'Scholarship',o:'2026-06-01',d:'2026-08-23',c:'conf',p:1,
+   li:'Black Heart Foundation Scholarship',
+   v:'Scholarship support for talented students facing financial barriers to education.',
+   e:'UK-based students facing financial barriers. Open across education levels including postgraduate.',ev:'yes',
+   l:'https://www.theblackheartfoundation.org/',
+   note:'Closes 23 August 2026 — the most immediate funding deadline in the register.',
+   prep:['Personal statement','Financial evidence','Reference']},
+
+  {id:'cam-open',n:'Cambridge MPhil in Human-Inspired AI',cat:'Master\'s',o:'2026-09-03',d:'2026-09-03',c:'est',p:1,
+   li:'MPhil in Human-Inspired Artificial Intelligence — Centre for Human-Inspired AI (CHIA)',
+   v:'Your primary target course. Applications reopen in early September.',
+   e:'Typically a high 2:1 or first in a relevant discipline. Creative Computing with a UX and HCI specialism is a legitimate route, particularly with the DeepMind research internship. Research proposal and two academic references required.',ev:'check',
+   l:'https://www.postgraduate.study.cam.ac.uk/',
+   note:'Email one or two CHIA supervisors with a draft research idea before submitting. Chiara went through this exact course and is worth speaking to about how the process actually ran.',
+   boost:'<b>What Cambridge actually screens for:</b> at this level they assume competence — what wins is a sharp, feasible research proposal and evidence a supervisor is interested in working with you. The application is won before you submit it, in the emails to supervisors.<br><br><b>Be the ideal candidate:</b> CHIA is literally "human-inspired AI" — the intersection of human behaviour and AI systems. That is your EMOS work exactly: how human domain experts interact with AI/computational tooling. You are not a weak CS applicant sneaking in; you are a strong HCI applicant applying to an HCI-flavoured course. Own that framing.<br><br><b>Foreground:</b> EMOS as HCI research, the DeepMind link, PrepTrack and Harmonia AI as evidence you ship real interactive systems, and a proposal that cites 2–3 actual CHIA faculty papers.<br><br><b>Do before applying:</b> read recent CHIA faculty publications and shape your proposal to connect with one or two specific researchers, then email them a concise paragraph before submitting; speak to Chiara (went through this exact course) about how the process really ran and who is good to work with; do a free HCI course to name-drop methods fluently — <i>UC San Diego\'s Interaction Design specialisation</i> or <i>Georgia Tech HCI</i> content, free to audit on Coursera/edX.',
+   prep:['Read CHIA faculty papers and identify 1–2 target supervisors','Draft research proposal citing their work','Email two CHIA supervisors before submitting','Speak to Chiara about the process','Free HCI course to sharpen method vocabulary','Two academic references','Correct the DeepMind title and end date on the CV','Portfolio link ready']},
+
+  {id:'cam-fund',n:'Cambridge funding deadline',cat:'Master\'s',o:'2026-09-03',d:'2026-12-02',c:'est',p:1,
+   li:'Graduate admissions application — funding section (gates Cambridge Trust, Opportunity, Get In, Spärck AI)',
+   v:'A single deadline gating four separate funding routes.',
+   e:'You must have submitted the graduate admissions application with the funding section completed in full. There is no separate portal for most of these awards.',ev:'yes',
+   l:'https://www.postgraduate.study.cam.ac.uk/funding',
+   note:'The most consequential date in the register. Missing it forfeits four funding routes at once regardless of how strong the academic application is.',
+   prep:['Complete the funding section in full','Finalise research proposal','Both references submitted','Transcript uploaded','Financial circumstances statement']},
+
+  {id:'sparck',n:'Spärck AI Scholarship',cat:'Scholarship',o:'2026-09-03',d:'2026-12-02',c:'est',p:1,
+   li:'Spärck AI Scholarship — automatic consideration via Cambridge funding deadline',
+   v:'Full fees plus a stipend of approximately £22,000. Cambridge is a founding partner.',
+   e:'UK and international students on an AI or STEM master\'s at a partner university. Consideration at Cambridge is automatic — no separate application form exists.',ev:'yes',
+   l:'https://www.gov.uk/',
+   note:'Verified for 2026/27, projected for 2027/28. The only action is making the Cambridge funding form excellent.',
+   prep:['Covered entirely by the Cambridge funding form']},
+
+  {id:'getin',n:'Get In Cambridge Studentships',cat:'Scholarship',o:'2026-09-03',d:'2026-12-02',c:'est',p:2,
+   li:'Get In Cambridge Studentship / Cambridge Opportunity Studentship',
+   v:'Fees plus living costs, around thirty awards. Get In is reserved for Black, British Bangladeshi and British Pakistani students.',
+   e:'Home fee status. Must not already hold a master\'s. Must declare a lack of independent means. Get In specifically requires Black, British Bangladeshi or British Pakistani heritage.',ev:'yes',
+   l:'https://www.postgraduate.study.cam.ac.uk/funding',
+   note:'Structured to top up the maximum government postgraduate loan, which conflicts with your no-loan rule. Apply and decide when a real offer exists.',
+   prep:['Covered by the Cambridge funding form','Decide your position on the loan top-up structure']},
+
+  {id:'cam-adm',n:'Cambridge admissions deadline',cat:'Master\'s',o:'2026-09-03',d:'2027-01-20',c:'est',p:1,
+   li:'MPhil HCAI — final course application deadline',
+   v:'The course deadline, falling after the December funding deadline.',
+   e:'Standard course entry requirements. Applying by this date but missing the December funding date means admission without funding consideration.',ev:'yes',
+   l:'https://www.postgraduate.study.cam.ac.uk/',
+   note:'Offers usually issued around mid-February.',
+   prep:['All materials submitted','Portfolio polished']},
+
+  {id:'oxford-baf',n:'Oxford Black Academic Futures',cat:'Scholarship',o:'2026-09-01',d:'2027-01-08',c:'est',p:2,
+   li:'Black Academic Futures Scholarship — University of Oxford',
+   v:'Around fifty awards covering fees plus a living grant.',
+   e:'Black or Mixed-Black heritage, UK home fee status, holding or applying for an offer on an Oxford graduate course. Tied to individual course deadlines, usually early to mid January.',ev:'yes',
+   l:'https://www.ox.ac.uk/admissions/graduate/fees-and-funding',
+   note:'Only relevant if you also apply to Oxford, so decide early whether the additional application load is worth it alongside Cambridge.',
+   prep:['Oxford course application','Personal statement','References']},
+
+  {id:'imperial-pres',n:'Imperial Presidential Scholarship',cat:'Scholarship',o:'2027-01-01',d:'2027-04-01',c:'est',p:2,
+   li:'President\'s Scholarship for students of Black heritage — Imperial College London',
+   v:'Full Home tuition plus a stipend. One award per faculty.',
+   e:'Black heritage, Home fee status, holding an offer for an Imperial master\'s. The 2026 deadline was 1 April 2026.',ev:'yes',
+   l:'https://www.imperial.ac.uk/study/fees-and-funding/',
+   note:'One award per faculty makes this extremely competitive, but the pool is small and your profile matches the criteria directly.',
+   prep:['Imperial course application','Personal statement']},
+
+  {id:'stapley',n:'Sir Richard Stapley Educational Trust',cat:'Scholarship',o:'2027-01-05',d:'2027-01-06',c:'est',p:2,
+   li:'Stapley Trust Postgraduate Grant',
+   v:'Between £650 and £1,500 towards postgraduate study in any subject.',
+   e:'UK resident undertaking postgraduate study with demonstrable financial need. Verify the age condition on the official site before investing time — the Trust has historically applied a minimum age requirement.',ev:'check',
+   l:'https://www.stapleytrust.org/',
+   note:'Reopens around 5 January with an approximately twenty-four hour window, capped at roughly the first three hundred applications. Pre-write everything and submit within minutes.',
+   prep:['Pre-write all answers in a document','Transcript and references ready to paste','Set three alarms for opening day']},
+
+  {id:'adobe-dc',n:'Adobe Design Circle Scholarship',cat:'Scholarship',o:'2027-01-15',d:'2027-04-30',c:'est',p:2,
+   li:'Adobe Design Circle Scholarship — administered by the Institute of International Education',
+   v:'Up to $25,000 per year, renewable for up to four years, for design students globally.',
+   e:'Students in UX, UI or interaction design programmes worldwide. Enrolment requirements need verifying with IIE — most likely requires current or incoming student status, which a master\'s offer would satisfy.',ev:'check',
+   l:'https://www.iie.org/programs/adobe-design-circle-scholarships/',
+   note:'One of very few major awards aimed at your actual discipline rather than at AI or computer science generally.',
+   prep:['Portfolio: three strongest case studies','Personal statement','Financial need evidence','Verify enrolment requirement with IIE']},
+
+  {id:'bending',n:'Bending Spoons Fellowship',cat:'Fellowship',o:'2027-02-10',d:'2027-04-15',c:'est',p:3,
+   li:'Bending Spoons Fellowship — CS / software engineering / AI',
+   v:'€50,000 per year for up to three years, plus mentorship and an optional paid summer internship. Ten awarded globally.',
+   e:'Must be enrolled in a bachelor\'s or master\'s in computer science, software engineering, AI or similar, at a university in the UK, EU, Switzerland or the non-EU Balkans.',ev:'no',
+   l:'https://fellowship.bendingspoons.com/',
+   note:'Closed to you outside enrolment. Park entirely until a master\'s has started, at which point it becomes one of the highest-value awards here.',
+   prep:['Requires enrolment first']},
+
+  {id:'gem',n:'GEM Fellowship',cat:'Fellowship',o:'2026-09-01',d:'2026-11-13',c:'est',p:3,
+   li:'National GEM Consortium MS Engineering Fellowship — Adobe Research is a corporate member',
+   v:'Full tuition and fee waiver, a living stipend, and up to two paid summer internships with a member employer. Adobe has sponsored over one hundred GEM Fellows in computer science since 2012.',
+   e:'Applicants must be a US citizen or US permanent resident at the time of application. Must be a STEM major and apply directly to at least three GEM member universities by 15 January or the department deadline, whichever falls earlier.',ev:'no',
+   l:'https://research.adobe.com/gem-fellowship/',
+   note:'The citizenship requirement is absolute with no international route. Logged so it stays closed rather than resurfacing. Would become very strong if you ever held US permanent residency.',
+   prep:['Not eligible — US citizenship or permanent residency required']},
+
+  // ══════════ FRANCE ══════════
+  {id:'entente',n:'France Excellence — Entente Cordiale',cat:'France',o:'2027-01-15',d:'2027-02-28',c:'est',p:1,
+   li:'France Excellence "Entente Cordiale" Scholarship Programme — Embassy of France in the UK',
+   v:'€900 net per month, plus tuition exemption at public institutions, health insurance, public liability cover, CVEC exemption and visa fee exemption.',
+   e:'Must be a British national with no Franco-British dual nationality. Must secure admission to a master\'s at a French university or Grande École. Works at any French institution rather than one specific university.',ev:'yes',
+   l:'https://www.uk.campusfrance.org/',
+   note:'The 2026 cycle opened 15 January and closed 28 February at 18:00 GMT, with interviews across March and April. Cannot be combined with any other French government or international scholarship — if you also win IDEX you must formally choose one.',
+   prep:['French master\'s application or offer','Personal statement in French','CV in French','Reference','Proof of British nationality','Interview preparation for March and April']},
+
+  {id:'saclay-adm',n:'Paris-Saclay M2 Human-Computer Interaction',cat:'Master\'s',o:'2026-11-01',d:'2027-03-25',c:'est',p:1,
+   li:'Master 2 — Human-Computer Interaction (HCI), Université Paris-Saclay',
+   v:'Taught entirely in English, tuition around €250 per year for a British applicant under the standard exemption.',
+   e:'A relevant bachelor\'s degree and English proficiency evidence. Admission here is the prerequisite for IDEX, which cannot be applied for independently.',ev:'yes',
+   l:'https://www.universite-paris-saclay.fr/en',
+   note:'Apply as early as the portal allows. No admission means no IDEX invitation, so the course application matters more than the scholarship application.',
+   prep:['Transcript and degree certificate','CV','Motivation letter','Portfolio','English proficiency evidence']},
+
+  {id:'idex',n:'Paris-Saclay IDEX Scholarship',cat:'France',o:'2027-03-01',d:'2027-03-31',c:'est',p:2,
+   li:'International Master\'s Scholarship Programme (IDEX) — Université Paris-Saclay',
+   v:'€10,000 per year paid monthly across ten months, plus up to €1,000 towards travel and visa costs.',
+   e:'Newly arrived international students aged thirty or under, studying in France for the first time. Must be admitted to a Paris-Saclay master\'s and then invited by email. Applicants receiving other funding above €600 per month are declared ineligible.',ev:'yes',
+   l:'https://www.universite-paris-saclay.fr/en/admission/bourses-et-aides-financieres',
+   note:'The €600 ceiling is what makes this mutually exclusive with Entente Cordiale at €900. Apply for both; if both land, take Entente Cordiale for the tuition and insurance package.',
+   prep:['Await the invitation email after admission','Motivation letter','Financial circumstances']},
+
+  {id:'eiffel',n:'Eiffel Excellence Scholarship',cat:'France',o:'2026-10-01',d:'2027-01-08',c:'est',p:2,
+   li:'Bourse d\'excellence Eiffel — Campus France (master\'s level)',
+   v:'Approximately €1,200 per month, plus international and national transport, insurance and housing assistance. Does not cover tuition.',
+   e:'All nationalities except French. Age twenty-nine or under for a master\'s award. You cannot apply directly — a French institution must nominate you, with internal deadlines running October to November, months ahead of the Campus France date.',ev:'check',
+   l:'https://www.campusfrance.org/en/france-excellence-eiffel-scholarship-program',
+   note:'The nomination requirement is the whole game. Contact French institutions in September about their internal Eiffel process or the January deadline is irrelevant to you. Sciences Po has confirmed it is not participating in the 2027 round.',
+   prep:['Contact French universities about nomination in September','Motivation letter','CV','Academic references','Confirm each institution\'s internal deadline']},
+
+  {id:'polytech',n:'École Polytechnique MScT',cat:'Master\'s',o:'2026-11-01',d:'2027-03-01',c:'est',p:2,
+   li:'MScT Visual and Creative AI (VIC-AI) / MScT Trustworthy and Responsible AI (TRAI)',
+   v:'Need-based and merit-based scholarships available. Tuition around €15,400 per year, reduced to approximately €12,350 for some candidates.',
+   e:'A relevant bachelor\'s degree. Many international students fund this through Eiffel, which requires institutional nomination.',ev:'yes',
+   l:'https://programmes.polytechnique.edu/en/master/',
+   note:'Visual and Creative AI is an unusually precise fit for a Creative Computing graduate moving into HCI. Raise Eiffel nomination in the same conversation as admissions.',
+   prep:['Portfolio','Transcript','Motivation letter','References','Ask about Eiffel nomination']},
+
+  // ══════════ USA ══════════
+  {id:'kennedy',n:'Kennedy Scholarship',cat:'USA',o:'2026-08-01',d:'2026-10-23',c:'est',p:1,
+   li:'Kennedy Scholarship — Kennedy Memorial Trust (Harvard or MIT)',
+   v:'Full tuition and health insurance, a means-tested bursary up to $31,000, $2,500 for summer travel, and a contribution towards flights.',
+   e:'British citizen, ordinarily resident in the UK, mainly educated in the UK. Graduate applicants must have begun UK undergraduate studies no earlier than 1 September 2016 and have since graduated. Any discipline, including non-degree Special Student status.',ev:'yes',
+   l:'https://www.kennedytrust.org.uk/',
+   note:'The eligibility wording covers your situation exactly and the means-testing works in your favour. Opens August, closes October.',
+   prep:['Research Harvard and MIT courses','Personal statement','Two academic references','Transcript','Financial circumstances evidence','Proof of UK citizenship and education']},
+
+  {id:'knox',n:'Frank Knox Memorial Fellowship',cat:'USA',o:'2026-08-01',d:'2026-10-23',c:'est',p:1,
+   li:'Frank Knox Memorial Fellowship — Harvard University (UK award)',
+   v:'At least $35,000 per year plus full tuition and health insurance, guaranteed up to two years on multi-year degrees.',
+   e:'British citizen resident in the UK and a graduate of a UK university. Roughly fifteen UK and Commonwealth Fellows selected annually. No application accepted from anyone already in the United States.',ev:'yes',
+   l:'https://www.frankknoxfellowships.org.uk/',
+   note:'Administered in the UK by the Kennedy Memorial Trust, so you can hold applications for both Knox and Kennedy simultaneously. Same materials, two shots.',
+   prep:['Harvard course application','Personal statement','References','Transcript']},
+
+  {id:'fulbright',n:'US–UK Fulbright Postgraduate Award',cat:'USA',o:'2026-09-01',d:'2027-05-05',c:'est',p:1,
+   li:'Fulbright Postgraduate Award (UK to USA) — US-UK Fulbright Commission',
+   v:'Funding towards tuition, a maintenance stipend, J-1 visa sponsorship and ongoing support.',
+   e:'UK citizen holding a bachelor\'s degree. Dual US-UK citizens and US residents are ineligible. An Opportunity Fund exists specifically for first-generation, free-school-meal and state-educated applicants.',ev:'yes',
+   l:'https://www.fulbright.org.uk/',
+   note:'Verify the exact deadline before anything else — historically early May, which may place the next open cycle at 2028 entry rather than 2027. Carries a two-year UK home-residency requirement afterwards.',
+   prep:['Confirm the exact deadline first','Research three US universities','Personal statement','Study or research objective','Three references','Transcript']},
+
+  {id:'bunac',n:'BUNAC Educational Scholarship Trust',cat:'USA',o:'2027-01-05',d:'2027-03-17',c:'est',p:3,
+   li:'BUNAC Educational Scholarship Trust (BEST) — postgraduate study in USA or Canada',
+   v:'Typically £5,000 to £15,000 as a top-up. Funds the first twelve months.',
+   e:'UK passport holder, currently in or within the last five years of UK tertiary education. Courses of three months to three years qualify. Explicitly a top-up, so other funding must be in place.',ev:'yes',
+   l:'https://jenza.com/about-us/scholarships/',
+   note:'Preference for candidates furthering transatlantic understanding, so frame around that rather than financial need alone. Only worth pursuing once Kennedy, Knox or Fulbright has landed.',
+   prep:['Confirmed US or Canada offer','Evidence of other funding','Personal statement']},
+
+  {id:'j1',n:'J-1 visa route for US internships',cat:'Internship',o:'2026-08-01',d:'2027-06-30',c:'est',p:2,
+   li:'J-1 Exchange Visitor — Intern or Trainee category',
+   v:'A visa mechanism, not funding. Pay comes entirely from the host employer.',
+   e:'J-1 Intern requires student status or within twelve months of graduation, up to twelve months — that window closes around June 2027 for you. J-1 Trainee requires a degree plus roughly one year of work experience, up to eighteen months. A designated sponsor must issue the DS-2019.',ev:'check',
+   l:'https://j1visa.state.gov/',
+   note:'Trainee is almost certainly the better route, because working through 2026/27 builds the required experience while the Intern window expires. Budget roughly $900 to $1,895 sponsor fee, $220 SEVIS and $185 visa.',
+   prep:['Secure a paying US host employer','Select a sponsor: Cultural Vistas, CIEE or IST Plus','Budget £1,000 to £1,800','DS-2019 paperwork','Accumulate one year of work experience']},
+
+  // ══════════ EUROPE ══════════
+  {id:'erasmus-m',n:'Erasmus Mundus Joint Masters',cat:'Europe',o:'2026-10-01',d:'2027-01-15',c:'est',p:1,
+   li:'Erasmus Mundus Joint Master (EMJM) Scholarship — apply per programme, up to three',
+   v:'Tuition, a monthly living allowance, travel and insurance, across a consortium of three or more universities in different countries.',
+   e:'Open to all nationalities including UK citizens — entirely separate from the Erasmus+ mobility scheme you were excluded from. Explicitly open to recent graduates. You apply directly to individual programmes, up to three per cycle.',ev:'yes',
+   l:'https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus-catalogue_en',
+   note:'The cleanest fit in the register because it sidesteps the enrolment problem entirely. Confirm each consortium\'s scholarship status before applying — individual programmes occasionally pause scholarship rounds while awaiting re-selection.',
+   prep:['Shortlist three AI, HCI or design programmes','Motivation letter for each','Transcript and degree certificate','Two references','English proficiency','Portfolio']},
+
+  {id:'daad',n:'DAAD Study Scholarship',cat:'Europe',o:'2026-08-01',d:'2026-11-01',c:'est',p:2,
+   li:'DAAD Study Scholarship — Master Studies for All Academic Disciplines (Germany)',
+   v:'Around €992 per month, plus health, accident and liability insurance, a rent subsidy and a travel allowance.',
+   e:'Graduates holding a first degree, applying to a master\'s in Germany. Funding for the 2027 cycle must begin in 2027, typically from 1 October. Most German public master\'s are tuition-free and many HCI and CS courses are taught in English.',ev:'yes',
+   l:'https://www.daad.de/en/',
+   note:'Frequently overlooked because Germany is not on most people\'s list. Combined with tuition-free study, the stipend covers considerably more of the real cost than it appears to.',
+   prep:['Select a German course','Motivation letter','CV','Transcript','Two references','Language certificate']},
+
+  {id:'epfl',n:'EPFL Excellence Fellowship',cat:'Europe',o:'2026-11-01',d:'2026-12-15',c:'est',p:3,
+   li:'EPFL Master\'s Excellence Fellowship',
+   v:'CHF 10,000 per semester, roughly CHF 20,000 to 40,000 total, plus guaranteed student housing.',
+   e:'Outstanding master\'s applicants of any nationality. Assessed alongside admission — you tick the box on the application. Renewal requires at least 50 ECTS and a GPA of 5.0 out of 6.0.',ev:'yes',
+   l:'https://www.epfl.ch/education/master/master-excellence-fellowships/',
+   note:'Extremely competitive and a substantial contribution rather than always full coverage. Zero marginal effort if applying to EPFL anyway.',
+   prep:['EPFL master\'s application','Tick the fellowship box','Transcript','References','Motivation letter']},
+
+  {id:'churchill',n:'Churchill Fellowship',cat:'Fellowship',o:'2026-09-01',d:'2026-10-20',c:'conf',p:3,
+   li:'Churchill Fellowship — Science, Technology and Innovation category',
+   v:'Individually calculated awards typically £4,000 to £8,000, averaging over £6,000, to travel anywhere for four to eight weeks.',
+   e:'UK citizen resident in the UK, aged eighteen or over. Covers travel, accommodation, food, insurance, visas and some vaccinations. Explicitly excludes academic study, degree placements, internships and student grants.',ev:'check',
+   l:'https://www.churchillfellowship.org/',
+   note:'The exclusions matter more than the eligibility. This cannot fund a master\'s or an internship — only a self-designed research or knowledge-exchange project benefiting the UK. Opens 1 September, closes 20 October, both confirmed, for travel from August 2027.',
+   prep:['Design a bespoke research project','Identify overseas host organisations','Articulate the UK benefit','Two references']},
+
+  {id:'rotary',n:'Rotary Foundation Global Grant',cat:'Fellowship',o:'2026-08-01',d:'2027-03-31',c:'est',p:3,
+   li:'Rotary Foundation Global Grant Scholarship',
+   v:'Around $30,000 or more for a year of graduate study abroad, covering tuition, living, travel and visa costs.',
+   e:'Must be sponsored through a local Rotary club or district, requiring early relationship-building. The project must align with one of Rotary\'s seven areas of focus.',ev:'check',
+   l:'https://www.rotary.org/en/our-programs/scholarships',
+   note:'Framing is everything. Technology and UX angled toward education access or community economic development can qualify; a straightforward HCI master\'s will not. Contact the Milton Keynes district early.',
+   prep:['Contact the local Rotary district','Frame the project under an area of focus','Course offer','Personal statement']},
+
+  {id:'turing',n:'Turing Scheme — Leicester appeal',cat:'Fellowship',o:'2026-07-01',d:'2026-08-31',c:'est',p:3,
+   li:'Turing Scheme 2026/27 — University of Leicester allocation',
+   v:'£16 to £23 per day living plus £165 to £1,360 travel under the Enhanced criteria, which you meet on multiple grounds.',
+   e:'The DfE guidance explicitly permits recent graduates who completed within the last twelve months and states they need not have been selected before graduating. Leicester has independently restricted its programme to currently registered students.',ev:'check',
+   l:'https://www.turing-scheme.org.uk/',
+   note:'Send the appeal to turing@le.ac.uk and attend a Wednesday drop-in, 2pm to 3pm. The most useful question is whether recent graduates were excluded from Leicester\'s DfE application entirely, or whether headroom exists in the existing grant.',
+   prep:['Send the appeal email to turing@le.ac.uk','Attend a Wednesday drop-in','Ask about third-party sponsoring institutions']},
+
+  // ══════════ AI FELLOWSHIPS ══════════
+  {id:'anthropic',n:'Anthropic Fellows Program',cat:'Fellowship',o:'2026-10-01',d:'2027-01-12',c:'est',p:2,
+   li:'Anthropic Fellows Program — AI safety research (Economics & Policy workstream)',
+   v:'$3,850 per week, roughly $15,000 per month in compute funding, and mentorship from senior researchers. Four months full-time, Berkeley or London.',
+   e:'Requires full-time work authorisation and physical presence in the US, UK or Canada. No visa sponsorship is offered, which is not a barrier for you. Applicants encouraged to apply without meeting every listed qualification.',ev:'yes',
+   l:'https://www.anthropic.com/',
+   note:'Eligible on paper and London removes visa friction entirely. The honest constraint is the technical bar on the core ML tracks. Economics and Policy weights analytical reasoning and clear writing over ML depth — that is where an HCI perspective on AI governance could land.',
+   prep:['Develop a specific research question','CV','Written research proposal','Strengthen Python fundamentals','Target the Economics and Policy track']},
+
+  {id:'openai-res',n:'OpenAI Residency',cat:'Fellowship',o:'2026-11-17',d:'2027-01-09',c:'est',p:3,
+   li:'OpenAI Residency — six-month paid research residency, San Francisco',
+   v:'$18,333 per month, roughly $220,000 annualised. Immigration and sponsorship support provided.',
+   e:'Open to global candidates including self-taught and non-traditional backgrounds. Residents must not be enrolled in education during the residency, so graduate status helps. Hybrid, at least three days per week in San Francisco.',ev:'check',
+   l:'https://openai.com/residency/',
+   note:'Formally eligible, but selection is heavily weighted toward mathematics, physics and software engineering. Tracked so it stays visible, not because it warrants significant effort this cycle.',
+   prep:['Revisit after completing a master\'s','Strengthen Python and ML fundamentals']},
+
+  {id:'meta-res',n:'Meta Research Internship',cat:'Internship',o:'2026-09-01',d:'2027-01-09',c:'est',p:2,
+   li:'Meta Research Internship — filter for UX Research and Product Design tracks',
+   v:'Between $7,650 and over $12,000 per month, across twelve to twenty-four weeks.',
+   e:'Many listings specify PhD enrolment, but Meta\'s research scope extends to human-AI interaction and applied UX research where bachelor\'s and master\'s candidates are considered. Visa sponsorship varies by role.',ev:'check',
+   l:'https://www.metacareers.com/students',
+   note:'Residency-level pay adjacent to your actual expertise. Filter deliberately for UX Research and Product Design rather than PhD research-scientist listings, which will screen you out.',
+   prep:['Portfolio','CV','Filter for UX Research and Product Design roles','Confirm visa sponsorship per role']},
+
+  // ══════════ FINTECH — INDIVIDUAL ══════════
+  {id:'santander',n:'Santander UK',cat:'Grad Scheme',o:'2026-10-01',d:'2026-12-04',c:'est',p:1,
+   li:'Global Retail Graduate Programme — Milton Keynes, 27 months, September 2027 start',
+   v:'A 27-month structured programme with rotations, a learning bootcamp, an innovation hackathon in Madrid, and exposure to AI tooling. Degree-neutral admissions policy.',
+   e:'Graduates from any discipline — Santander applies "degree neutrality" across its programmes, so no subject or grade bar is imposed. Right to work in the UK required. Based in Milton Keynes.',ev:'yes',
+   l:'https://www.santander.com/en/careers/uk-careers/emerging-talent/graduate-programmes',
+   note:'CORRECTED: this is not open now. Santander states applications open in Autumn 2026 for the 2027 intake. Expect roughly October, closing late November or early December. Once live, Santander does review on a rolling basis and may close early on volume, so apply in the first three weeks. Milton Keynes means no relocation cost, which materially changes the savings maths.',
+   prep:['Set a reminder for early October 2026','CV with corrected DeepMind details','Cover letter','Online assessment preparation','Video interview preparation']},
+
+  {id:'jpm-ddp',n:'J.P. Morgan',cat:'Grad Scheme',o:'2026-09-01',d:'2026-10-31',c:'est',p:1,
+   li:'2027 Design Development Programme — Full-Time Analyst (London)',
+   v:'A two-year full-time programme in Experience Design, covering UX/UI Design, UX Research and Service Design, mentored by UX design experts.',
+   e:'⚠️ The 2026 London listing required an expected graduation date of December 2025 to June 2026. If the 2027 cycle shifts to December 2026 to June 2027, you fall outside it as a June 2026 graduate. Requires a bachelor\'s in a design discipline (Interaction Design, HCI, UX) or a related field, and a digital portfolio communicating Problem, Ideation, Testing, Solution, Impact and Reflection. A HireVue assessment is mandatory before your application is reviewed.',ev:'check',
+   l:'https://careers.jpmorgan.com/',
+   note:'The 2026 London posting went live in early September 2025 and reviewed on a rolling basis, closing once positions filled. Contact the early careers team directly about the graduation window before writing anything — that single question determines whether this is worth your time. Note the US version of DDP requires US work authorisation with no sponsorship, so London is your only route.',
+   boost:'<b>The exact skills the listing names:</b> a digital portfolio communicating Problem → Ideation → Testing → Solution → Impact → Reflection; Interaction Design; Visual/UI Design or Information Architecture; user-centred design; User Research; UX Writing; Prototyping; and explicitly "Understanding Accessibility Guidelines and Inclusive Design practices." Mirror this structure exactly in your portfolio and CV — they are telling you the rubric.<br><br><b>Specific Forage simulation:</b> JP Morgan\'s Forage catalogue is software-engineering-heavy (Python, React, their Perspective data-viz tool) rather than design — so the SWE sim is optional colour, not essential. More valuable: it proves you understand their fintech engineering context, which helps you design for it. Do the free <i>JPMorgan Software Engineering Virtual Experience</i> on theforage.com only if you have spare hours; prioritise a dedicated <i>accessibility / inclusive design</i> course instead, since the listing names it explicitly and most design applicants ignore it.<br><br><b>Be the ideal candidate:</b> a HireVue video assessment gates the whole application and must be completed before review — prepare for it properly. Restructure your three case studies into their exact six-stage framework.<br><br><b>Foreground:</b> accessibility/inclusive design (their stated criterion, your differentiator), the six-stage case study structure, and any fintech-adjacent reasoning.<br><br><b>Do before applying:</b> confirm the graduation-year window with early careers first; take a free accessibility course (W3C/edX "Introduction to Web Accessibility" is free); rebuild the portfolio to their six headings; rehearse HireVue answers.',
+   prep:['Confirm the graduation-year window with JPM early careers FIRST','Free accessibility course (W3C/edX Intro to Web Accessibility)','Rebuild portfolio into Problem/Ideation/Testing/Solution/Impact/Reflection','Optional: JPMorgan Software Engineering Forage sim for fintech context','HireVue video preparation','Apply within the first two weeks']},
+
+  {id:'wise-grad',n:'Wise',cat:'Grad Scheme',o:'2026-09-01',d:'2026-11-30',c:'est',p:1,
+   li:'Graduate UX/UI/Service Designer — London, September 2027 start',
+   v:'An 18-month rotational graduate programme: nine months in one product team, then nine months in a second placement within the same squad, then settling into a permanent role.',
+   e:'⭐ Wise defines a graduate as "a student in their final year of university or who graduated a year ago" — as a June 2026 graduate you are squarely eligible for a September 2027 start. Bachelor\'s or master\'s in a design-related field. Must be eligible to work in the UK; no sponsorship offered on UK roles.',ev:'yes',
+   l:'https://wise.jobs/early-careers',
+   note:'Genuinely one of the best fits in the register: the graduate definition explicitly includes people a year out, the programme is design-led and rotational, and it is London-based with no visa complication. Wise posts each role separately with its own closing date rather than one firm-wide deadline, so set alerts on wise.jobs and react when it appears. The main cycle opens September to October 2026 for 2027 starts.',
+   boost:'<b>What the interview actually tests:</b> Wise runs a three-stage loop — recruiter phone screen, a "meet the team" round built around open-ended and scenario-based questions plus a values-fit assessment, and a design exercise. Their whole brand is "money without borders" and radical mission-alignment, so values fit is weighted heavily, not just craft.<br><br><b>Be the ideal candidate:</b> the listing emphasises strong visual craft, Figma, Adobe Creative Cloud, curiosity about AI, rationalising design decisions clearly, and learning from user testing. Show a portfolio where the <i>thinking</i> is visible — problem framing, trade-offs, measurable impact — not just pretty screens. Come with genuine curiosity and questions; multiple applicants report the interviews feel like conversations and reward that.<br><br><b>Foreground:</b> your Congolese heritage and cross-border family context is a genuine, authentic connection to Wise\'s "money without borders" mission for people who send money internationally — that is a values story almost no other candidate can tell. Plus Figma fluency, EMOS user-testing, and clear design rationale.<br><br><b>Do before applying:</b> read Wise\'s mission and values pages and prepare a specific, honest story about why borderless finance matters to you; rework one case study to foreground measurable impact; practise walking through your design process out loud (not reading off the portfolio).',
+   prep:['Set job alerts on wise.jobs for Graduate and Design','Prepare a genuine "money without borders" mission story (Congolese/cross-border angle)','Portfolio where the thinking is visible: problem, trade-offs, impact','Figma and Adobe Creative Cloud evidence','Practise a spoken design-process walkthrough','Prepare thoughtful questions for the "meet the team" round']},
+
+  {id:'revolut-grad',n:'Revolut',cat:'Grad Scheme',o:'2026-09-01',d:'2026-11-30',c:'est',p:2,
+   li:'Graduate Programme 2027 — Product Design (and Direct Junior Hire route)',
+   v:'Structured graduate programme across Revolut tech hubs. The separate internship programme offers visa assistance, travel costs and accommodation.',
+   e:'⚠️ The Internship Programme 2027 requires penultimate-year students graduating in 2028 with a predicted first — you do not qualify for that route. The Graduate Programme is the correct target. There is also a Direct Junior Hire route which explicitly suits candidates who graduated more than twelve months prior. Hybrid, three days per week in office.',ev:'check',
+   l:'https://www.revolut.com/careers/',
+   note:'The graduate programme typically opens in early September for the following year, with the optimal window September to mid-October 2026. Quotas for popular streams can fill by mid-October even though the portal stays open into November or December. Note the internship requires a predicted first-class degree — check whether the graduate programme applies the same bar, as you hold a 2:1.',
+   prep:['Confirm the graduate programme grade requirement','Portfolio','CV','Apply within the first three weeks of opening','Consider the Direct Junior Hire route as a parallel path']},
+
+  {id:'monzo',n:'Monzo',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:3,
+   li:'Product Designer — early careers / junior (listing title varies by cycle)',
+   v:'Design roles at one of the strongest product design cultures in UK fintech.',
+   e:'Not individually verified for the 2027 cycle. Monzo hires design roles reactively rather than running a fixed graduate scheme, so criteria vary by listing. Right to work in the UK required.',ev:'check',
+   l:'https://monzo.com/careers/',
+   note:'Dates here are unverified — treat as a placeholder until you check the careers page directly. Monzo does not publish a structured graduate design programme in the way Wise does, so job alerts are the realistic strategy.',
+   prep:['Check monzo.com/careers directly and confirm what exists','Set job alerts','Portfolio','CV']},
+
+  // ══════════ BIG TECH — INDIVIDUAL ══════════
+  {id:'google-ux',n:'Google',cat:'Internship',o:'2026-09-01',d:'2026-11-15',c:'est',p:1,
+   li:'UX Design Intern, Summer 2027 — and Associate UX Designer for graduates',
+   v:'Approximately $44 per hour on average across a twelve-week programme, with housing stipends on some placements.',
+   e:'⚠️ Google accepts candidates from design, HCI, computer science and related programmes, but the internship typically requires students in their penultimate year. As a graduate, the Associate UX Designer and full-time UX roles are the correct target instead.',ev:'check',
+   l:'https://careers.google.com/students/',
+   note:'The internship posts in September and closes by November. Given the penultimate-year requirement, spend your effort on the graduate and full-time UX listings rather than the internship — the internship application is likely to be screened out on student status regardless of portfolio strength.',
+   prep:['Target Associate UX Designer and full-time roles rather than the internship','Portfolio: three strongest case studies','CV with corrected DeepMind details','Prepare a portfolio walkthrough']},
+
+  {id:'apple-ux',n:'Apple',cat:'Internship',o:'2026-08-15',d:'2026-10-31',c:'est',p:1,
+   li:'Design Internship / UX Design roles — London and Cupertino',
+   v:'Roughly $35 to $50 per hour on US internships. London roles are salaried.',
+   e:'Varies significantly by listing — some are open to recent graduates, others require current enrolment. UK-based roles avoid the visa question entirely.',ev:'check',
+   l:'https://www.apple.com/careers/uk/',
+   note:'Check London listings before US ones. Your Apple Tabs bill-splitting concept is a direct asset because it demonstrates you already think in their design idiom — lead the portfolio with it rather than burying it.',
+   prep:['Filter London listings first','Lead the portfolio with Apple Tabs','CV','Cover letter']},
+
+  {id:'palantir',n:'Palantir — Product Design',cat:'Internship',o:'2026-07-01',d:'2026-10-31',c:'conf',p:1,chk:'',
+   li:'Product Designer — Internship & New Grad · New York AND London (multiple Lever listings, live now)',
+   v:'Design for complex, data-dense, high-stakes software (Foundry, Gotham, Apollo). On a given day: leading a design sprint, designing a micro-interaction to make a complex analytical task feel simple, and creating flexible reusable UI components. Pays extremely well; both your target cities.',
+   e:'Internship is for those nearing graduation; New Grad roles for recent grads — both potentially open to you, verify each Lever listing. Figma proficiency expected. Some roles (US Government track) need US citizenship — apply to the COMMERCIAL NYC/London roles, not gov ones. London roles avoid the visa question.',ev:'check',
+   l:'https://jobs.lever.co/palantir',
+   note:'LIVE NOW on Lever. Apply to commercial NYC + London product design roles (avoid the US-Government ones — they need US citizenship). Rolling review, ~27-day process. This is a genuine stretch-but-realistic target: your EMOS redesign (making complex scientific tooling usable for domain experts) is almost EXACTLY what Palantir does — that parallel is your single strongest angle. Rare among your applications in how well your actual work matches their mission.',
+   boost:'<b>The process (5 researched stages — prepare for each):</b><br>1. <b>Recruiter screen</b> — "tell me about yourself", why Palantir, how you collaborate with engineering, comfort with ambiguity.<br>2. <b>Async Interaction Design Challenge</b> (the key filter) — a wireframe/interaction problem, 5-day window but ~2 hours recommended. Some prompts want hand-drawn sketches (raw layout skill), some allow Figma/Miro — READ INSTRUCTIONS carefully. Judged on <i>clarity over aesthetics</i> and pointing out all key interactions.<br>3. <b>45-min Portfolio Review</b> with 2 designers — strict: ~30 min presenting just 1–2 UX projects, heavy focus on <i>micro-interactions</i> and the "whys". NOT pretty screens — they want depth, systems thinking, and a solid reason behind every decision.<br>4. <b>Ideation/Iteration Challenge + Q&A</b> — live design thinking.<br>5. <b>Hiring Manager</b> — behavioural + mission fit.<br><br><b>What they want:</b> people who enjoy technical complexity, take extreme ownership, and defend designs with <i>logic and data, not subjective taste</i>. Systems thinking + analytical rigor + pristine interaction craft.<br><br><b>Your angle:</b> EMOS = translating chaotic complex data/scientific workflows into usable interfaces = literally their mission. Lead your portfolio with it. Prepare to talk micro-interactions and defend every decision with reasoning.<br><br><b>Prep:</b> study current Palantir products (Foundry/Gotham) so you speak their design language; practise whiteboard/interaction challenges focused on clarity; rehearse a tight 30-min 1–2 project portfolio walkthrough foregrounding micro-interactions and rationale.',
+   prep:['Apply to commercial NYC + London roles on Lever (NOT US-Gov ones)','Study Palantir Foundry & Gotham to speak their design language','Rebuild portfolio: 1–2 deep projects, micro-interactions foregrounded, EMOS led','Practise interaction-design/whiteboard challenges (clarity over aesthetics)','Rehearse a strict 30-min portfolio walkthrough defending every decision with logic','Prep recruiter answers: collaboration with engineers, comfort with ambiguity']},
+
+  {id:'meta-design',n:'Meta',cat:'Internship',o:'2026-08-15',d:'2026-10-31',c:'est',p:2,
+   li:'Product Design Intern, Summer 2027 / University Grad — Product Designer',
+   v:'Roughly $35 to $50 per hour on internships, with housing stipends on many placements.',
+   e:'Internships typically require current student status. Meta is explicitly degree-agnostic about institution and values a portfolio of shipped work over academic metrics. The University Grad track is the graduate-appropriate route.',ev:'check',
+   l:'https://www.metacareers.com/students',
+   note:'The emphasis on shipped work rather than pedigree favours you — PrepTrack, Harmonia AI and the EMOS redesign are all real, defensible artefacts. Target University Grad listings rather than internships.',
+   prep:['Target University Grad rather than intern listings','Portfolio','CV','Design challenge preparation']},
+
+  {id:'microsoft-ux',n:'Microsoft',cat:'Internship',o:'2026-08-15',d:'2026-11-30',c:'est',p:2,
+   li:'Product Designer, University Graduate — UK and US',
+   v:'Roughly $35 to $50 per hour on US internships. UK graduate roles are salaried.',
+   e:'Internship tracks typically require current enrolment; Microsoft also runs graduate-entry design roles which are open to recent graduates. The substantial UK presence removes visa complexity.',ev:'check',
+   l:'https://careers.microsoft.com/students/',
+   note:'The University Graduate listings are the right target, not the internships. The UK entity hires directly and the process is considerably simpler than the US route.',
+   prep:['Target University Graduate roles','Portfolio','CV','Cover letter']},
+
+  {id:'adobe-int',n:'Adobe',cat:'Internship',o:'2026-09-01',d:'2026-11-30',c:'est',p:2,
+   li:'Design Internship / Product Design — NOT Adobe Research internships',
+   v:'Approximately $38 to $51 per hour. Locations include London, France and North America.',
+   e:'⚠️ Adobe Research internships require current master\'s or PhD enrolment and are closed to you. The standard Design internships and graduate design roles have broader criteria and are the correct target. Roles are hybrid and co-located with mentors.',ev:'check',
+   l:'https://www.adobe.com/careers/university.html',
+   note:'Getting the Research versus Design distinction right is the single most important thing here — applying to the wrong one wastes the application entirely. France-based roles are worth noting given your French.',
+   prep:['Target Design, not Research','Portfolio','CV','Check France-based listings']},
+
+  {id:'spotify',n:'Spotify',cat:'Internship',o:'2026-08-15',d:'2026-10-31',c:'est',p:2,
+   li:'Design Internship / Associate Product Designer — London and Stockholm',
+   v:'A twelve-week structured internship programme, plus graduate design roles.',
+   e:'Internships typically require student status, though criteria vary by cycle. European locations substantially reduce visa friction relative to US programmes.',ev:'check',
+   l:'https://www.lifeatspotify.com/students',
+   note:'Strong design culture and a well-regarded programme. The London option makes it one of the more realistic international-calibre placements here.',
+   prep:['Portfolio','CV','Cover letter']},
+
+  {id:'figma',n:'Figma',cat:'Internship',o:'2026-09-01',d:'2026-11-30',c:'est',p:3,
+   li:'Product Design Intern / New Grad Product Designer — London and San Francisco',
+   v:'Structured design internships and new-grad design roles.',
+   e:'Not individually verified for the 2027 cycle. Figma has a London office. Criteria vary by listing.',ev:'check',
+   l:'https://www.figma.com/careers/',
+   note:'Dates unverified — check the careers page directly. Worth applying given you already work in Figma daily and can speak to the product credibly.',
+   prep:['Verify listings on figma.com/careers','Portfolio','CV']},
+
+  {id:'salesforce',n:'Salesforce Futureforce',cat:'Internship',o:'2026-09-01',d:'2026-11-30',c:'est',p:3,
+   li:'Futureforce — UX Design Intern / Associate Product Designer',
+   v:'Structured early-careers design programme.',
+   e:'Not individually verified for the 2027 cycle. Futureforce covers both internships and graduate entry, so check which listing applies.',ev:'check',
+   l:'https://www.salesforce.com/company/careers/university-recruiting/',
+   note:'Dates unverified. Futureforce is the umbrella brand for all Salesforce early careers, so search within it rather than the general careers page.',
+   prep:['Verify listings on the Futureforce site','Portfolio','CV']},
+
+  // ══════════ FASHION, BEAUTY & MEDIA — INDIVIDUAL ══════════
+  {id:'conde',n:'Condé Nast',cat:'Grad Scheme',o:'2026-12-22',d:'2027-01-05',c:'est',p:1,chk:'2026-12-01',
+   li:'UK & US Summer Internship Program — includes a UX Research internship (Vogue, GQ, Wired etc.)',
+   v:'Ten-week London summer internship inside the Product, Design & Technology org, working with UX Researchers, Product Designers and Product Managers, with a dedicated mentor. Permanent Product Design / Associate Product Designer roles also appear separately through the year.',
+   e:'⚠️ The summer internship targets rising seniors graduating Spring/Summer 2027 or Dec 2026, or those entering their final undergraduate year — so as a June 2026 graduate you may fall JUST outside the internship criteria; VERIFY. The permanent Associate Product Designer / Product Design roles are the better graduate fit and are posted separately. Right to work in the UK required.',ev:'check',
+   l:'https://www.condenast.com/careers',
+   note:'⚠️ CORRECTED + CHECK-BACK 1 DEC: the 2026 Summer Internship Program opened 22 DECEMBER 2025 and closed 2 JANUARY 2026 — a brutal ~2-week window straight through the holidays. Expect 2027 to open ~22 Dec 2026 and close ~early Jan 2027. This is the TIGHTEST window on your whole list, so everything must be ready by mid-December. BUT your real route is warmer and not date-bound: Steven Postlethwaite (Senior Director of Product Design) already interviewed you and made an offer — message him directly about permanent product-design roles rather than relying on the internship window.',
+   boost:'<b>Your unfair advantage:</b> you already interviewed here and received an offer. That beats any application. Steven knows your work — a warm, direct message to him is the play, not a cold portal application.<br><br><b>If applying to the internship/roles cold too:</b> Condé Nast gets 500+ applications per posting from day one, so a generic CV dies. Lead with a fashion/media-literate portfolio and your luxury beauty background (Chanel, Tom Ford, Estée Lauder) — you understand their world commercially, which almost no other UX applicant does.<br><br><b>Prepare BEFORE 22 Dec:</b> portfolio + cover letter fully ready, because the window is days not weeks.',
+   prep:['Message Steven Postlethwaite directly about permanent product design roles','Verify whether June-2026 grads qualify for the summer internship','Have portfolio + cover letter fully ready before 22 Dec','Lead with fashion/media + luxury beauty commercial angle','Apply on day one (22 Dec) if the internship route is open to you']},
+
+  {id:'amex',n:'American Express',cat:'Grad Scheme',o:'2026-07-01',d:'2026-11-30',c:'est',p:2,chk:'2026-08-15',
+   li:'Amex Technology Early Careers — Product Design / UX Research / UX Writing tracks',
+   v:'Structured tech early-careers programme spanning Digital Product Management, Product Design, UX Research, UX Writing and Design Operations, feeding into a 1-year Graduate Full-Time Program.',
+   e:'Open to graduates. Applications run July to November, though timelines vary by location. UK roles are typically London. Right to work required (verify sponsorship per role).',ev:'check',
+   l:'https://www.americanexpress.com/en-us/careers/career-areas/technology/',
+   note:'⚠️ CHECK-BACK 15 AUG: the window is July–November and varies by location, so check the Amex careers site for the specific UK Product Design / UX role and its exact closing date. A genuinely strong, often-overlooked design early-careers programme. Apply early in the window.',
+   boost:'<b>The listing names:</b> product road mapping, stakeholder management, and the design disciplines above. Foreground your PrepTrack Product Owner experience (product road mapping + stakeholder management are literally named) and your UX portfolio.<br><br><b>Angle:</b> your beauty-retail background shows commercial/customer instinct, which suits Amex\'s premium-customer brand.',
+   prep:['Check Amex careers for the UK Product Design/UX role + closing date','Foreground PrepTrack (product roadmapping + stakeholder management)','Portfolio','CV','Apply early in the Jul–Nov window']},
+
+  {id:'apadmi',n:'Apadmi',cat:'Grad Scheme',o:'2026-06-01',d:'2026-08-31',c:'est',p:2,chk:'2026-08-01',
+   li:'UX Graduate Programme — Manchester (Salford Quays) · ~£25k · Sept start',
+   v:'18-month structured UX grad scheme at an award-winning digital product agency (clients: Domino\'s, NHS, United Utilities). Grad kick-off day, structured UX curriculum, shadowing, live projects, Professional Scrum Master cert within 6 months, then choose UX/UI design or user research.',
+   e:'Open to graduates. Manchester-based (Salford Quays). Right to work in the UK. ~£25k salary.',ev:'yes',
+   l:'https://www.apadmi.com/careers/',
+   note:'⚠️ CHECK-BACK 1 AUG: the 2025 cohort started September 2025, so the 2026/27 cycle likely recruits spring–summer for a Sept start — the window may be EARLY, so check now in case it is already open or imminent. Manchester means low cost of living relative to London. The free Scrum Master cert is a nice bonus credential.',
+   boost:'<b>Angle:</b> agency work means variety and client exposure — foreground your ability to work across different product contexts (PrepTrack, Harmonia, EMOS all differ). They value team players and curiosity; the culture is a big deal to them (86% of staff recommend it).<br><br><b>The Professional Scrum Master cert</b> you\'d earn here is itself a booster for future roles.',
+   prep:['Check apadmi.com/careers NOW for the current cycle','Portfolio showing range across product types','CV','Cover letter emphasising team/culture fit']},
+
+  {id:'capgemini',n:'Capgemini',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:2,chk:'2026-09-15',
+   li:'Digital Factory / Digital Excellence — UX Designer (graduate & consultant entry)',
+   v:'UX design within Capgemini\'s Digital Factory community — user-centred design, inclusive design practices, digital services and products across public and private sector clients.',
+   e:'Graduate and consultant-level UX roles. Some roles require or prefer SC security clearance (UK public-sector work), which needs UK residency history. Right to work in the UK required. Grace (your Step UP mentor) is now at Capgemini — a warm internal contact.',ev:'check',
+   l:'https://www.capgemini.com/gb-en/careers/',
+   note:'⚠️ CHECK-BACK 15 SEP: Capgemini runs both a structured graduate programme (autumn cycle) and rolling UX Designer consultant roles. Check which is live. IMPORTANT WARM CONTACT: Grace Ogunleye-Wright (your Step UP mentor) works here — reach out to her about referrals and which route to target.',
+   boost:'<b>Warm contact:</b> Grace at Capgemini can give you a referral and inside guidance — message her before applying.<br><br><b>The listing names</b> inclusive design practices explicitly — your W3C accessibility course (in your boosters) speaks directly to this. Foreground user-centred design and any public-sector/social-impact angle.',
+   prep:['Message Grace Ogunleye-Wright about referral + which route','Check Capgemini for graduate vs consultant UX roles','Foreground inclusive/accessible design (ties to your W3C course)','Portfolio','CV']},
+
+  {id:'jisc',n:'Jisc',cat:'Grad Scheme',o:'2026-11-01',d:'2027-01-25',c:'est',p:3,chk:'2026-11-01',
+   li:'UX Designer Graduate scheme — ~£29.5k · 2-year rotational, 4 teams',
+   v:'Two-year UX graduate scheme rotating through four teams across Jisc\'s product and technology function (Central UX + OpenAthens UX). User research, user-centred design, working with PMs, developers and researchers.',
+   e:'Open to graduates. UK-based, hybrid (can work remotely up to 5 days/week). ~£29,500. Right to work in the UK.',ev:'yes',
+   l:'https://www.jisc.ac.uk/careers',
+   note:'⚠️ CHECK-BACK 1 NOV: the 2026 cycle posted ~14 Jan and closed 25 Jan 2026 — so the equivalent 2027 intake likely opens late 2026/early Jan 2027. A genuinely good, higher-paying (£29.5k), fully rotational UX grad scheme with strong remote flexibility. Education-sector mission may appeal given your background.',
+   boost:'<b>Angle:</b> Jisc serves UK education — connect your own widening-participation journey and PrepTrack (an education/interview-prep tool) to their mission. The four-team rotation rewards adaptability, so show range in your portfolio.',
+   prep:['Check jisc.ac.uk/jobs from early November','Connect PrepTrack + your education journey to their mission','Portfolio showing range','CV']},
+
+  {id:'bae',n:'BAE Systems',cat:'Grad Scheme',o:'2026-09-01',d:'2027-01-31',c:'est',p:2,chk:'2026-09-15',
+   li:'Graduate UX Consultant — BAE Systems Digital Intelligence · ~£34k + £2k welcome bonus',
+   v:'Graduate UX Consultant working across the full User-Centred Design lifecycle: Discovery, Define, Design, Implementation, Test, Deploy — research, persona creation, needs analysis, site maps, wireframes and prototypes.',
+   e:'⚠️ Minimum 2:2 in a related subject (you qualify). BUT: some BAE roles are subject to SECURITY AND EXPORT-CONTROL restrictions, and "your nationality or place of birth may limit the roles you can undertake." As a British citizen you should be eligible for most, but SC clearance requires a continuous UK residency history — verify this early, as it is the main risk. Hybrid, 3–5 days on-site at your base location.',ev:'check',
+   l:'https://www.baesystems.com/en/careers/careers-in-the-uk/graduates',
+   note:'⚠️ CHECK-BACK 15 SEP: BAE runs Jan/Apr graduate start dates, with applications historically opening around September and often rolling. ~£34k + £2k welcome bonus is one of the higher graduate salaries on your list. The UX Consultant role is a genuine, full-lifecycle UX position. Confirm the security-clearance/nationality position before investing heavily.',
+   boost:'<b>The listing names:</b> the full UCD lifecycle, persona creation, needs analysis, site maps, wireframes, prototypes, and "eliciting human response to visuals." Structure your portfolio to show the whole journey (Discovery→Deploy), not just final screens — your EMOS redesign fits this end-to-end framing well.<br><br><b>Angle:</b> defence/complex-systems UX is about clarity under high stakes — your EMOS work (making complex scientific tooling usable) is a strong, relevant parallel.',
+   prep:['Verify SC clearance / nationality eligibility EARLY','Portfolio structured across the full Discovery→Deploy lifecycle','Foreground EMOS as complex-systems UX','CV (2:2 minimum met)','Apply early — often rolling']},
+
+  {id:'ibm',n:'IBM',cat:'Grad Scheme',o:'2026-09-01',d:'2026-11-30',c:'est',p:2,chk:'2026-09-15',
+   li:'Consulting by Degrees — UX Designer & Researcher, IBM iX · 2-year programme',
+   v:'IBM\'s 2-year Consulting by Degrees development programme, UX Designer & Researcher track at IBM iX: co-facilitating Design Thinking workshops, wireframes and high-fidelity UI, usability tests, A/B testing, user journey mapping, flow charts. Project rotation, focused training and mentoring.',
+   e:'Open to graduates; a master\'s is preferred for some IBM iX design roles but not always required. Portfolio is mandatory — "your application will not be considered if you do not have a portfolio." Right to work in the UK required. Design Thinking familiarity is preferred.',ev:'check',
+   l:'https://www.ibm.com/careers/early-career',
+   note:'⚠️ CHECK-BACK 15 SEP: IBM early-careers/graduate applications typically open in autumn and can close by late November or roll until filled. The process runs CV + portfolio + written application → virtual assessment centre → portfolio review & design interview with an IBM iX designer. Genuinely strong consulting-track UX programme with broad client exposure.',
+   boost:'<b>The process is portfolio-led:</b> a virtual assessment centre then a portfolio review and design interview — so the portfolio and your ability to talk through your process out loud are decisive. Practise walking through PrepTrack/EMOS.<br><br><b>The listing names Design Thinking</b> repeatedly — IBM invented much of the modern enterprise Design Thinking practice. Do IBM\'s free Enterprise Design Thinking Practitioner badge (free, online) BEFORE applying: it is a direct, on-brand booster that signals you already speak their language.<br><br><b>Angle:</b> consulting rewards range and client empathy — your beauty-retail customer-facing background plus varied projects (PrepTrack, Harmonia, EMOS) show exactly that.',
+   prep:['Do IBM\'s free Enterprise Design Thinking Practitioner badge before applying','Portfolio (mandatory — no portfolio = auto-reject)','Practise a spoken portfolio walkthrough for the design interview','Written application form','CV']},
+
+  // ═══════════ NEXT-WAVE ROLES (from your LinkedIn shortlist) ═══════════
+  {id:'natgrid',n:'National Grid',cat:'Grad Scheme',o:'2026-09-15',d:'2026-11-30',c:'est',p:1,chk:'2026-09-15',
+   li:'2026 Graduate UX Developer, IT & Digital — Warwick · £36,640 + £2k bonus · 18-month, 3 placements',
+   v:'18-month UX/UI grad programme, three 6-month placements: design & prototype UI for web and mobile, user research, usability testing, wireframes, design systems, plus Agile/Scrum pathway, 1:1 coaching and a mentor.',
+   e:'Minimum 2:2 in UX Design, Human-Centred Design, Marketing, Psychology or related — and "it doesn\'t matter when you graduated," so recent grads are explicitly fine. Warwick-based, hybrid. Mostly NO sponsorship — needs right to work in the UK. One of the highest grad salaries on your list at £36,640.',ev:'yes',
+   l:'https://www.nationalgrid.com/careers',
+   note:'⚠️ CHECK-BACK 15 SEP: assessment centres run Dec–April and are rolling, so applications open in autumn (est. mid-Sept) and fill on a rolling basis — apply in the FIRST WEEKS, not near any deadline. This is go-live-critical: be ready by mid-September. Salary + benefits (£2k joining, £2.4k completion, £200/mo accommodation) are excellent.',
+   boost:'<b>The listing names:</b> UI for web AND mobile, user research, usability testing, competitor analysis, design systems, Agile/Scrum. Show a mobile + web breadth in your portfolio.<br><br><b>Angle:</b> energy-sector digital is complex-systems UX serving millions — your EMOS redesign (complex tooling made usable) is a strong parallel. Psychology/human-centred framing welcome, which suits your research-led approach.',
+   prep:['Set alert + check National Grid careers from mid-Sept','Portfolio showing web AND mobile UI','Foreground EMOS as complex-systems UX','Online assessment prep (numerical/situational + video)','Apply in the first weeks — rolling']},
+
+  {id:'apple-cdp',n:'Apple — Creative Development Program',cat:'Internship',o:'2027-07-01',d:'2027-07-25',c:'est',p:2,chk:'2027-06-15',
+   li:'Designer, Creative Development Program — International Content Design (App Store & Podcasts), London · 12-month',
+   v:'Coveted 12-month entry-level design programme on the International Content Design team, producing editorial creative for the App Store\'s global storefronts alongside Designers and Art Directors.',
+   e:'Foundational Adobe Creative Suite competency; basic Sketch a bonus. Online portfolio showing graphic-design aptitude. Right to live/work in the UK. Able to attend the London office Tue/Wed/Thu for the full 12 months. Entry-level fixed salary.',ev:'yes',
+   l:'https://jobs.apple.com/',
+   note:'⚠️ 2026 CYCLE CLOSED (deadline was 25 July 2026, 9am; assessment day Aug 2026; starts Oct 2026). CHECK-BACK 15 JUNE 2027 for the next cycle — it opened early July and closed late July, so it\'s a TIGHT summer window. This is more editorial/graphic-design than product UX, but a prestigious Apple credential. Application is 3 stages: cover-letter questions → role task → August assessment day.',
+   boost:'<b>The application questions are specific and personal:</b> why the programme, where you get inspiration, best-designed app you\'ve used, favourite podcast and why, most-used app of all time. Prepare genuine, considered answers — this is where personality wins.<br><br><b>Angle:</b> your Apple Tabs case study + luxury-brand visual sensibility (Chanel, Dior, Tom Ford) suits editorial App Store creative unusually well.',
+   prep:['Diarise mid-June 2027 for the next cycle','Prepare answers to their 6 signature questions','Graphic-design-forward portfolio (Adobe Creative Suite)','Lead with Apple Tabs + luxury visual work']},
+
+  {id:'amazon-ux',n:'Amazon — UX Design Intern',cat:'Internship',o:'2026-05-01',d:'2026-07-31',c:'est',p:2,chk:'2027-04-15',
+   li:'UX Design Intern, Interaction Design — London Studio, Devices & Services (Alexa, Echo, Fire TV, Kindle) · 3-month summer',
+   v:'3-month summer internship in the London Studio Design Team within Devices & Services — futures-focused work on Amazon\'s consumer hardware/services: interfaces, interaction prototypes, product visualisations, design narratives.',
+   e:'⚠️ Requires being CURRENTLY ENROLLED in a Bachelor\'s or Master\'s in interaction, visual, motion or industrial design (or related) — so as a June 2026 graduate you\'d only qualify if you\'re enrolled in a master\'s. A portfolio link on the CV is mandatory. Competencies: Visual Design Craft, Prototyping, Storytelling, Systems Thinking.',ev:'check',
+   l:'https://www.amazon.jobs/',
+   note:'⚠️ 2026 CYCLE LIKELY CLOSED. CHECK-BACK 15 APRIL 2027. Enrolment requirement means this only works if you start a master\'s in 2027 — park it as a during-master\'s option. Reposted late June 2026, so it runs a spring→summer window. Preferred extras: motion design, 3D CAD, Gen-AI/AI-augmented design tools.',
+   boost:'<b>The 4 named competencies</b> — Visual Design Craft, Prototyping, Storytelling, Systems Thinking — should each map to a portfolio piece. They want strong interaction/motion and prototypes, not just static screens.<br><br><b>Angle:</b> Gen-AI/AI-augmented design familiarity is a preferred skill — your GenAI-for-UX booster + DeepMind background speak directly to it.',
+   prep:['Only if enrolled in a master\'s in 2027 — diarise April 2027','Portfolio mapped to the 4 named competencies','Show prototypes/interaction, not just screens','Foreground AI-augmented design (GenAI booster + DeepMind)']},
+
+  {id:'sky-ux',n:'Sky — Associate UX Designer',cat:'Grad Scheme',o:'2026-09-01',d:'2026-11-30',c:'est',p:1,chk:'2026-09-01',
+   li:'Associate UX Designer — Content Technology & Innovation, London (Osterley) · hybrid 2 days/wk',
+   v:'Entry-level UX role: support user research (usability testing, surveys, interviews), create wireframes, user flows and prototypes, shape information architecture, apply usability and accessibility principles, with coaching from senior designers.',
+   e:'Foundational UX/interaction exposure, a portfolio of academic OR commercial UX projects, Figma familiarity, user-centred design understanding. Degree "desirable" not essential — so your profile is comfortably enough. ⚠️ NO visa sponsorship; needs right to work in the UK. Criminal record check if successful.',ev:'yes',
+   l:'https://careers.sky.com/',
+   note:'⚠️ CHECK-BACK 1 SEP: reposted ~late May 2026; entry-level UX roles at Sky recur, so watch the careers site from early autumn. Genuinely entry-level (accepts academic portfolios), London-based, strong benefits (free Sky/NOW, up to 9% pension, private healthcare). A strong, realistic fit.',
+   boost:'<b>The listing names accessibility explicitly</b> — your W3C accessibility booster speaks directly to it. Also names research methods (usability testing, surveys, interviews) — foreground EMOS user testing.<br><br><b>Angle:</b> Content Tech & Innovation is media/entertainment UX — your creative and cultural fluency fits Sky\'s brand well.',
+   prep:['Set alert on Sky careers from early Sept','Portfolio (academic projects accepted) with research + wireframes','Foreground accessibility (W3C booster) + EMOS user testing','Figma evidence','CV']},
+
+  {id:'sg-cib',n:'Société Générale CIB — Trainee Product Designer',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:2,chk:'2026-09-15',
+   li:'Trainee, Product Designer — SG Markets Product & UX team, London · B2B finance products',
+   v:'End-to-end product design (scoping, research, ideation, prototyping, handoff) on a ~20-person design team that has shipped 120+ services. Start with a buddy on smaller projects, progress to leading full projects.',
+   e:'Portfolio showing UX and Product Design; comfort with complex, data-heavy interfaces (finance experience a plus, not essential); production-ready Figma prototypes; willingness to learn to build interactive prototypes in-browser (HTML/CSS/JS — coding not required). ⚠️ "Trainee" may imply a placement/fixed-term structure — verify it suits a graduate.',ev:'check',
+   l:'https://careers.societegenerale.com/',
+   note:'⚠️ CHECK-BACK 15 SEP: reposted ~late May 2026 (ref 26000BEK). Verify whether "Trainee" is a graduate role or a student placement. Your Harmonia AI project (built with Flask, i.e. you\'ve shipped code-adjacent work) directly answers their "willingness to build in-browser prototypes" point — a genuine edge here.',
+   boost:'<b>Your unusual edge:</b> they want designers willing to build interactive prototypes in HTML/CSS/JS. Your Harmonia AI (Flask) and general build experience means you can say yes credibly — most designers can\'t. Foreground that.<br><br><b>Angle:</b> comfort with complex, data-heavy B2B interfaces — EMOS (a lab operating system) is exactly this. Lead with it.',
+   prep:['Verify "Trainee" suits a graduate (not student placement)','Portfolio foregrounding EMOS (complex data-heavy interface)','Foreground your build ability (Harmonia/Flask) for the in-browser prototyping point','Production-ready Figma prototypes','CV']},
+
+  {id:'hp-ux',n:'HP — Security UX Designer Intern',cat:'Internship',o:'2026-01-01',d:'2026-03-31',c:'est',p:3,chk:'2026-12-01',
+   li:'Security UX Designer Intern — HP Wolf Security, Cambridge · hybrid · 12-month placement',
+   v:'12-month UX placement on the HP Wolf Security team (cybersecurity / micro-virtualization): early-stage concepts and user flows, high-fidelity mockups and prototypes, translating research into proposals, negotiating UX with PMs and developers.',
+   e:'Bachelor\'s in HCI, UX, Graphic, Interaction, Product Design or Media/Marketing; UX/UI/IA understanding; Figma, Adobe, Sketch, InVision, Miro; portfolio with case studies; usability-testing experience. Open to postgrads and 2026 grads with a Bachelor\'s. ⚠️ Remote applications not progressed — Cambridge-based. ⚠️ "12-month placement/intern" may target placement-year students — verify graduate eligibility.',ev:'check',
+   l:'https://www.hp.com/us-en/jobs.html',
+   note:'⚠️ 2026 CYCLE LIKELY CLOSED (reposted ~late March 2026, Class of 2026 intake). CHECK-BACK 1 DEC for the next cycle — placement roles like this often open in winter for the following autumn. Verify whether a graduate (vs placement-year student) qualifies. Cambridge-based; you\'d need to be there.',
+   boost:'<b>The listing names Figma, Adobe, Sketch, InVision, Miro</b> — list every tool you know. It also wants case studies covering problem definition → research → wireframes → prototypes: structure your portfolio exactly so.<br><br><b>Angle:</b> security UX is about making complex, high-stakes systems usable — EMOS again is your parallel. Frame it that way.',
+   prep:['Verify graduate eligibility + diarise Dec check','Portfolio: problem → research → wireframes → prototypes','List all named tools (Figma, Adobe, Sketch, InVision, Miro)','Foreground EMOS as complex-systems UX']},
+
+  {id:'santander-uxr',n:'Santander UK — UX Research Assistant',cat:'Grad Scheme',o:'2026-08-01',d:'2026-09-30',c:'est',p:2,chk:'2026-08-01',
+   li:'UX Research Assistant (UXR) | S2 | Homes team — Milton Keynes · 12-month FTC · hybrid',
+   v:'UX research role in the Homes UX team: plan and conduct qualitative & quantitative research on mortgage-broker behaviour, discussion guides, participant recruitment, moderating sessions, journey mapping, competitor benchmarking, actionable reports to senior stakeholders.',
+   e:'⚠️ The listing asks for "extensive business experience," so it reads more experienced-hire than graduate — but a strong research portfolio + your PrepTrack research work could stretch to it. Nice-to-haves: UserZoom/Attest/Figma/Figjam, mortgages/B2C knowledge, design thinking. Milton Keynes (your base — zero relocation). 12-month FTC.',ev:'check',
+   l:'https://www.santanderjobs.co.uk/',
+   note:'⚠️ CHECK-BACK 1 AUG: this specific FTC was posted ~Aug 2025; similar roles recur. It\'s a research-specialist role rather than a grad scheme, and the "extensive experience" ask makes it a stretch — but it\'s in Milton Keynes (no relocation) and Santander is already on your list, so worth watching. A good parallel target to the Santander grad programme.',
+   boost:'<b>Angle:</b> this is pure UX research — foreground your research methods from EMOS (you tested with real users) and PrepTrack. Learn UserZoom basics (they name it).<br><br><b>Local advantage:</b> Milton Keynes base means you can commit to the 12 office days/month easily — say so.',
+   prep:['Watch Santander careers from Aug for a recurrence','Research-forward portfolio (EMOS + PrepTrack methods)','Learn UserZoom/Attest basics (named tools)','Emphasise your Milton Keynes local base']},
+
+  {id:'dior-digital',n:'Parfums Christian Dior — Digital Intern',cat:'Internship',o:'2026-07-01',d:'2026-07-31',c:'est',p:2,chk:'2027-05-01',
+   li:'Digital Intern, eRetail team — Marketing/Digital, London · on-site',
+   v:'Support Dior\'s eTrade strategy across UK online retailers: coordinate product launches, keep retailer sites on-brand, competitive-intelligence reports, sales tracking, site audits, budget/PO coordination.',
+   e:'Highly organised, analytical, detail-oriented. e-retail/digital marketing experience desirable (luxury a plus). Understanding of UK retail and beauty market. Right to work in the UK. ⚠️ This is a digital-MARKETING/eRetail role, not UX design — but it\'s a foot in the door at a luxury house you already know.',ev:'yes',
+   l:'https://www.dior.com/en_gb/fashion/careers',
+   note:'⚠️ CHECK-BACK 1 MAY 2027: posted ~mid-July 2026, so a summer window. NOT a UX role — it\'s eRetail/digital marketing. Include only because your beauty background makes you a genuinely strong candidate and it\'s LVMH/Dior. Decide if it fits your UX-focused goals or is a strategic beauty-industry entry point.',
+   boost:'<b>Your unfair advantage:</b> you\'ve worked luxury beauty counters including Dior-adjacent brands (Chanel, Tom Ford, NARS). You know the UK beauty market and luxury retail from the inside — this listing literally asks for that. Almost no other applicant has counter experience.<br><br><b>Angle:</b> connect your retail floor experience to their eRetail/eTrade world — you understand the customer and the product.',
+   prep:['Diarise May 2027 for the next cycle','CV foregrounding luxury beauty counter experience (Chanel, Tom Ford, NARS, Dior-adjacent)','Show UK beauty-market knowledge','Decide if this fits your UX goals or is a beauty-industry entry play']},
+
+  {id:'loreal',n:'L\'Oréal',cat:'Grad Scheme',o:'2026-12-01',d:'2027-02-28',c:'est',p:1,
+   li:'L\'Oréal Management Trainee Programme (digital/tech track) and Brandstorm competition',
+   v:'Digital and technology graduate tracks across Paris and London.',
+   e:'Open to recent graduates with the right to work in the relevant country. Brandstorm has separate criteria and sometimes requires student status — verify before registering.',ev:'yes',
+   l:'https://careers.loreal.com/',
+   note:'Beauty experience plus French fluency plus UX is an unusually strong combination here, particularly for Paris roles. Brandstorm participation has historically fast-tracked candidates to internship consideration, so check whether graduates can still enter.',
+   prep:['Check Brandstorm eligibility for graduates','Portfolio with a beauty-technology case study','CV in English and French','Cover letter']},
+
+  {id:'estee',n:'Estée Lauder Companies',cat:'Internship',o:'2026-09-01',d:'2026-11-15',c:'est',p:1,
+   li:'CEO Presidential Internship — Creative and UX tracks, New York',
+   v:'A prestigious New York internship with explicit Creative and UX tracks.',
+   e:'⚠️ Typically requires current student status, often a rising senior or graduate student — verify whether recent graduates qualify before writing the essays. Requires US work authorisation or J-1 sponsorship.',ev:'check',
+   l:'https://www.esteelaudercompanies.com/en/careers',
+   note:'New York, beauty and UX in one programme, which is close to your stated ideal. You have provable Estée Lauder company experience through the Bobbi Brown role at John Lewis, which almost no other applicant will have.',
+   prep:['Confirm recent-graduate eligibility first','Portfolio with a beauty-technology case study','CV highlighting the Bobbi Brown and Estée Lauder experience','Essays','J-1 visa research']},
+
+  {id:'charlotte',n:'Charlotte Tilbury',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:2,
+   li:'Junior Product Designer / UX roles — London (rolling)',
+   v:'Design and digital roles at a fast-growing British luxury beauty brand.',
+   e:'Not individually verified. Hires on a rolling basis rather than through a graduate scheme. Right to work in the UK required.',ev:'check',
+   l:'https://www.charlottetilbury.com/uk/careers',
+   note:'Dates unverified because there is no fixed cycle. Your beauty counter years are a genuine commercial differentiator here — make that explicit in the covering letter rather than treating it as unrelated retail work.',
+   prep:['Set job alerts','Portfolio','CV emphasising luxury beauty experience','Tailored cover letter']},
+
+  {id:'thg',n:'THG',cat:'Grad Scheme',o:'2026-10-01',d:'2026-12-31',c:'est',p:3,
+   li:'THG Graduate Scheme — design and digital tracks, Manchester',
+   v:'Structured graduate scheme across the THG ecosystem including Lookfantastic and Cult Beauty.',
+   e:'Not individually verified for 2027. Historically opens around October. Manchester-based, right to work in the UK required.',ev:'check',
+   l:'https://www.thg.com/careers/',
+   note:'Dates unverified. Manchester offers a considerably lower cost of living than London, which is relevant to your savings targets.',
+   prep:['Verify the 2027 scheme exists and its dates','Portfolio','CV']},
+
+  {id:'farfetch',n:'Farfetch',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:2,
+   li:'Product Designer / UX roles — London and Porto (rolling)',
+   v:'Luxury fashion e-commerce product design.',
+   e:'Not individually verified. Hires reactively rather than through a fixed graduate scheme.',ev:'check',
+   l:'https://www.farfetchcareers.com/',
+   note:'Dates unverified. Job alerts are the entire strategy for reactive hirers like this — set them so you see openings on the day they post rather than a fortnight later.',
+   prep:['Set job alerts','Portfolio','CV']},
+
+  {id:'ynap',n:'YOOX Net-a-Porter',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:2,
+   li:'Digital Product Design roles — London (rolling)',
+   v:'Online luxury fashion product and experience design.',
+   e:'Not individually verified. Reactive hiring.',ev:'check',
+   l:'https://www.ynap.com/careers/',
+   note:'Dates unverified. Note YNAP has been through significant ownership change, so confirm the design team structure still exists before investing effort.',
+   prep:['Verify the design team and current hiring','Set job alerts','Portfolio','CV']},
+
+  {id:'asos',n:'ASOS',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:2,
+   li:'Product Design / UX roles — London (rolling)',
+   v:'Large in-house London tech and design team.',
+   e:'Not individually verified. Reactive hiring rather than a fixed graduate scheme.',ev:'check',
+   l:'https://www.asoscareers.com/',
+   note:'Dates unverified. One of the larger UK fashion tech teams, so volume of openings is higher than at the luxury brands.',
+   prep:['Set job alerts','Portfolio','CV']},
+
+  {id:'burberry',n:'Burberry',cat:'Grad Scheme',o:'2026-09-01',d:'2026-12-31',c:'est',p:3,
+   li:'Digital Product Design roles — London (rolling)',
+   v:'Digital design at a British luxury heritage brand.',
+   e:'Not individually verified. Reactive hiring.',ev:'check',
+   l:'https://careers.burberry.com/',
+   note:'Dates unverified. Smaller digital team than ASOS or Farfetch, so openings are less frequent but competition is correspondingly narrower.',
+   prep:['Set job alerts','Portfolio','CV']},
+
+  {id:'bbc',n:'BBC',cat:'Grad Scheme',o:'2026-11-01',d:'2027-02-28',c:'est',p:2,
+   li:'BBC Design Trainee Scheme',
+   v:'A structured, design-led trainee scheme — unusually design-focused for a graduate programme.',
+   e:'Not individually verified for 2027. Historically opens in the new year. Right to work in the UK required.',ev:'check',
+   l:'https://careers.bbc.co.uk/',
+   note:'Dates unverified. Well-regarded and genuinely design-led rather than a general graduate scheme with a design rotation bolted on. Worth watching specifically for the January or February opening.',
+   prep:['Verify the 2027 scheme dates','Portfolio','CV','Set alerts for the new year']},
+
+  {id:'faststream',n:'Civil Service Fast Stream',cat:'Grad Scheme',o:'2026-09-15',d:'2026-11-30',c:'est',p:2,
+   li:'Digital, Data and Technology Fast Stream — includes GDS design practice',
+   v:'A structured digital and technology track. GDS maintains one of the strongest design practices in UK government.',
+   e:'Nationality requirements apply and vary by scheme, but British citizens qualify across all streams. Typically requires a 2:2 or above. Open to graduates.',ev:'yes',
+   l:'https://www.faststream.gov.uk/',
+   note:'A long process running September to roughly November, but the design training and GDS reputation are genuinely valuable and pay progression is more predictable than most private-sector routes.',
+   prep:['Online test preparation','CV','Behaviour and competency examples','Assessment centre preparation']},
+
+  // ══════════ PROGRAMMES ══════════
+  {id:'10kbi',n:'10,000 Black Interns',cat:'Programme',o:'2026-09-01',d:'2026-11-30',c:'est',p:1,
+   li:'10,000 Black Interns Programme 2027 — 35+ sectors',
+   v:'Paid, structured internships across more than thirty-five sectors including technology, media and consulting.',
+   e:'Over eighteen, Black or of Black heritage including mixed heritage, and either currently studying at a UK university or graduated from a UK university within the last three years. You are comfortably inside the graduate window.',ev:'yes',
+   l:'https://www.10000blackinterns.com/',
+   note:'More than seventy per cent of alumni are in employment and around thirty per cent are retained by their host — an unusually strong conversion rate. Opens around September for the following year.',
+   prep:['CV','Select sector preferences: technology, media, consulting','Video interview preparation']},
+
+  {id:'upreach',n:'upReach Tech500',cat:'Programme',o:'2026-08-01',d:'2027-06-30',c:'est',p:1,
+   li:'upReach Tech500 — Associate programme',
+   v:'Free programme offering training, networking and employer access across the technology sector.',
+   e:'Criteria centre on socioeconomic background — household income, first-generation status, free school meals and state schooling. No degree subject requirement, and grades are contextualised against your circumstances rather than assessed in isolation.',ev:'yes',
+   l:'https://upreach.org.uk/',
+   note:'The contextual grade assessment is the important detail — your A-levels are considered against the barriers you faced rather than against a raw threshold.',
+   prep:['Application form','Household income evidence','Free school meals or first-generation evidence']},
+
+  {id:'smf',n:'Social Mobility Foundation',cat:'Programme',o:'2026-08-01',d:'2027-06-30',c:'est',p:2,
+   li:'Aspiring Professionals Programme — technology stream',
+   v:'Mentoring, work experience and structured employer access, with reasonable expenses covered.',
+   e:'Widening participation criteria based on household income, school type and parental education. A careers organisation rather than a funder.',ev:'yes',
+   l:'https://www.socialmobility.org.uk/',
+   note:'Value is in warm introductions and employer relationships rather than money. Network effects compound across an application cycle.',
+   prep:['Application form','Background evidence']},
+
+  {id:'seo',n:'SEO London',cat:'Programme',o:'2026-08-01',d:'2027-06-30',c:'est',p:2,
+   li:'SEO London — Technology programme',
+   v:'Training, mentoring and direct employer pipelines into technology and finance.',
+   e:'Targets ethnic minority and low-socioeconomic-background students and graduates. Not individually verified for the 2027 cycle.',ev:'check',
+   l:'https://www.seo-london.org/',
+   note:'Dates unverified. Note that Santander runs diversity pathway partnerships with SEO London that carry earlier deadlines than the main graduate scheme — worth asking about.',
+   prep:['Verify current eligibility and cycle','Application form','CV']},
+
+  {id:'bright',n:'Bright Network',cat:'Programme',o:'2026-08-01',d:'2027-06-30',c:'est',p:3,
+   li:'Bright Network membership and Internship Experience UK',
+   v:'Free membership giving access to insight days, graduate schemes and diversity-specific streams.',
+   e:'Open to all students and recent graduates.',ev:'yes',
+   l:'https://www.brightnetwork.co.uk/',
+   note:'Ten minutes to join and occasionally surfaces listings that never reach public job boards.',
+   prep:['Sign up','Complete profile','Set alerts']},
+
+  // ══════════ CONFERENCE GRANTS ══════════
+  {id:'abw',n:'AWS re:Invent — All Builders Welcome Grant',cat:'Conference',o:'2027-06-20',d:'2027-07-14',c:'conf',p:1,
+   li:'All Builders Welcome Grant — AWS re:Invent 2027, Las Vegas',
+   v:'Full conference pass, round-trip airfare to Las Vegas, five nights hotel, technical and career sessions, mentorship from AWS experts, plus a curated grantee programme with a welcome event and peer meetup.',
+   e:'Within the first five years of a technology career, or a university student preparing for a tech career. At least 21 years old by the event. Must demonstrate how the opportunity helps overcome barriers. International applicants welcome but responsible for obtaining their own travel visa. ⚠️ You cannot have previously accepted a grant to the same event.',ev:'check',
+   l:'https://aws.amazon.com/events/reinvent/experiences/all-builders-welcome/',
+   note:'CORRECTED: the 2026 cycle opened in late June and closed 14 July 2026 — already passed, and your application is in. Notification lands around September. This entry now tracks the 2027 cycle, which should open late June 2027 and close mid-July. Note the terms exclude anyone who has previously accepted an ABW grant, so if you win for 2026 you cannot reapply for 2027.',
+   prep:['Await the September 2026 outcome first','If unsuccessful, diarise late June 2027','Reuse the barriers narrative','Sort a B1/B2 visa early if successful']},
+
+  {id:'citadel',n:'Citadel Conference Travel Grant',cat:'Conference',o:'2026-07-01',d:'2026-09-25',c:'conf',p:1,
+   li:'Citadel Conference Travel Grant — Grace Hopper Celebration 2026',
+   v:'Full conference pass, round-trip airfare, lodging, Uber vouchers to and from the airport, and a meal stipend. Recipients also attend Citadel-hosted dinners and recruitment events.',
+   e:'Aimed at women and underrepresented candidates in technology, including students and early-career professionals. Covers GHC in Anaheim, 27 to 30 October 2026.',ev:'yes',
+   l:'https://www.citadel.com/careers/programs-and-events/conference-travel-grant/',
+   note:'Deadline 25 September 2026 confirmed, notifications by 5 October. This is the realistic route to attending GHC 2026 with travel covered — more so than the AnitaB scholarships, which mostly grant virtual access. More quant-oriented than your background, but GHC is explicitly included and the AWS narrative transfers.',
+   prep:['CV','Application essays','Arrange a B1/B2 visa','Transcript']},
+
+  {id:'ghc-reg',n:'Grace Hopper Celebration 2026',cat:'Conference',o:'2026-03-01',d:'2026-10-27',c:'conf',p:2,
+   li:'GHC 26 — Anaheim, California, 27 to 30 October 2026 (paid registration)',
+   v:'The largest gathering advancing women in tech. Four days of applied sessions across AI, software engineering, product management and quantum computing, plus one of the biggest recruiting expos in the industry.',
+   e:'Open to anyone who registers and pays. AnitaB.org Premium or Lifetime Membership gives discounted rates, with Lifetime Members receiving a further 25 per cent off including early-bird pricing. Early-bird registration is already open.',ev:'yes',
+   l:'https://ghc.anitab.org/pricing',
+   note:'IMPORTANT CORRECTION on how to attend: the AnitaB.org Advancing Inclusion Student Scholarships grant complimentary VIRTUAL registration and require current enrolment, so they are not a travel-funded route for you. The Kamala Scholars Program is restricted to third- and fourth-year undergraduates. The genuine fully-funded routes are corporate grants — Citadel and Google Conference Scholarships — or paying yourself with a membership discount.',
+   prep:['Decide: Citadel grant, Google scholarship, or self-fund','Consider AnitaB Premium Membership for the discount','Arrange a B1/B2 visa','Prepare a recruiting-expo CV']},
+
+  {id:'google-conf',n:'Google Conference Scholarships',cat:'Conference',o:'2026-08-01',d:'2027-06-30',c:'est',p:2,
+   li:'Google Conference Scholarship — eligible conferences include CHI, Grace Hopper and AfroTech',
+   v:'Conference registration, round-trip travel, hotel accommodation for the travel dates, and a $100 stipend for incidental costs.',
+   e:'For candidates historically underrepresented in technology, including women and Black candidates. Applications are rolling. Student status requirements vary by conference and must be checked per award.',ev:'check',
+   l:'https://buildyourfuture.withgoogle.com/scholarships/',
+   note:'CHI is the flagship HCI research conference and by far the most relevant to your trajectory. Rolling applications mean no single deadline to miss — which also makes it easy to forget entirely.',
+   prep:['CV','Personal statement','Select target conference — CHI','Verify student status requirement per conference']},
+
+  {id:'chi',n:'CHI 2027 submission',cat:'Conference',o:'2026-08-01',d:'2026-09-15',c:'est',p:3,
+   li:'CHI 2027 — Late-Breaking Work or Student Poster submission',
+   v:'Acceptance unlocks Google conference funding to attend, and a CHI credit is a meaningful signal for HCI master\'s and PhD applications.',
+   e:'Open to anyone — no institutional affiliation requirement. Late-breaking work and student poster categories have substantially lower barriers than full papers.',ev:'yes',
+   l:'https://chi2027.acm.org/',
+   note:'A long shot, but the EMOS redesign at the APRIL AI Hub is genuine HCI work with real users in a real research setting. Ask Anastasia, Atish or Alexandros whether a late-breaking work submission is viable and whether they would co-author.',
+   prep:['Email the Edinburgh supervisors about co-authoring','Write up EMOS as a poster or late-breaking work','Confirm the exact CHI 2027 submission deadlines']},
+
+  // ══════════════════════════════════════════════════
+  //  BOOSTERS — tangible things to DO, each dated
+  // ══════════════════════════════════════════════════
+
+  {id:'b-googleux',n:'Google UX Design Certificate',cat:'Booster',o:'2026-08-01',d:'2026-09-30',c:'est',p:1,chk:'',
+   li:'Coursera Professional Certificate · 7 courses · builds 3 portfolio projects',
+   v:'The single most cross-applicable credential for your profile. Recognised Google credential + it produces three portfolio pieces as you go.',
+   e:'Free via Coursera financial aid: click "Financial Aid available" under each of the 7 courses, answer two 250-word questions, ~15 days approval, reuse the same answers. Up to 11 pending aid applications at once. Audit mode gives videos free without the certificate.',ev:'yes',
+   l:'https://www.coursera.org/professional-certificates/google-ux-design',
+   note:'No fixed deadline — this is self-paced, so the date shown is a TARGET to finish by, not a real deadline. Aim to complete before the autumn scholarship/grad-scheme wave so it is on your CV when you apply. Start the first course (Foundations of UX Design) now; the three projects are reusable everywhere.',
+   boost:'<b>Strengthens:</b> DeepMind Scholarship, Google UX, Apple, Meta, Microsoft, Adobe, Spotify, Wise, Revolut, JP Morgan DDP, Santander, all beauty/fashion design roles, 10KBI, Adobe Design Circle. Roughly two-thirds of the register.<br><br><b>Action now:</b> apply for financial aid on Course 1 today (approval takes ~15 days, so start the clock). Then one course per 1–2 weeks.',
+   prep:['Apply for Coursera financial aid on Course 1 (Foundations of UX)','Reuse the same aid answers for Courses 2–7','Complete ~1 course per fortnight','Add each of the 3 portfolio projects to your portfolio','Add the certificate to LinkedIn + CV']},
+
+  {id:'b-forage-jpm',n:'JPMorgan Forage Simulation',cat:'Booster',o:'2026-08-01',d:'2026-08-31',c:'est',p:2,chk:'',
+   li:'JPMorganChase Software Engineering Virtual Experience · theforage.com · free, ~5 hrs',
+   v:'Free self-paced job simulation from JP Morgan themselves. Certificate for CV + LinkedIn, and it lets you speak credibly about their fintech context in the DDP application.',
+   e:'Completely free, no application, no selection. Self-paced, ~5–6 hours. Certificate on completion.',ev:'yes',
+   l:'https://www.theforage.com/simulations?companies=jpmorgan',
+   note:'Self-paced, so the date is a target. JP Morgan\'s Forage catalogue is software-engineering-heavy (Python, React, their Perspective data-viz tool) rather than design — so this is OPTIONAL colour that shows fintech-context awareness, not essential. Do it only if you have spare hours; the free accessibility course matters more for the DDP.',
+   boost:'<b>Strengthens:</b> JP Morgan DDP mainly. Lower priority than the accessibility course, but a nice CV line that shows specific interest in JPM.',
+   prep:['Register on theforage.com','Complete the JPMorgan Software Engineering sim','Add certificate to CV + LinkedIn']},
+
+  {id:'b-accessibility',n:'Web Accessibility Course',cat:'Booster',o:'2026-08-01',d:'2026-09-15',c:'est',p:1,chk:'',
+   li:'W3Cx "Introduction to Web Accessibility" · edX · free to audit',
+   v:'The JP Morgan DDP listing explicitly names "Accessibility Guidelines and Inclusive Design" — most design applicants ignore this, so it is a precise differentiator.',
+   e:'Free to audit on edX. Self-paced, a few hours. Optional paid certificate.',ev:'yes',
+   l:'https://www.edx.org/learn/web-accessibility/the-world-wide-web-consortium-w3c-introduction-to-web-accessibility',
+   note:'Self-paced; date is a target. Genuinely high-leverage because accessibility is named in multiple design job descriptions (JP Morgan explicitly) and shows inclusive-design maturity, which also aligns with your widening-participation values narrative.',
+   boost:'<b>Strengthens:</b> JP Morgan DDP (named criterion), plus Wise, Google, Apple, Meta, Microsoft, Adobe, GDS/Fast Stream — accessibility is valued across all serious design teams.',
+   prep:['Enrol on edX (audit mode)','Complete the W3C accessibility course','Add a line to your portfolio on inclusive/accessible design','Add to CV + LinkedIn']},
+
+  {id:'b-french',n:'French Language Certificate (DELF/DALF)',cat:'Booster',o:'2026-08-01',d:'2026-11-30',c:'est',p:1,chk:'2026-09-01',
+   li:'DELF B2 / DALF C1 · Alliance Française · proves fluency on paper',
+   v:'You are fluent, but fluency you cannot prove is invisible on a French application. A formal certificate turns a claim into evidence.',
+   e:'Paid exam (~£100–150 depending on level and centre). Alliance Française centres in London and other UK cities run sessions on scheduled dates through the year.',ev:'check',
+   l:'https://www.alliancefrancaise.org.uk/',
+   note:'⚠️ CHECK-BACK 1 SEP: exam session dates and booking deadlines vary by centre and fill up — check the Alliance Française London calendar for the next available DELF B2 or DALF C1 sitting and book ahead, because results can take weeks and you want the certificate in hand before the France applications (Entente Cordiale opens ~Jan 2027).',
+   boost:'<b>Strengthens:</b> Entente Cordiale, Paris-Saclay, Eiffel, Polytechnique, L\'Oréal Paris, and any francophone design role. Genuinely differentiating for the entire France cluster — and cheap relative to its impact.',
+   prep:['Check Alliance Française London exam calendar (by 1 Sep)','Book the next DELF B2 or DALF C1 sitting','Sit the exam','Add the certificate to CV before France applications open']},
+
+  {id:'b-santander-oa',n:'Santander Open Academy Courses',cat:'Booster',o:'2026-08-01',d:'2026-10-01',c:'est',p:2,chk:'',
+   li:'Santander Open Academy · free courses · shows specific interest in Santander',
+   v:'Exactly your instinct — Santander runs free courses through its own Open Academy platform. Completing ones relevant to the Retail/Data & AI grad programme shows demonstrated interest in THEM, which rolling-assessment schemes reward.',
+   e:'Free. Self-paced online courses across data, tech, employability and finance. Certificate/badge on completion.',ev:'yes',
+   l:'https://www.santanderopenacademy.com/en/index.html',
+   note:'Self-paced; finish a couple before the Santander grad scheme opens (~Oct 2026) so you can reference them in the application and interview as evidence you engaged with Santander before applying. Pick data/AI and digital-product relevant ones to match the Retail programme. ENROLLED (Aug 2026): (1) Product Management: Designing and Launching Digital Products — your strongest pick, maps to the Retail/Data & AI digital-product track and to your PrepTrack Product Owner experience; (2) Customer Centricity & Customer Experience — UX language in a banking wrapper, bridges design to their commercial world; (3) SEO and Content Marketing — breadth. In the application, connect the PM course to leading PrepTrack as Product Owner.',
+   boost:'<b>Strengthens:</b> Santander Global Retail Graduate Programme specifically. A concrete signal that you chose them deliberately — and the Product Management course gives you a direct line to say "I led PrepTrack as Product Owner and deepened it with Santander\'s own product course."<br><br><b>Interview hook:</b> pair the PM course + PrepTrack as one story about digital product ownership; use the Customer Centricity course to show you translate UX into commercial/customer value.',
+   prep:['✅ Enrolled: Product Management: Designing & Launching Digital Products','✅ Enrolled: Customer Centricity & Customer Experience','✅ Enrolled: SEO and Content Marketing','Complete the Product Management course first (highest relevance)','Note completion to reference in the Santander application + interview']},
+
+  {id:'b-loreal-brand',n:'L\'Oréal Brandstorm Registration',cat:'Booster',o:'2026-09-01',d:'2026-12-15',c:'est',p:1,chk:'2026-09-15',
+   li:'L\'Oréal Brandstorm innovation competition · fast-tracks to internship consideration',
+   v:'Entering L\'Oréal\'s global innovation competition has historically fast-tracked participants to internship consideration. For L\'Oréal, DOING Brandstorm is itself the booster.',
+   e:'⚠️ Historically requires student status — must verify whether recent graduates can still enter the 2027 edition. Registration typically opens in autumn.',ev:'check',
+   l:'https://brandstorm.loreal.com/',
+   note:'⚠️ CHECK-BACK 15 SEP: the 2027 Brandstorm timeline and eligibility should be published around September. Confirm whether June-2026 graduates qualify. If yes, this is one of the highest-leverage single actions for the L\'Oréal target — it pairs your beauty background + UX + French perfectly.',
+   boost:'<b>Strengthens:</b> L\'Oréal graduate programme above all. Your beauty-counter experience + UX + French fluency is almost the exact profile Brandstorm rewards.',
+   prep:['Check Brandstorm 2027 eligibility for graduates (by 15 Sep)','If eligible, register and form/join a team','Build a beauty-tech innovation concept using your UX skills']},
+
+  {id:'b-martingale-web',n:'Martingale Application Webinars',cat:'Booster',o:'2026-08-12',d:'2026-10-01',c:'est',p:1,chk:'2026-08-12',
+   li:'Martingale online application webinars + partner-university course webinars',
+   v:'Free online webinars where you learn about the scholarship, ask questions, and (crucially) meet the leaders of each partner-university degree programme — past scholars credit these with making their university applications far easier.',
+   e:'Free. Announced when applications open and listed on Martingale\'s "applications are now open" page and newsletter.',ev:'yes',
+   l:'https://martingale.foundation/scholarships/',
+   note:'⚠️ CHECK-BACK 12 AUG: the exact webinar dates are NOT published yet — Martingale posts them the day applications open (12 August 2026). Sign up to their newsletter NOW so you get the announcement. Estimated window: webinars run from mid-August through the October deadline. Attending signals engagement and helps you target the right partner university.',
+   boost:'<b>Strengthens:</b> Martingale directly, plus your Cambridge/partner-university choice. The degree-programme webinars help you pick and pitch the right course.',
+   prep:['Sign up to the Martingale newsletter NOW','Check the site on 12 Aug for webinar dates','Attend the general application webinar','Attend the webinar(s) for your target partner universities']},
+
+  {id:'b-cs50',n:'Harvard CS50 (free)',cat:'Booster',o:'2026-08-01',d:'2026-12-01',c:'est',p:3,chk:'',
+   li:'CS50: Introduction to Computer Science · edX · Harvard, free to audit',
+   v:'Harvard\'s own famous free CS course. Both a genuine skills boost and a credible talking point in applications TO Harvard (Kennedy, Knox).',
+   e:'Free to audit on edX. Self-paced. Optional paid certificate.',ev:'yes',
+   l:'https://www.edx.org/learn/computer-science/harvard-university-cs50-s-introduction-to-computer-science',
+   note:'Self-paced; longer commitment than the others (several weeks). Lower priority — only worth it if you want to strengthen the technical side for the Harvard/MIT scholarships or the AI-heavy targets. Being able to say you completed Harvard\'s CS50 in a Kennedy/Knox application is a neat, on-brand signal.',
+   boost:'<b>Strengthens:</b> Kennedy, Frank Knox (both Harvard), plus general technical credibility for DeepMind, Anthropic, Polytechnique.',
+   prep:['Enrol on edX (audit)','Work through CS50 problem sets','Reference it in Harvard-facing applications']},
+
+  {id:'b-ai-essentials',n:'Google AI Essentials',cat:'Booster',o:'2026-08-01',d:'2026-10-01',c:'est',p:2,chk:'',
+   li:'Google AI Essentials · Coursera · short AI-foundations credential',
+   v:'A short, recognised AI-foundations credential that shows technical seriousness alongside your design background — useful for the AI-heavy scholarships.',
+   e:'Free via Coursera financial aid (same process as the UX cert), or free to audit. Short — a few hours.',ev:'yes',
+   l:'https://www.coursera.org/learn/google-ai-essentials',
+   note:'Self-paced; date is a target. Quick win that lets a DeepMind/Anthropic/Cambridge application say you have formal AI grounding, not just UX. Pairs well with the Google UX cert for a design-plus-AI profile.',
+   boost:'<b>Strengthens:</b> DeepMind Scholarship, Cambridge MPhil HCAI, Anthropic Fellows, Polytechnique VIC-AI.',
+   prep:['Enrol (financial aid or audit)','Complete Google AI Essentials','Add to CV + LinkedIn']},
+
+  {id:'b-linkedin',n:'Portfolio + LinkedIn Refresh',cat:'Booster',o:'2026-08-01',d:'2026-08-20',c:'est',p:1,chk:'',
+   li:'Rebuild 3 case studies + update LinkedIn with every credential',
+   v:'For every design role the portfolio IS the application. Three tight case studies in a Problem→Research→Ideation→Testing→Solution→Impact structure will outperform any certificate.',
+   e:'Free. Time only.',ev:'yes',
+   l:'https://www.linkedin.com/',
+   note:'The foundational booster — do this FIRST and early (target: done by 20 Aug) because every other application depends on it. Rework PrepTrack, EMOS and Apple Tabs into the six-stage structure JP Morgan names. Add every completed cert, Forage sim and the DeepMind internship to LinkedIn so recruiters searching those terms find you.',
+   boost:'<b>Strengthens:</b> literally every design internship and grad scheme. Also fix the DeepMind title + end date on the master CV while you are here.',
+   prep:['Fix the DeepMind title + end date on the master CV','Rework PrepTrack into 6-stage case study','Rework EMOS into 6-stage case study','Rework Apple Tabs into 6-stage case study','Update LinkedIn with DeepMind internship + all credentials']},
+
+  {id:'b-ixdf',n:'IxDF: HCI Foundations + AI for Designers',cat:'Booster',o:'2026-08-01',d:'2026-10-15',c:'est',p:1,chk:'',
+   li:'Interaction Design Foundation · ~£50/yr student membership unlocks BOTH + all 40 courses',
+   v:'Best value on the whole list: one cheap annual membership unlocks every IxDF course. HCI Foundations is the most on-brand credential for your master\'s targets — literally the vocabulary Cambridge HCAI and Paris-Saclay HCI use. AI for Designers hits the AI-plus-design sweet spot.',
+   e:'~£50/year student membership (verify current student/graduate rate). Each course ~15–20 hrs over 3–6 weeks, one lesson unlocking per week. Verifiable certificate per course. Well recognised (Adobe, SAP, Imperial use their material).',ev:'yes',
+   l:'https://www.interaction-design.org/',
+   note:'Self-paced within weekly unlocks; target date is when to finish HCI Foundations by. Do HCI Foundations FIRST (feeds Cambridge/Saclay + every design role), then AI for Designers. Note one lesson unlocks per week, so a 6-lesson course takes ~6 weeks minimum — start early.',
+   boost:'<b>Feeds:</b> HCI Foundations → Cambridge MPhil HCAI, Paris-Saclay HCI, every UX role. AI for Designers → DeepMind, Google UX, Meta, all AI-adjacent design. Best £-per-application on the list.',
+   prep:['Join IxDF at the student/graduate rate','Complete HCI: Foundations of UX Design FIRST','Complete AI for Designers','Add both certificates to CV + LinkedIn']},
+
+  {id:'b-cs50ai',n:'CS50 AI with Python',cat:'Booster',o:'2026-08-01',d:'2026-10-15',c:'est',p:2,chk:'',
+   li:'CS50\'s Introduction to Artificial Intelligence with Python · HarvardX / edX',
+   v:'The highest-prestige technical credential here. Directly answers the one gap in your profile for AI scholarships: proof you can hold your own technically, not just as a designer. "Harvard CS50 AI" is a genuine signal on a DeepMind or Cambridge application.',
+   e:'Free to audit on edX ($299 optional verified certificate). 7 weeks, 10–30 hrs/week — the heaviest lift on the list. Intermediate; assumes Python (your Harmonia AI/Flask background helps).',ev:'yes',
+   l:'https://pll.harvard.edu/course/cs50s-introduction-artificial-intelligence-python',
+   note:'⚠️ Because it is 7 weeks and demanding, START IT EARLY and run it in parallel with Google UX — do not wait for a free month, you will not get one before the Oct/Nov deadlines. If the first problem set feels too Python-heavy, do CS50 Intro to Programming with Python first as the on-ramp.',
+   boost:'<b>Feeds:</b> DeepMind Scholarship, Cambridge MPhil HCAI, Anthropic Fellows, Polytechnique VIC-AI, Kennedy/Knox (Harvard-facing). Narrower reach but high-prestige where it counts.',
+   prep:['Enrol on edX (audit)','Gauge Python comfort on the first problem set','Work through ~1 week of material at a time','Reference "Harvard CS50 AI" on AI-facing applications']},
+
+  {id:'b-genai-ux',n:'Generative AI for UI/UX Design',cat:'Booster',o:'2026-08-01',d:'2026-08-31',c:'est',p:1,chk:'',
+   li:'Coursera specialisation · AI-assisted design',
+   v:'Timely and differentiating — most designers have not formalised AI-assisted design yet, and it sits exactly at your UX-plus-AI intersection. Reads well next to the DeepMind internship.',
+   e:'Free via Coursera financial aid. ~1–2 months part-time. Beginner–intermediate.',ev:'yes',
+   l:'https://www.coursera.org/specializations/generative-ai-for-ui-ux-design',
+   note:'Do this after Google UX + IxDF HCI Foundations. Wise explicitly asks for "curiosity about AI" — this course is direct evidence of exactly that.',
+   boost:'<b>Feeds:</b> DeepMind, Google UX, Meta, Adobe, Wise, and any 2027-facing design role where AI fluency is now expected.',
+   prep:['Apply for Coursera financial aid','Complete the specialisation','Add an AI-assisted design piece to your portfolio','Add to CV + LinkedIn']},
+
+  {id:'b-figma',n:'Figma Course (pick one)',cat:'Booster',o:'2026-08-01',d:'2026-08-31',c:'est',p:3,chk:'',
+   li:'Coursera · one short Figma course to formalise a tool you already use',
+   v:'You already use Figma daily, so this is a quick, cheap credential to formalise an existing skill — not a learning priority. Pick the single shortest, highest-rated option and knock it out in a weekend.',
+   e:'Free via Coursera financial aid. ~1–2 weeks. Beginner.',ev:'yes',
+   l:'https://www.coursera.org/search?query=figma',
+   note:'Do ONE, not two — a single certificate is enough to list the skill. A quick early win to build momentum while the longer courses run.',
+   boost:'<b>Feeds:</b> Wise, Figma, Adobe, and every design role listing Figma as a requirement.',
+   prep:['Pick the shortest highly-rated Figma course','Complete it in a weekend','Add to CV + LinkedIn']},
+
+  {id:'b-ibm-dt',n:'IBM Enterprise Design Thinking Badge',cat:'Booster',o:'2026-08-01',d:'2026-09-10',c:'est',p:2,chk:'',
+   li:'IBM Enterprise Design Thinking — Practitioner · free online badge',
+   v:'A free, recognised IBM digital badge in Enterprise Design Thinking — IBM invented much of the modern enterprise Design Thinking practice, and their grad process explicitly values it.',
+   e:'Free. Online, self-paced, a few hours. Official IBM credential you can add to LinkedIn.',ev:'yes',
+   l:'https://www.ibm.com/design/thinking/',
+   note:'Self-paced; date is a target. A precise, on-brand booster for the IBM Consulting by Degrees application — signals you already speak their design language before you apply. Quick win, high relevance to one specific target.',
+   boost:'<b>Feeds:</b> IBM Consulting by Degrees directly (named in their process), and Design Thinking vocabulary helps at Capgemini, Deloitte Digital, and any consulting-flavoured design role.',
+   prep:['Complete the free IBM Enterprise Design Thinking Practitioner badge','Add the badge to LinkedIn','Reference it in the IBM application']},
+
+  {id:'b-extern-bereal',n:'BeReal Product Management Externship',cat:'Booster',o:'2026-08-17',d:'2026-10-05',c:'conf',p:1,chk:'',
+   li:'Extern.com · BeReal Product Management Externship · 8 weeks · IN PROGRESS (Day 1)',
+   v:'A structured, real-company PM externship producing genuine portfolio deliverables: a mapped user journey, competitor benchmark, a RICE-scored feature decision, a PRD-lite, a Canva prototype, focus-group research, and a recorded pitch. Broadens you from UX into Product Management.',
+   e:'Enrolled and in progress. Runs Aug 17 – Oct 5, 2026 across five projects. Completion gives a certificate and a full case study.',ev:'yes',
+   l:'https://app.extern.com/externships/623',
+   note:'IN PROGRESS — started Day 1. Confirmed schedule: Project 1 (Map the user journey) wk1, due ~24 Aug; Project 2 (Benchmark competitors) wk2-3, due ~31 Aug; Project 3 (Design a feature — RICE scoring, PRD-lite, Canva prototype) wk4-5, due ~14 Sep; Project 4 (Focus-group testing) wk6-7, due ~28 Sep; Project 5 (Pitch) wk8, due ~5 Oct. Finishing before mid-October means it lands on your CV in time for the autumn scholarship + grad-scheme wave.',
+   boost:'<b>Feeds:</b> Santander (product track — pair with your Open Academy PM course + PrepTrack Product Owner role), JP Morgan DDP, American Express (names product roadmapping), Wise, Revolut, and any PM-adjacent role. Also a portfolio case study for design roles.<br><br><b>Turn it into a portfolio piece:</b> the RICE feature decision, PRD-lite and focus-group insights are exactly the artefacts that show product thinking, not just visual design. Write it up as a 6th case study.<br><br><b>Interview story:</b> "I took a real BeReal product brief end-to-end — journey mapping, competitor benchmarking, feature prioritisation with RICE, a PRD, prototyping and user testing, then pitched it." That is a complete PM narrative almost no other design grad has.',
+   prep:['Project 1: Map the BeReal user journey (by ~24 Aug)','Project 2: Benchmark competitors (by ~31 Aug)','Project 3: Design a feature — RICE, PRD-lite, Canva prototype (by ~14 Sep)','Project 4: Run focus-group testing (by ~28 Sep)','Project 5: Prepare & record the pitch (by ~5 Oct)','Write the whole thing up as a portfolio case study']}
+  ];
+
+  var CATS=['Scholarship','Master\'s','France','USA','Europe','Fellowship','Internship','Grad Scheme','Programme','Conference','Booster'];
+  var STATUSES=['Not started','Preparing','Applied','Interview','Offer','Rejected','Skipped'];
+  var SC={'Not started':'#bd93a4','Preparing':'#d99a2b','Applied':'#6b7fd0','Interview':'#ff4d94','Offer':'#3fa77f','Rejected':'#e0526b','Skipped':'#c9b3bd'};
+  var VERD={yes:'You meet the criteria',check:'Verify before applying',no:'Not eligible'};
+
+  var state={},open={};
+  var f={q:'',cats:{},stats:{},hideDone:false,starOnly:false,hideNo:false};
+  function $(i){return document.getElementById(i);}
+  function flash(){var e=$('flash');e.classList.add('show');setTimeout(function(){e.classList.remove('show');},1100);}
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+  var SKEY='register-state-v3';
+  function load(){
+    // Prefer localStorage (works in Safari + installed web apps). Fall back to
+    // Claude's window.storage if present (for viewing inside the Claude app).
+    var loaded=false;
+    try{
+      var raw=localStorage.getItem(SKEY);
+      if(raw){ state=JSON.parse(raw); loaded=true; }
+    }catch(e){}
+    if(loaded){ seed(); render(); return; }
+    if(typeof window.storage!=='undefined' && window.storage.get){
+      window.storage.get(SKEY).then(function(r){
+        if(r&&r.value){try{state=JSON.parse(r.value);}catch(e){}}
+        seed();render();
+      }).catch(function(){seed();render();});
+    } else { seed(); render(); }
+  }
+  function seed(){
+    if(!state.__seed_santander){
+      if(!state['b-santander-oa'])state['b-santander-oa']={status:'Preparing',notes:'Enrolled in 3 courses: Product Management (Designing & Launching Digital Products), Customer Centricity & CX, SEO & Content Marketing.',prep:[0,1,2]};
+      else{state['b-santander-oa'].status='Preparing';if(!state['b-santander-oa'].prep)state['b-santander-oa'].prep=[];[0,1,2].forEach(function(i){if(state['b-santander-oa'].prep.indexOf(i)<0)state['b-santander-oa'].prep.push(i);});}
+      state.__seed_santander=true;
+      save();
+    }
+    if(!state.__seed_extern){
+      if(!state['b-extern-bereal'])state['b-extern-bereal']={status:'Preparing',notes:'In progress — started Day 1. BeReal PM Externship on Extern.com.',prep:[]};
+      else state['b-extern-bereal'].status='Preparing';
+      state.__seed_extern=true;
+      save();
+    }
+  }
+  var t;
+  function save(){
+    clearTimeout(t);
+    t=setTimeout(function(){
+      var ok=false;
+      try{ localStorage.setItem(SKEY,JSON.stringify(state)); ok=true; flash(); }catch(e){}
+      // best-effort mirror into Claude's storage when available (harmless elsewhere)
+      if(typeof window.storage!=='undefined' && window.storage.set){
+        try{ window.storage.set(SKEY,JSON.stringify(state)).then(function(){ if(!ok)flash(); }).catch(function(){}); }catch(e){}
+      }
+    },400);
+  }
+  function get(id){
+    if(!state[id])state[id]={status:'Not started',notes:'',prep:[]};
+    if(!state[id].prep)state[id].prep=[];
+    return state[id];
+  }
+  function days(ds){return Math.ceil((new Date(ds+'T00:00:00')-TODAY)/86400000);}
+  function fmt(ds){return new Date(ds+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
+  function isLive(s){return !(s==='Applied'||s==='Interview'||s==='Offer'||s==='Rejected'||s==='Skipped');}
+  function when(n,st){
+    if(st==='Offer')return{b:'—',s:'offer',col:'#3fa77f'};
+    if(st==='Rejected')return{b:'—',s:'closed',col:'#c9b3bd'};
+    if(st==='Skipped')return{b:'—',s:'skipped',col:'#c9b3bd'};
+    if(st==='Applied')return{b:'—',s:'sent',col:'#6b7fd0'};
+    if(st==='Interview')return{b:'—',s:'stage',col:'#ff4d94'};
+    if(n<0)return{b:'—',s:'passed',col:'#c9b3bd'};
+    if(n===0)return{b:'0',s:'today',col:'#ff3b6b'};
+    return{b:n,s:(n===1?'day':'days'),col:(n<=14?'#ff3b6b':(n<=45?'#d99a2b':'#5a2a3f'))};
+  }
+  function anyKey(o){for(var k in o){if(o[k])return true;}return false;}
+
+  function visible(){
+    var hc=anyKey(f.cats),hs=anyKey(f.stats);
+    return DATA.filter(function(x){
+      var s=get(x.id);
+      if(f.q&&(x.n+' '+x.cat+' '+x.li+' '+x.v+' '+x.e+' '+x.note).toLowerCase().indexOf(f.q.toLowerCase())===-1)return false;
+      if(hc&&!f.cats[x.cat])return false;
+      if(hs&&!f.stats[s.status])return false;
+      if(f.hideDone&&(s.status==='Rejected'||s.status==='Skipped'))return false;
+      if(f.starOnly&&x.p!==1)return false;
+      if(f.hideNo&&x.ev==='no')return false;
+      return true;
+    }).sort(function(a,b){
+      function dead(s){return(s==='Rejected'||s==='Skipped')?1:0;}
+      var da=dead(get(a.id).status),db=dead(get(b.id).status);
+      if(da!==db)return da-db;
+      return new Date(a.d)-new Date(b.d);
+    });
+  }
+
+  function renderStrip(){
+    var ap=0,of=0,so=0,el=0;
+    DATA.forEach(function(x){
+      var s=get(x.id),n=days(x.d);
+      if(s.status==='Applied'||s.status==='Interview'||s.status==='Offer')ap++;
+      if(s.status==='Offer')of++;
+      if(n>=0&&n<=30&&isLive(s.status))so++;
+      if(x.ev!=='no')el++;
+    });
+    var c=[[DATA.length,'Entries'],[el,'Eligible'],[so,'Due ≤30d'],[ap,'Submitted'],[of,'Offers']];
+    $('strip').innerHTML=c.map(function(x){return '<div class="cell"><div class="n">'+x[0]+'</div><div class="l">'+x[1]+'</div></div>';}).join('');
+  }
+
+  function renderAgenda(){
+    var items=[];
+    DATA.forEach(function(x){
+      if(!isLive(get(x.id).status)||x.ev==='no')return;
+      var nd=days(x.d);
+      if(nd>=0&&nd<=75) items.push({n:x.n,when:x.d,nd:nd,kind:'deadline'});
+      if(x.chk){var nc=days(x.chk); if(nc>=0&&nc<=75) items.push({n:x.n,when:x.chk,nd:nc,kind:'check'});}
+    });
+    items.sort(function(a,b){return new Date(a.when)-new Date(b.when);});
+    items=items.slice(0,8);
+    if(!items.length){$('agendaBox').innerHTML='';return;}
+    $('agendaBox').innerHTML='<div class="agenda"><span class="kicker">Immediate</span><h3>The next seventy-five days</h3><ol>'+
+      items.map(function(x){
+        var d=x.nd<=14?'<b>'+x.nd+' days</b>':x.nd+' days';
+        var tag=x.kind==='check'?' <span style="color:#d81b74;font-weight:700">check back</span>':'';
+        return '<li><span class="nm">'+x.n+tag+'</span><span class="dt">'+d+' &nbsp;·&nbsp; '+fmt(x.when)+'</span></li>';}).join('')+'</ol></div>';
+  }
+
+  function renderChips(){
+    $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(f.cats[c]?' on':'')+'" data-cat="'+c+'">'+c+'</button>';}).join('');
+    $('statChips').innerHTML=STATUSES.map(function(s){return '<button class="chip'+(f.stats[s]?' on':'')+'" data-stat="'+s+'">'+s+'</button>';}).join('');
+    Array.prototype.forEach.call($('catChips').querySelectorAll('[data-cat]'),function(b){
+      b.onclick=function(){var c=b.getAttribute('data-cat');f.cats[c]=!f.cats[c];render();};});
+    Array.prototype.forEach.call($('statChips').querySelectorAll('[data-stat]'),function(b){
+      b.onclick=function(){var c=b.getAttribute('data-stat');f.stats[c]=!f.stats[c];render();};});
+    $('hideDone').className='chip'+(f.hideDone?' on':'');
+    $('onlyStar').className='chip'+(f.starOnly?' on':'');
+    $('hideIneligible').className='chip'+(f.hideNo?' on':'');
+  }
+
+  function renderList(){
+    var items=visible();
+    if(!items.length){$('list').innerHTML='<div class="empty">No entries match the current filters.</div>';return;}
+    $('list').innerHTML=items.map(function(x){
+      var s=get(x.id),n=days(x.d),w=when(n,s.status);
+      var dead=(s.status==='Rejected'||s.status==='Skipped');
+      var dn=s.prep.length,tt=x.prep.length;
+      var detail='';
+      if(open[x.id]){
+        detail='<div class="detail">'+
+          '<div class="elig"><div class="eh">Eligibility</div><p>'+x.e+'</p><span class="verdict '+x.ev+'">'+VERD[x.ev]+'</span></div>'+
+          '<p class="brief">'+x.note+'</p>'+
+          (x.boost?'<div class="boost"><div class="boost-h">♥ How to be the ideal candidate</div><p>'+x.boost+'</p></div>':'')+
+          '<div class="fld"><div class="sec">Status</div><select data-status="'+x.id+'">'+
+            STATUSES.map(function(o){return '<option'+(o===s.status?' selected':'')+'>'+o+'</option>';}).join('')+'</select></div>'+
+          (tt?'<div class="fld"><div class="sec">Preparation — '+dn+' of '+tt+' complete</div><ul class="prep">'+
+            x.prep.map(function(p,i){var on=s.prep.indexOf(i)>-1;
+              return '<li class="'+(on?'on':'')+'" data-prep="'+x.id+'" data-i="'+i+'"><span class="box '+(on?'on':'')+'">'+(on?'✓':'')+'</span><span>'+p+'</span></li>';}).join('')+'</ul></div>':'')+
+          '<div class="fld"><div class="sec">Notes</div><textarea data-notes="'+x.id+'" placeholder="Contacts, login details, current stage, follow-ups…">'+esc(s.notes||'')+'</textarea></div>'+
+          '<a class="btn" href="'+x.l+'" target="_blank" rel="noopener">Official page</a></div>';
+      }
+      return '<div class="entry'+(dead?' dead':'')+'">'+
+        '<div class="head" data-toggle="'+x.id+'">'+
+          '<div class="when"><div class="big" style="color:'+w.col+'">'+w.b+'</div><div class="small">'+w.s+'</div></div>'+
+          '<div class="body">'+
+            '<div class="cl"><span class="cat">'+x.cat+'</span><span class="cm '+(x.c==='conf'?'y':'n')+'">'+(x.c==='conf'?'Confirmed':'Estimated')+'</span></div>'+
+            '<h3>'+x.n+(x.p===1?' <span class="star">♥</span>':'')+'</h3>'+
+            '<div class="listing">'+x.li+'</div>'+
+            '<div class="desc">'+x.v+'</div>'+
+            '<div class="dates"><b>Deadline</b> '+fmt(x.d)+(x.o&&x.o!==x.d?' &nbsp;&nbsp;<b>Opens</b> '+fmt(x.o):'')+(x.chk?' &nbsp;&nbsp;<b style="color:#d81b74">Check back</b> '+fmt(x.chk):'')+'</div>'+
+            '<div class="sl"><span class="dot" style="background:'+SC[s.status]+'"></span><span style="color:'+SC[s.status]+'">'+s.status+'</span>'+
+              (tt?'<span class="prog">· '+dn+'/'+tt+' prepared</span>':'')+'</div>'+
+          '</div></div>'+detail+'</div>';
+    }).join('');
+
+    Array.prototype.forEach.call($('list').querySelectorAll('[data-toggle]'),function(el){
+      el.onclick=function(){var id=el.getAttribute('data-toggle');open[id]=!open[id];renderList();};});
+    Array.prototype.forEach.call($('list').querySelectorAll('[data-status]'),function(el){
+      el.onchange=function(){get(el.getAttribute('data-status')).status=el.value;save();render();};
+      el.onclick=function(e){e.stopPropagation();};});
+    Array.prototype.forEach.call($('list').querySelectorAll('[data-prep]'),function(el){
+      el.onclick=function(e){e.stopPropagation();
+        var s=get(el.getAttribute('data-prep')),i=parseInt(el.getAttribute('data-i'),10);
+        var k=s.prep.indexOf(i); if(k>-1)s.prep.splice(k,1); else s.prep.push(i);
+        save();renderList();};});
+    Array.prototype.forEach.call($('list').querySelectorAll('[data-notes]'),function(el){
+      el.oninput=function(){get(el.getAttribute('data-notes')).notes=el.value;save();};
+      el.onclick=function(e){e.stopPropagation();};});
+  }
+
+  // ═══════════ DAILY PLAN ═══════════
+  var VIEW='register';
+  function ymd(dt){return dt.toISOString().slice(0,10);}
+  function addDays(dt,n){var d=new Date(dt);d.setDate(d.getDate()+n);return d;}
+  function isWeekend(dt){var g=dt.getDay();return g===0||g===6;}
+  function prevWeekday(dt){var d=new Date(dt);while(isWeekend(d))d=addDays(d,-1);return d;}
+  function nextWeekday(dt){var d=new Date(dt);while(isWeekend(d))d=addDays(d,1);return d;}
+  function workdaysBetween(a,b){ // count weekdays from a (incl) to b (excl)
+    var n=0,d=new Date(a); while(d<b){ if(!isWeekend(d))n++; d=addDays(d,1);} return n;
+  }
+
+  // A task is OVERDUE if it was scheduled on or before today and isn't done.
+  // We schedule backward from each opening date; anything whose slot has arrived
+  // and passed without being ticked is surfaced as overdue and re-placed onto
+  // the coming weekdays. Applications without enough runway are flagged at-risk.
+  function buildSchedule(){
+    var byDate={}, overdue=[], atRisk=[], done=[], dayLoad={};
+    var horizon=addDays(TODAY,150);
+    var SOFT=6; // aim to keep a day under ~6 tasks; heavier is allowed only when forced
+    // find a weekday for a batch: prefer at/just-before 'pref'; if that runs into
+    // the past or full days, fall FORWARD onto the next lighter weekday instead.
+    function softPlace(pref,batchSize){
+      var d=new Date(pref), guard=0;
+      // walk backward through weekdays looking for room, but not into the past
+      while(guard<160 && d>=TODAY){
+        if((dayLoad[ymd(d)]||0)<SOFT) return d;
+        d=prevWeekday(addDays(d,-1)); guard++;
+      }
+      // no room in the past window → fall forward from today onto the next lighter day
+      var f=nextWeekday(new Date(TODAY)); guard=0;
+      while(guard<260){ if((dayLoad[ymd(f)]||0)<SOFT) return f; f=nextWeekday(addDays(f,1)); guard++; }
+      return f;
+    }
+    // classify a task into a batchable "kind" so similar work clusters
+    function kindOf(label){
+      var l=label.toLowerCase();
+      if(/email|message|contact|reach out|ask |webinar|drop-in|attend|network/.test(l))return 'outreach';
+      if(/transcript|evidence|reference|income|proof|financial|certificate|passport|nationality/.test(l))return 'admin';
+      if(/portfolio|case study|cv|linkedin|cover letter|personal statement|proposal|essay|motivation|write|draft/.test(l))return 'writing';
+      if(/course|coursera|forage|certificate|enrol|complete|edx|ixdf|cs50|sim/.test(l))return 'learning';
+      if(/check|verify|confirm|research|read|browse|look|find|set alert|diarise|register|book/.test(l))return 'research';
+      return 'other';
+    }
+    DATA.forEach(function(x){
+      var s=get(x.id);
+      if(!isLive(s.status)||x.ev==='no'||!x.prep||!x.prep.length)return;
+      for(var di=0;di<x.prep.length;di++){ if(s.prep.indexOf(di)>-1) done.push({app:x.id,appName:x.n,label:x.prep[di],pri:x.p,i:di}); }
+      var todo=[];
+      for(var i=0;i<x.prep.length;i++){ if(s.prep.indexOf(i)<0) todo.push({i:i,label:x.prep[i],kind:kindOf(x.prep[i])}); }
+      if(!todo.length)return;
+      var target=x.o?new Date(x.o+'T00:00:00'):new Date(x.d+'T00:00:00');
+      target=addDays(target,-1);
+      var usingDeadline=false;
+      if(target<TODAY){ target=new Date(x.d+'T00:00:00'); usingDeadline=true; }
+      var runway=workdaysBetween(TODAY,addDays(target,1));
+      if(target>=TODAY && runway<Math.ceil(todo.length/2)){
+        atRisk.push({app:x.id,appName:x.n,need:todo.length,have:runway,by:usingDeadline?x.d:x.o,kind:usingDeadline?'deadline':'opens'});
+      }
+      if(target<TODAY){
+        todo.forEach(function(t){ overdue.push({app:x.id,appName:x.n,i:t.i,label:t.label,pri:x.p,late:x.d}); });
+        atRisk.push({app:x.id,appName:x.n,need:todo.length,have:0,by:x.d,kind:'deadline',passed:true});
+        return;
+      }
+      // BATCH: group this app's tasks by kind, so related work sits together.
+      var groups={}; todo.forEach(function(t){ (groups[t.kind]=groups[t.kind]||[]).push(t); });
+      var batches=Object.keys(groups).map(function(k){return groups[k];});
+      var cursor=prevWeekday(target);
+      for(var b=batches.length-1;b>=0;b--){
+        var slot=softPlace(cursor,batches[b].length);
+        var arr=batches[b];
+        if(slot<TODAY){
+          arr.forEach(function(t){ overdue.push({app:x.id,appName:x.n,i:t.i,label:t.label,pri:x.p,late:ymd(slot)}); });
+        } else {
+          var key=ymd(slot);
+          arr.forEach(function(t){ (byDate[key]=byDate[key]||[]).push({app:x.id,appName:x.n,i:t.i,label:t.label,pri:x.p}); });
+          dayLoad[key]=(dayLoad[key]||0)+arr.length;
+        }
+        cursor=prevWeekday(addDays(slot,-1));
+      }
+    });
+    // reschedule overdue as one batch per app onto soonest weekdays (priority first)
+    overdue.sort(function(a,b){return a.pri-b.pri;});
+    var byAppOv={}; overdue.forEach(function(t){ (byAppOv[t.app]=byAppOv[t.app]||[]).push(t); });
+    var place=nextWeekday(new Date(TODAY));
+    Object.keys(byAppOv).forEach(function(ap){
+      var key=ymd(place);
+      byAppOv[ap].forEach(function(t){ (byDate[key]=byDate[key]||[]).push({app:t.app,appName:t.appName,i:t.i,label:t.label,pri:t.pri,resched:true}); });
+      place=nextWeekday(addDays(place,1));
+    });
+    return {byDate:byDate, overdue:overdue, atRisk:atRisk, done:done, horizon:horizon};
+  }
+
+  function renderDaily(){
+    var R=buildSchedule();
+    var sched=R.byDate, keys=Object.keys(sched).sort();
+    var html='<p class="daily-intro">Your prep, scheduled weekday-by-weekday and worked <b>backward from each opening date</b> so you\'re ready to apply on day one. Today is highlighted; weekends are free. Miss a task and it turns up in the red <b>Overdue</b> banner AND is automatically rescheduled onto the next days — nothing gets lost.</p>';
+
+    // AT-RISK banner
+    if(R.atRisk.length){
+      html+='<div class="risk"><div class="risk-h">⚠ At risk — not enough time left</div><ul>'+
+        R.atRisk.map(function(a){
+          if(a.passed)return '<li><b>'+a.appName+'</b> — opening/deadline has passed; '+a.need+' task'+(a.need>1?'s':'')+' still open. Decide whether to push for it or mark it skipped.</li>';
+          return '<li><b>'+a.appName+'</b> — needs '+a.need+' task'+(a.need>1?'s':'')+' done before it '+a.kind+' on '+fmt(a.by)+', but only '+a.have+' weekday'+(a.have===1?'':'s')+' remain. Double up or start today.</li>';
+        }).join('')+'</ul></div>';
+    }
+
+    // OVERDUE banner (open tasks only)
+    var ovOpen=R.overdue.filter(function(t){return get(t.app).prep.indexOf(t.i)<0;});
+    if(ovOpen.length){
+      html+='<div class="overdue"><div class="ov-h">● Overdue &middot; '+ovOpen.length+' carried over</div><ul>'+
+        ovOpen.map(function(t){
+          var late=Math.max(0,Math.round((TODAY-new Date(t.late+'T00:00:00'))/86400000));
+          return '<li class="ov-task" data-dapp="'+t.app+'" data-di="'+t.i+'">'+
+            '<span class="tb"></span>'+
+            '<span class="tt"><span class="src'+(t.pri===1?' pri':'')+'">'+(t.pri===1?'♥ ':'')+t.appName+(late>0?' · '+late+'d late':'')+'</span>'+t.label+'</span></li>';
+        }).join('')+'</ul></div>';
+    }
+
+    if(!keys.length && !R.overdue.length){$('daily').innerHTML=html+renderDoneLog(R.done)+'<div class="empty" style="padding:30px">Nothing left to schedule right now.</div>';return;}
+
+    var todayKey=ymd(TODAY), lastWeek='';
+    keys.forEach(function(k){
+      var dt=new Date(k+'T00:00:00');
+      var wk=weekLabel(dt);
+      if(wk!==lastWeek){ html+='<div class="wk-hd">'+wk+'</div>'; lastWeek=wk; }
+      var isToday=(k===todayKey);
+      // only OPEN tasks show in the day (done ones move to the log)
+      var tasks=sched[k].filter(function(t){var s=get(t.app);return s.prep.indexOf(t.i)<0;}).sort(function(a,b){return a.pri-b.pri;});
+      if(!tasks.length)return;
+      var dayName=dt.toLocaleDateString('en-GB',{weekday:'long'});
+      var dayDate=dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+      html+='<div class="day'+(isToday?' today':'')+'">'+
+        '<div class="day-h"><span class="dd">'+dayName+', '+dayDate+(isToday?'<span class="todaytag">Today</span>':'')+'</span>'+
+          '<span class="dc">'+tasks.length+' to do</span></div>'+
+        '<ul class="day-tasks">'+
+        tasks.map(function(t){
+          return '<li class="day-task" data-dapp="'+t.app+'" data-di="'+t.i+'">'+
+            '<span class="tb"></span>'+
+            '<span class="tt"><span class="src'+(t.pri===1?' pri':'')+'">'+(t.pri===1?'♥ ':'')+t.appName+(t.resched?' · rescheduled':'')+'</span>'+t.label+'</span></li>';
+        }).join('')+'</ul></div>';
+    });
+    html+=renderDoneLog(R.done);
+    $('daily').innerHTML=html;
+    Array.prototype.forEach.call($('daily').querySelectorAll('[data-dapp]'),function(el){
+      el.onclick=function(){
+        var s=get(el.getAttribute('data-dapp')),i=parseInt(el.getAttribute('data-di'),10);
+        var k=s.prep.indexOf(i); if(k>-1)s.prep.splice(k,1); else s.prep.push(i);
+        save();renderDaily();
+      };
+    });
+  }
+  function renderDoneLog(done){
+    if(!done||!done.length)return '';
+    // group by application
+    var byApp={};
+    done.forEach(function(t){ (byApp[t.appName]=byApp[t.appName]||[]).push(t); });
+    var names=Object.keys(byApp).sort();
+    var rows=names.map(function(nm){
+      var items=byApp[nm];
+      return '<div class="done-app"><div class="done-app-h">'+(items[0].pri===1?'♥ ':'')+nm+' <span>'+items.length+'</span></div>'+
+        items.map(function(t){
+          return '<div class="done-row" data-dapp="'+t.app+'" data-di="'+t.i+'"><span class="tb on">✓</span><span class="tt">'+t.label+'</span></div>';
+        }).join('')+'</div>';
+    }).join('');
+    return '<details class="donelog"><summary>✓ Done &middot; '+done.length+' task'+(done.length>1?'s':'')+' completed</summary><div class="done-body">'+rows+'<p class="done-note">Tap any item to un-tick it if you logged it by mistake.</p></div></details>';
+  }
+  function weekLabel(dt){
+    var monday=new Date(dt); var g=(monday.getDay()+6)%7; monday=addDays(monday,-g);
+    var tw=new Date(TODAY); var tg=(tw.getDay()+6)%7; var thisMon=addDays(tw,-tg);
+    if(ymd(monday)===ymd(thisMon))return 'This week';
+    if(ymd(monday)===ymd(addDays(thisMon,7)))return 'Next week';
+    return 'Week of '+monday.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  }
+
+  function switchView(v){
+    VIEW=v;
+    $('vt-register').className='vt'+(v==='register'?' on':'');
+    $('vt-daily').className='vt'+(v==='daily'?' on':'');
+    $('controls').style.display=(v==='register')?'block':'none';
+    $('list').style.display=(v==='register')?'block':'none';
+    $('daily').style.display=(v==='daily')?'block':'none';
+    if(v==='daily')renderDaily(); else renderList();
+  }
+
+  function render(){renderStrip();renderAgenda();renderChips();if(VIEW==='daily')renderDaily();else renderList();}
+  $('vt-register').onclick=function(){switchView('register');};
+  $('vt-daily').onclick=function(){switchView('daily');};
+
+  // ── backup / restore ──
+  $('exportBtn').onclick=function(){
+    try{
+      var blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a');
+      var d=new Date();
+      a.href=url; a.download='application-tracker-backup-'+d.toISOString().slice(0,10)+'.json';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    }catch(e){ alert('Backup failed: '+e.message); }
+  };
+  $('importBtn').onclick=function(){ $('importFile').click(); };
+  $('importFile').onchange=function(e){
+    var file=e.target.files&&e.target.files[0]; if(!file)return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var data=JSON.parse(r.result);
+        if(typeof data!=='object')throw new Error('not valid');
+        state=data; save(); render();
+        alert('Progress restored ✓');
+      }catch(err){ alert('That file could not be read as a backup.'); }
+    };
+    r.readAsText(file);
+  };
+  $('search').oninput=function(e){f.q=e.target.value;renderList();};
+  $('hideDone').onclick=function(){f.hideDone=!f.hideDone;render();};
+  $('onlyStar').onclick=function(){f.starOnly=!f.starOnly;render();};
+  $('hideIneligible').onclick=function(){f.hideNo=!f.hideNo;render();};
+  load();
+})();
+</script>
+</body>
+</html>
