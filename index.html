@@ -345,24 +345,172 @@
   .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
   .tags span{font-size:13px;font-family:'Patrick Hand',cursive;background:var(--pink-2);color:var(--ink);border:2px solid var(--ink);padding:4px 11px;border-radius:var(--pill);}
   .plabel{font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--accent-deep);margin-bottom:8px;}
+
+  /* ═══════════ proper-website layout ═══════════ */
+  body{padding:0;background:#ffeef5;background-image:radial-gradient(#ffd0e2 1.3px,transparent 1.6px);background-size:26px 26px;}
+  #app{max-width:none;margin:0;background:transparent;border:none;border-radius:0;box-shadow:none;padding:0;min-height:100vh;}
+  #app::before{display:none;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(255,248,251,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:3px solid var(--ink);box-shadow:0 4px 0 0 rgba(90,42,63,.10);}
+  .topbar-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px;flex-wrap:wrap;}
+  .brand{flex:0 0 auto;display:flex;align-items:center;gap:9px;font-family:'Kalam',cursive;font-weight:700;font-size:22px;color:var(--ink);background:none;border:none;cursor:pointer;padding:0;}
+  .brand .brand-mk{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--accent);color:#fff;border:2.5px solid var(--ink);border-radius:60% 40% 55% 45%;font-size:15px;transition:transform .12s;}
+  .brand em{font-style:normal;color:var(--accent-deep);}
+  .brand:hover .brand-mk{transform:rotate(-10deg);}
+  .nav{position:static;top:auto;z-index:auto;margin:0 0 0 auto;padding:0;background:none;border:none;box-shadow:none;border-radius:0;}
+  .navpill{font-size:14px;padding:7px 12px;box-shadow:none;border-width:2px;}
+  .navpill:hover{transform:translateY(-1px);background:var(--pink-2);}
+  .navpill.on{transform:none;box-shadow:1px 2px 0 0 var(--ink);}
+  @media(max-width:760px){
+    .topbar-in{padding:9px 13px;gap:9px;}
+    .nav{width:100%;margin:3px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;padding-bottom:2px;}
+    .brand{font-size:19px;}
+  }
+  .main{max-width:1080px;margin:0 auto;padding:30px 22px 24px;}
+  @media(max-width:760px){.main{padding:20px 14px 14px;}}
+  .mast.hero{border-bottom:3px dashed var(--rule);padding:6px 0 26px;margin-bottom:28px;}
+  .mast.hero h1{font-size:clamp(38px,6vw,58px);}
+  .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+  .home-grid>#homeGreet,.home-grid>#homeCarousel,.home-grid>#strip,.home-grid>#homeTodo,.home-grid>#agendaBox,.home-grid>#homeQuick{grid-column:1/-1;}
+  .home-grid .greet,.home-grid .panel,.home-grid .agenda,.home-grid .strip{margin-bottom:0;}
+  @media(max-width:760px){.home-grid{grid-template-columns:1fr;gap:16px;}}
+  #view-apps,#view-schedule,#view-interview,#view-profile{max-width:860px;margin:0 auto;}
+  .greet,.agenda,.boost,.guide{transform:none;}
+  .greet::before,.agenda::before{display:none;}
+  .entry{transform:none!important;}
+  .sh{transform:none;}
+  .qgrid{grid-template-columns:repeat(auto-fit,minmax(148px,1fr));}
+  @media(min-width:820px){
+    #learnBoosters{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+    #learnBoosters .lcard{margin-bottom:0;}
+    .gloss{column-count:2;column-gap:30px;}
+    .gloss li{break-inside:avoid;}
+  }
+  .site-foot{border-top:3px solid var(--ink);background:var(--pink-2);margin-top:44px;}
+  .foot-in{max-width:1080px;margin:0 auto;padding:26px 22px 42px;}
+  .foot-in .backup{margin-top:0;margin-bottom:18px;}
+  .foot-in .colophon{margin-top:0;border-top:none;padding-top:0;}
+
+  /* progress ring */
+  .ring{width:98px;height:98px;border-radius:50%;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:var(--sh-lift);}
+  .ring span{width:68px;height:68px;background:#fff;border:2.5px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:21px;color:var(--accent-deep);}
+
+  /* carousel */
+  .cc-panel{overflow:hidden;}
+  .cc-nav{display:flex;gap:6px;}
+  .cc-arrow{width:30px;height:30px;border:2.5px solid var(--ink);background:#fff;border-radius:50%;font-size:17px;line-height:1;cursor:pointer;color:var(--ink);box-shadow:var(--sh-lift);}
+  .cc-arrow:hover{background:var(--accent);color:#fff;}
+  .cc-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .cc-track::-webkit-scrollbar{display:none;}
+  .cc-card{scroll-snap-align:start;flex:0 0 232px;background:var(--pink-2);border:2.5px solid var(--ink);border-radius:var(--w-sm);box-shadow:var(--sh-lift);padding:14px 15px;cursor:pointer;transition:transform .1s;}
+  .cc-card:hover{transform:translateY(-3px);}
+  .cc-cat{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-deep);font-weight:700;}
+  .cc-n{font-family:'Kalam',cursive;font-weight:700;font-size:16px;color:var(--ink);margin:5px 0 8px;line-height:1.2;}
+  .cc-when{font-size:14px;color:var(--ink);}
+  .cc-when b{color:var(--accent-deep);font-size:20px;}
+  .cc-date{font-size:12px;color:var(--ink-2);margin-top:2px;}
+
+  /* tree view */
+  .tree{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh-soft);margin-bottom:18px;}
+  .tree>summary{padding:13px 18px;cursor:pointer;font-family:'Kalam',cursive;font-weight:700;font-size:17px;color:var(--ink);list-style:none;}
+  .tree>summary::-webkit-details-marker{display:none;}
+  .tree>summary::before{content:"▸ ";color:var(--accent);}
+  .tree[open]>summary::before{content:"▾ ";}
+  .tree-in{padding:4px 16px 14px;}
+  .tnode>summary{padding:8px 4px;cursor:pointer;font-size:14.5px;color:var(--ink);list-style:none;font-weight:700;}
+  .tnode>summary::-webkit-details-marker{display:none;}
+  .tnode>summary::before{content:"＋ ";color:var(--accent-deep);}
+  .tnode[open]>summary::before{content:"– ";color:var(--accent-deep);}
+  .tct{color:var(--ink-3);font-weight:400;font-size:12px;}
+  .tleaves{list-style:none;padding:2px 0 8px 18px;border-left:2px dashed var(--rule);margin-left:8px;}
+  .tleaves li{padding:6px 0;font-size:13.5px;color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:8px;}
+  .tleaves li:hover{color:var(--accent-deep);}
+  .tdot{width:10px;height:10px;border-radius:60% 40% 55% 45%;border:1.5px solid var(--ink);flex-shrink:0;}
+
+  /* popover */
+  .cell{cursor:pointer;}
+  .infodot{font-size:10px;color:var(--ink-3);}
+  .popover{position:absolute;z-index:200;max-width:220px;background:var(--ink);color:#fff;font-family:'Patrick Hand',cursive;font-size:13px;line-height:1.4;padding:9px 12px;border-radius:12px 6px 10px 8px/8px 10px 6px 12px;box-shadow:var(--sh);}
+
+  /* sub-tabs (Resources) */
+  .subtabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+  .subtab{padding:9px 16px;font-family:'Kalam',cursive;font-weight:700;font-size:15px;background:#fff;border:2.5px solid var(--ink);border-radius:var(--pill);cursor:pointer;color:var(--ink-2);box-shadow:var(--sh-lift);}
+  .subtab.on{background:var(--accent);color:#fff;}
+  .subtab:hover{background:var(--pink-2);}
+  .subtab.on:hover{background:var(--accent);}
+
+  /* date-window search */
+  .datewin{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:2px 0 16px;}
+  .datewin .fl{color:var(--accent-deep);}
+  .dinput{font-family:'Patrick Hand',cursive;font-size:14px;color:var(--ink);background:#fff;border:2.5px solid var(--ink);border-radius:var(--pill);padding:7px 12px;box-shadow:var(--sh-lift);outline:none;}
+  .dinput:focus{border-color:var(--accent);}
+  .dsep{color:var(--accent-deep);font-weight:700;}
+
+  /* forms + interactive */
+  .addbox{background:var(--pink-2);border:3px dashed var(--accent);border-radius:var(--w);margin-bottom:20px;overflow:hidden;}
+  .addbox summary{padding:14px 18px;cursor:pointer;font-family:'Kalam',cursive;font-weight:700;font-size:17px;color:var(--accent-deep);list-style:none;}
+  .addbox summary::-webkit-details-marker{display:none;}
+  .addbox[open] summary{border-bottom:2px dashed var(--accent);}
+  .add-plus{display:inline-block;width:24px;height:24px;line-height:22px;text-align:center;background:var(--accent);color:#fff;border:2px solid var(--ink);border-radius:60% 40% 55% 45%;margin-right:6px;font-size:16px;}
+  .addform{padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
+  .addform label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-deep);}
+  .addform input,.addform select,.addform textarea{font-family:'Patrick Hand',cursive;font-size:15px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink);background:#fff;border:2.5px solid var(--ink);border-radius:var(--w-sm);padding:10px 12px;box-shadow:var(--sh-lift);outline:none;}
+  .addform input:focus,.addform select:focus,.addform textarea:focus{border-color:var(--accent);}
+  .addform textarea{min-height:60px;resize:vertical;line-height:1.4;}
+  .add-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:520px){.add-row{grid-template-columns:1fr;}}
+  .addform .btn{align-self:flex-start;margin-top:4px;}
+  .add-hint{font-size:12px;color:var(--ink-2);font-style:italic;}
+  .btn.danger{background:#fff;border-color:var(--alarm);color:var(--alarm);}
+  .btn.danger:hover{background:var(--alarm);color:#fff;}
+  .btn.sm{padding:7px 14px;font-size:11px;}
+  .story{background:#fff;border:2.5px solid var(--ink);border-radius:var(--w-sm);box-shadow:var(--sh-lift);margin-bottom:10px;}
+  .story summary{padding:11px 14px;cursor:pointer;font-family:'Kalam',cursive;font-weight:700;font-size:15px;color:var(--ink);list-style:none;}
+  .story summary::-webkit-details-marker{display:none;}
+  .story[open] summary{border-bottom:2px dashed var(--rule-2);}
+  .story p{font-size:13.5px;line-height:1.55;color:var(--ink);padding:8px 14px 0;}
+  .story p b{color:var(--accent-deep);}
+  .story .btn{margin:12px 14px 14px;}
+  .todolist{list-style:none;margin-bottom:12px;}
+  .todo{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:2px dashed var(--rule-2);font-size:14.5px;}
+  .todo:last-child{border-bottom:none;}
+  .todo.on .tt{text-decoration:line-through;color:var(--ink-3);}
+  .todo .tt{flex:1;}
+  .todo .box{cursor:pointer;}
+  .todo-x{background:none;border:none;color:var(--ink-3);font-size:15px;cursor:pointer;padding:2px 7px;border-radius:8px;line-height:1;}
+  .todo-x:hover{color:var(--alarm);background:var(--pink-2);}
+  .todo-add{display:flex;gap:9px;}
+  .todo-add input{flex:1;font-family:'Patrick Hand',cursive;font-size:15px;color:var(--ink);background:#fff;border:2.5px solid var(--ink);border-radius:var(--pill);padding:9px 14px;box-shadow:var(--sh-lift);outline:none;}
+  .todo-add input:focus{border-color:var(--accent);}
+  .todo-add .btn{padding:9px 16px;}
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="mast">
-    <div class="rt"><span class="kicker">Blessing's big plan ♥ post-grad adventures</span></div>
-    <h1>My <em>Application</em> HQ <span class="bang">!</span></h1>
-    <div class="sub">Scholarships &middot; Fellowships &middot; Internships &middot; Grad Schemes &nbsp;♥&nbsp; 2026/27 &rarr; 2027/28</div>
-  </div>
-  <nav class="nav" id="nav"></nav>
+  <header class="topbar">
+    <div class="topbar-in">
+      <button class="brand" data-nav="home"><span class="brand-mk">♥</span> Application&nbsp;HQ <em>Blessing</em></button>
+      <nav class="nav" id="nav"></nav>
+    </div>
+  </header>
+
+  <main class="main">
 
   <section class="view" id="view-home">
-    <div id="homeGreet"></div>
-    <div class="strip" id="strip"></div>
-    <div id="homeNext"></div>
-    <div id="agendaBox"></div>
-    <div id="homeProgress"></div>
-    <div id="homeQuick"></div>
+    <div class="mast hero">
+      <div class="rt"><span class="kicker">Blessing's big plan &#9829; post-grad adventures</span></div>
+      <h1>My <em>Application</em> HQ <span class="bang">!</span></h1>
+      <div class="sub">Scholarships &middot; Fellowships &middot; Internships &middot; Grad Schemes &nbsp;&#9829;&nbsp; 2026/27 &rarr; 2027/28</div>
+    </div>
+    <div class="home-grid">
+      <div id="homeGreet"></div>
+      <div id="homeCarousel"></div>
+      <div class="strip" id="strip"></div>
+      <div id="homeNext"></div>
+      <div id="homeProgress"></div>
+      <div id="homeTodo"></div>
+      <div id="agendaBox"></div>
+      <div id="homeQuick"></div>
+    </div>
   </section>
 
   <section class="view" id="view-apps" hidden>
@@ -370,8 +518,37 @@
       <h2 class="sh">The Register ♥</h2>
       <p class="shp">Every scholarship, fellowship, internship and grad scheme — tap any card to open eligibility, the deadline, your prep checklist and how to be the ideal candidate.</p>
     </div>
+    <details class="addbox" id="addbox">
+      <summary><span class="add-plus">&#43;</span> Add your own opportunity</summary>
+      <div class="addform">
+        <label>Name<input id="add-n" type="text" placeholder="e.g. Deloitte Design Grad Scheme"></label>
+        <div class="add-row">
+          <label>Category<select id="add-cat">
+            <option>Scholarship</option><option>Master's</option><option>France</option><option>USA</option><option>Europe</option><option>Fellowship</option><option>Internship</option><option selected>Grad Scheme</option><option>Programme</option><option>Conference</option><option>Booster</option>
+          </select></label>
+          <label>Priority<select id="add-p"><option value="2">Normal</option><option value="1">&#9829; High</option><option value="3">Low</option></select></label>
+        </div>
+        <div class="add-row">
+          <label>Deadline<input id="add-d" type="date"></label>
+          <label>Opens (optional)<input id="add-o" type="date"></label>
+        </div>
+        <label>Link (optional)<input id="add-l" type="url" placeholder="https://…"></label>
+        <label>What it is (optional)<input id="add-v" type="text" placeholder="One line about it"></label>
+        <label>Eligibility / notes (optional)<textarea id="add-e" placeholder="Who it&rsquo;s for, anything to remember…"></textarea></label>
+        <label>Your prep steps &mdash; one per line (optional)<textarea id="add-prep" placeholder="Draft cover letter&#10;Update CV&#10;Apply"></textarea></label>
+        <button class="btn" id="addSave">Add to my register &#9829;</button>
+        <div class="add-hint">Saved to this device and included everywhere &mdash; board, schedule and stats. Remove it any time.</div>
+      </div>
+    </details>
     <div class="controls" id="controls">
     <input class="search" id="search" placeholder="Search the register…" />
+    <div class="datewin">
+      <span class="fl" style="margin:0">Deadline between</span>
+      <input type="date" id="dFrom" class="dinput">
+      <span class="dsep">&rarr;</span>
+      <input type="date" id="dTo" class="dinput">
+      <button class="chip" id="dClear">Clear dates</button>
+    </div>
     <div class="fl">Category</div><div class="chips" id="catChips"></div>
     <div class="fl">Status</div><div class="chips" id="statChips"></div>
     <div class="fl">View</div>
@@ -381,6 +558,7 @@
       <button class="chip" id="hideIneligible">Hide ineligible</button>
     </div>
   </div>
+    <div id="appsTree"></div>
     <div class="list" id="list"></div>
   </section>
 
@@ -443,16 +621,22 @@
     </div>
     <div id="profile"></div>
   </section>
-  <div class="backup">
-    <button class="bk-btn" id="exportBtn">⬇ Back up my progress</button>
-    <button class="bk-btn" id="importBtn">⬆ Restore from backup</button>
-    <input type="file" id="importFile" accept="application/json" style="display:none">
-  </div>
-  <div class="colophon">
-    <strong>CONFIRMED</strong> — verified against the official source.<br>
-    <strong>ESTIMATED</strong> — projected from the previous published cycle. Verify before relying on it.<br>
-    Progress saves automatically to this device. Back it up now and then, so a browser reset can't wipe it.
-  </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="foot-in">
+      <div class="backup">
+        <button class="bk-btn" id="exportBtn">⬇ Back up my progress</button>
+        <button class="bk-btn" id="importBtn">⬆ Restore from backup</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
+      </div>
+      <div class="colophon">
+        <strong>CONFIRMED</strong> — verified against the official source.<br>
+        <strong>ESTIMATED</strong> — projected from the previous published cycle. Verify before relying on it.<br>
+        Progress saves automatically to this device. Back it up now and then, so a browser reset can't wipe it.
+      </div>
+    </div>
+  </footer>
 </div>
 <div class="flash" id="flash">Saved</div>
 
@@ -1304,7 +1488,7 @@
   var VERD={yes:'You meet the criteria',check:'Verify before applying',no:'Not eligible'};
 
   var state={},open={};
-  var f={q:'',cats:{},stats:{},hideDone:false,starOnly:false,hideNo:false};
+  var f={q:'',cats:{},stats:{},hideDone:false,starOnly:false,hideNo:false,dFrom:'',dTo:''};
   function $(i){return document.getElementById(i);}
   function flash(){var e=$('flash');e.classList.add('show');setTimeout(function(){e.classList.remove('show');},1100);}
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1374,7 +1558,7 @@
 
   function visible(){
     var hc=anyKey(f.cats),hs=anyKey(f.stats);
-    return DATA.filter(function(x){
+    return allApps().filter(function(x){
       var s=get(x.id);
       if(f.q&&(x.n+' '+x.cat+' '+x.li+' '+x.v+' '+x.e+' '+x.note).toLowerCase().indexOf(f.q.toLowerCase())===-1)return false;
       if(hc&&!f.cats[x.cat])return false;
@@ -1382,6 +1566,8 @@
       if(f.hideDone&&(s.status==='Rejected'||s.status==='Skipped'))return false;
       if(f.starOnly&&x.p!==1)return false;
       if(f.hideNo&&x.ev==='no')return false;
+      if(f.dFrom&&new Date(x.d+'T00:00:00')<new Date(f.dFrom+'T00:00:00'))return false;
+      if(f.dTo&&new Date(x.d+'T00:00:00')>new Date(f.dTo+'T00:00:00'))return false;
       return true;
     }).sort(function(a,b){
       function dead(s){return(s==='Rejected'||s==='Skipped')?1:0;}
@@ -1393,20 +1579,20 @@
 
   function renderStrip(){
     var ap=0,of=0,so=0,el=0;
-    DATA.forEach(function(x){
+    allApps().forEach(function(x){
       var s=get(x.id),n=days(x.d);
       if(s.status==='Applied'||s.status==='Interview'||s.status==='Offer')ap++;
       if(s.status==='Offer')of++;
       if(n>=0&&n<=30&&isLive(s.status))so++;
       if(x.ev!=='no')el++;
     });
-    var c=[[DATA.length,'Entries'],[el,'Eligible'],[so,'Due ≤30d'],[ap,'Submitted'],[of,'Offers']];
-    $('strip').innerHTML=c.map(function(x){return '<div class="cell"><div class="n">'+x[0]+'</div><div class="l">'+x[1]+'</div></div>';}).join('');
+    var c=[[allApps().length,'Entries','Every opportunity in your hub'],[el,'Eligible','Ones you can actually apply for'],[so,'Due ≤30d','Deadlines within the next 30 days'],[ap,'Submitted','Applied, interviewing or offered'],[of,'Offers','Offers received — amazing!']];
+    $('strip').innerHTML=c.map(function(x){return '<div class="cell" data-pop="'+x[2]+'"><div class="n">'+x[0]+'</div><div class="l">'+x[1]+' <span class="infodot">&#9432;</span></div></div>';}).join('');
   }
 
   function renderAgenda(){
     var items=[];
-    DATA.forEach(function(x){
+    allApps().forEach(function(x){
       if(!isLive(get(x.id).status)||x.ev==='no')return;
       var nd=days(x.d);
       if(nd>=0&&nd<=75) items.push({n:x.n,when:x.d,nd:nd,kind:'deadline'});
@@ -1435,6 +1621,7 @@
   }
 
   function renderList(){
+    renderTree();
     var items=visible();
     if(!items.length){$('list').innerHTML='<div class="empty">No entries match the current filters.</div>';return;}
     $('list').innerHTML=items.map(function(x){
@@ -1453,7 +1640,7 @@
             x.prep.map(function(p,i){var on=s.prep.indexOf(i)>-1;
               return '<li class="'+(on?'on':'')+'" data-prep="'+x.id+'" data-i="'+i+'"><span class="box '+(on?'on':'')+'">'+(on?'✓':'')+'</span><span>'+p+'</span></li>';}).join('')+'</ul></div>':'')+
           '<div class="fld"><div class="sec">Notes</div><textarea data-notes="'+x.id+'" placeholder="Contacts, login details, current stage, follow-ups…">'+esc(s.notes||'')+'</textarea></div>'+
-          '<a class="btn" href="'+x.l+'" target="_blank" rel="noopener">Official page</a></div>';
+          (x.l?'<a class="btn" href="'+x.l+'" target="_blank" rel="noopener">Official page</a>':'')+(x.id.indexOf('u-')===0?' <button class="btn danger" data-del="'+x.id+'">Remove this</button>':'')+'</div>';
       }
       return '<div class="entry'+(dead?' dead':'')+'">'+
         '<div class="head" data-toggle="'+x.id+'">'+
@@ -1482,6 +1669,8 @@
     Array.prototype.forEach.call($('list').querySelectorAll('[data-notes]'),function(el){
       el.oninput=function(){get(el.getAttribute('data-notes')).notes=el.value;save();};
       el.onclick=function(e){e.stopPropagation();};});
+    Array.prototype.forEach.call($('list').querySelectorAll('[data-del]'),function(el){
+      el.onclick=function(e){e.stopPropagation();if(confirm('Remove this opportunity from your register?'))delCustom(el.getAttribute('data-del'));};});
   }
 
   // ═══════════ DAILY PLAN ═══════════
@@ -1527,7 +1716,7 @@
       if(/check|verify|confirm|research|read|browse|look|find|set alert|diarise|register|book/.test(l))return 'research';
       return 'other';
     }
-    DATA.forEach(function(x){
+    allApps().forEach(function(x){
       var s=get(x.id);
       if(!isLive(s.status)||x.ev==='no'||!x.prep||!x.prep.length)return;
       for(var di=0;di<x.prep.length;di++){ if(s.prep.indexOf(di)>-1) done.push({app:x.id,appName:x.n,label:x.prep[di],pri:x.p,i:di}); }
@@ -1658,6 +1847,99 @@
     return 'Week of '+monday.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   }
 
+  // ═══════════ INTERACTIVE HELPERS ═══════════
+  function custom(){ return (state.__custom = state.__custom || []); }
+  function allApps(){ return DATA.concat(custom()); }
+  function delCustom(id){
+    var a=custom(); for(var i=0;i<a.length;i++){ if(a[i].id===id){ a.splice(i,1); break; } }
+    if(state[id])delete state[id]; if(open[id])delete open[id]; save(); render();
+  }
+
+  function todos(){ return (state.__todos = state.__todos || []); }
+  function renderTodos(){
+    var host=$('homeTodo'); if(!host)return; var t=todos();
+    var rows=t.length?t.map(function(o,i){
+      return '<li class="todo'+(o.done?' on':'')+'"><span class="box '+(o.done?'on':'')+'" data-todo="'+i+'">'+(o.done?'✓':'')+'</span><span class="tt">'+esc(o.t)+'</span><button class="todo-x" data-todo-del="'+i+'">✕</button></li>';
+    }).join(''):'<div class="bempty">Nothing yet — jot a quick task below. 🌸</div>';
+    host.innerHTML='<div class="panel"><div class="panel-h">📝 Your own to-dos</div><ul class="todolist">'+rows+
+      '</ul><div class="todo-add"><input id="todo-in" type="text" placeholder="Add a quick task…"><button class="btn" id="todo-add-btn">Add</button></div></div>';
+    function add(){ var v=$('todo-in').value.trim(); if(!v)return; todos().push({t:v,done:false}); save(); renderTodos(); }
+    $('todo-add-btn').onclick=add;
+    $('todo-in').onkeydown=function(e){ if(e.key==='Enter')add(); };
+    Array.prototype.forEach.call(host.querySelectorAll('[data-todo]'),function(el){
+      el.onclick=function(){ var i=parseInt(el.getAttribute('data-todo'),10); var a=todos(); a[i].done=!a[i].done; save(); renderTodos(); };});
+    Array.prototype.forEach.call(host.querySelectorAll('[data-todo-del]'),function(el){
+      el.onclick=function(){ todos().splice(parseInt(el.getAttribute('data-todo-del'),10),1); save(); renderTodos(); };});
+  }
+
+  function stories(){ return (state.__stories = state.__stories || []); }
+  function renderStar(){
+    var host=$('interview'); if(!host)return; var list=stories();
+    var saved=list.length?list.map(function(s,i){
+      return '<details class="story"><summary>'+esc(s.t||'Untitled story')+'</summary>'+
+        '<p><b>Situation</b> '+esc(s.s||'—')+'</p><p><b>Task</b> '+esc(s.ta||'—')+'</p>'+
+        '<p><b>Action</b> '+esc(s.a||'—')+'</p><p><b>Result</b> '+esc(s.r||'—')+'</p>'+
+        '<button class="btn danger sm" data-story-del="'+i+'">Delete story</button></details>';
+    }).join(''):'<div class="bempty">No stories yet — write your first one below. ✨</div>';
+    var html='<div class="panel"><div class="panel-h">🌟 Your STAR story bank</div>'+
+      '<p class="shp" style="margin-bottom:12px">Write your best answers once, reuse them in every interview.</p>'+saved+
+      '<div class="addform" style="margin-top:14px">'+
+      '<label>Story title<input id="st-t" type="text" placeholder="e.g. Redesigning EMOS under pressure"></label>'+
+      '<label>Situation<textarea id="st-s" placeholder="Set the scene…"></textarea></label>'+
+      '<label>Task<textarea id="st-ta" placeholder="What needed doing…"></textarea></label>'+
+      '<label>Action<textarea id="st-a" placeholder="What YOU did…"></textarea></label>'+
+      '<label>Result<textarea id="st-r" placeholder="The measurable outcome…"></textarea></label>'+
+      '<button class="btn" id="st-save">Save this story ♥</button></div></div>';
+    var wrap=document.createElement('div'); wrap.innerHTML=html; host.appendChild(wrap);
+    $('st-save').onclick=function(){
+      var t=$('st-t').value.trim();
+      var s={t:t,s:$('st-s').value.trim(),ta:$('st-ta').value.trim(),a:$('st-a').value.trim(),r:$('st-r').value.trim()};
+      if(!t && !s.s && !s.a){ alert('Add at least a title and a line or two ♥'); return; }
+      stories().push(s); save(); flash(); renderInterview();
+    };
+    Array.prototype.forEach.call(host.querySelectorAll('[data-story-del]'),function(el){
+      el.onclick=function(){ if(confirm('Delete this story?')){ stories().splice(parseInt(el.getAttribute('data-story-del'),10),1); save(); renderInterview(); } };});
+  }
+
+  function renderCarousel(){
+    var host=$('homeCarousel'); if(!host)return;
+    var up=allApps().filter(function(x){ return isLive(get(x.id).status)&&x.ev!=='no'&&days(x.d)>=0; })
+      .sort(function(a,b){ return (a.p-b.p)||(new Date(a.d)-new Date(b.d)); }).slice(0,10);
+    if(!up.length){ host.innerHTML=''; return; }
+    var cards=up.map(function(x){ var n=days(x.d);
+      return '<div class="cc-card" data-open="'+x.id+'"><div class="cc-cat">'+x.cat+'</div><div class="cc-n">'+(x.p===1?'♥ ':'')+esc(x.n)+'</div><div class="cc-when"><b>'+n+'</b> day'+(n===1?'':'s')+' left</div><div class="cc-date">'+fmt(x.d)+'</div></div>';
+    }).join('');
+    host.innerHTML='<div class="panel cc-panel"><div class="panel-h" style="justify-content:space-between"><span>🎠 Coming up ♥</span><span class="cc-nav"><button class="cc-arrow" data-cc="-1">‹</button><button class="cc-arrow" data-cc="1">›</button></span></div><div class="cc-track" id="ccTrack">'+cards+'</div></div>';
+    var track=$('ccTrack');
+    Array.prototype.forEach.call(host.querySelectorAll('[data-cc]'),function(b){ b.onclick=function(){ track.scrollBy({left:parseInt(b.getAttribute('data-cc'),10)*252,behavior:'smooth'}); };});
+    Array.prototype.forEach.call(host.querySelectorAll('[data-open]'),function(el){ el.onclick=function(){ openEntry(el.getAttribute('data-open')); };});
+  }
+
+  function renderTree(){
+    var host=$('appsTree'); if(!host)return; var groups={};
+    allApps().forEach(function(x){ (groups[x.cat]=groups[x.cat]||[]).push(x); });
+    var inner=CATS.filter(function(cat){ return groups[cat]; }).map(function(cat){
+      var items=groups[cat].sort(function(a,b){ return a.p-b.p||(new Date(a.d)-new Date(b.d)); });
+      return '<details class="tnode"><summary>'+cat+' <span class="tct">'+items.length+'</span></summary><ul class="tleaves">'+
+        items.map(function(x){ var st=get(x.id).status;
+          return '<li data-open="'+x.id+'"><span class="tdot" style="background:'+SC[st]+'"></span>'+(x.p===1?'♥ ':'')+esc(x.n)+'</li>'; }).join('')+'</ul></details>';
+    }).join('');
+    host.innerHTML='<details class="tree"><summary>🌳 Browse by category</summary><div class="tree-in">'+inner+'</div></details>';
+    Array.prototype.forEach.call(host.querySelectorAll('[data-open]'),function(el){ el.onclick=function(){ openEntry(el.getAttribute('data-open')); };});
+  }
+
+  function initPopovers(){
+    document.addEventListener('click',function(e){
+      var t=e.target.closest?e.target.closest('[data-pop]'):null;
+      var ex=document.getElementById('popover'); if(ex)ex.parentNode.removeChild(ex);
+      if(!t)return; e.stopPropagation();
+      var p=document.createElement('div'); p.id='popover'; p.className='popover'; p.textContent=t.getAttribute('data-pop');
+      document.body.appendChild(p); var r=t.getBoundingClientRect();
+      p.style.left=Math.max(8,Math.min(window.innerWidth-p.offsetWidth-8, r.left+r.width/2-p.offsetWidth/2))+'px';
+      p.style.top=(window.scrollY+r.bottom+8)+'px';
+    });
+  }
+
   // ═══════════ NAVIGATION / HUB SHELL ═══════════
   var NAVITEMS=[
     {id:'home',label:'Home',emo:'🏠'},
@@ -1677,6 +1959,7 @@
     Array.prototype.forEach.call($('nav').querySelectorAll('[data-nav]'),function(b){
       b.onclick=function(){go(b.getAttribute('data-nav'));};
     });
+    var br=document.querySelector('.brand'); if(br)br.onclick=function(){go('home');};
   }
   function go(id){
     CUR=id;
@@ -1751,7 +2034,7 @@
     });
     if(shown<4){
       // fill with soonest upcoming deadlines
-      var up=DATA.filter(function(x){return isLive(get(x.id).status)&&x.ev!=='no'&&days(x.d)>=0;})
+      var up=allApps().filter(function(x){return isLive(get(x.id).status)&&x.ev!=='no'&&days(x.d)>=0;})
         .sort(function(a,b){return new Date(a.d)-new Date(b.d);}).slice(0,4-shown);
       up.forEach(function(x){var n=days(x.d);
         rows+='<div class="nextrow"><span class="nxg">⚑</span><span><b>'+esc(x.n)+'</b> — due in '+n+' day'+(n===1?'':'s')+' ('+fmt(x.d)+')</span></div>';});
@@ -1760,8 +2043,8 @@
     $('homeNext').innerHTML='<div class="panel"><div class="panel-h">🌟 Do this next</div>'+(rows||'<div class="bempty">All caught up — lovely. ✨</div>')+ovNote+'</div>';
 
     // progress
-    var total=DATA.length, submitted=0, offers=0, prepDone=0, prepTot=0, elig=0, bTot=0, bStart=0;
-    DATA.forEach(function(x){
+    var total=allApps().length, submitted=0, offers=0, prepDone=0, prepTot=0, elig=0, bTot=0, bStart=0;
+    allApps().forEach(function(x){
       var s=get(x.id);
       if(s.status==='Applied'||s.status==='Interview'||s.status==='Offer')submitted++;
       if(s.status==='Offer')offers++;
@@ -1773,7 +2056,9 @@
       var pct=max?Math.round(val/max*100):0;
       return '<div class="pbar"><div class="pl"><span>'+label+'</span><b>'+val+'/'+max+'</b></div><div class="ptrack"><div class="pfill '+cls+'" style="width:'+pct+'%"></div></div></div>';
     }
+    var opct=prepTot?Math.round(prepDone/prepTot*100):0;
     $('homeProgress').innerHTML='<div class="panel"><div class="panel-h">🎀 Your progress</div>'+
+      '<div class="ring" style="background:conic-gradient(var(--accent) '+opct+'%, var(--pink-2) 0)"><span>'+opct+'%</span></div>'+
       bar('Prep tasks ticked',prepDone,prepTot,'')+
       bar('Applications submitted',submitted,elig,'mint')+
       bar('Boosters underway',bStart,bTot,'gold')+
@@ -1787,6 +2072,7 @@
     }).join('')+'</div>';
     Array.prototype.forEach.call($('homeQuick').querySelectorAll('[data-goto]'),function(el){
       el.onclick=function(){go(el.getAttribute('data-goto'));};});
+    renderTodos();renderCarousel();
   }
 
   // ═══════════ BOARD ═══════════
@@ -1804,8 +2090,8 @@
     var html='<div class="board">';
     cols.concat([null]).forEach(function(st){
       var list, title, col;
-      if(st===null){ list=DATA.filter(function(x){var s=get(x.id).status;return closed.indexOf(s)>-1;}); title='Closed'; col='var(--ink-3)'; }
-      else { list=DATA.filter(function(x){return get(x.id).status===st;}); title=st; col=SC[st]; }
+      if(st===null){ list=allApps().filter(function(x){var s=get(x.id).status;return closed.indexOf(s)>-1;}); title='Closed'; col='var(--ink-3)'; }
+      else { list=allApps().filter(function(x){return get(x.id).status===st;}); title=st; col=SC[st]; }
       list.sort(function(a,b){return a.p-b.p || (new Date(a.d)-new Date(b.d));});
       html+='<div class="bcol"><div class="bcol-h"><span class="bdot" style="background:'+col+'"></span>'+title+'<span class="bct">'+list.length+'</span></div>'+
         (list.length?list.map(card).join(''):'<div class="bempty">nothing here yet</div>')+'</div>';
@@ -1823,7 +2109,7 @@
       '<div class="guide blue"><h3>Are online certificates worth anything?</h3><p>On their own, not much. As <b>evidence attached to a real project</b>, a lot. The Google UX cert matters because it produces three portfolio pieces; IxDF HCI Foundations matters because it gives you the exact vocabulary Cambridge and Paris-Saclay use. Always pair a cert with something you built.</p></div>'+
       '<div class="guide mint"><h3>Do them in this order</h3><p><b>Foundation first:</b> Portfolio + LinkedIn, then start Google UX (list it “in progress” straight away). <b>Then differentiators:</b> IxDF HCI Foundations, Generative AI for UI/UX, accessibility. <b>Then the heavy technical one</b> (CS50 AI) in parallel — don’t wait for a free month, it won’t come before the autumn deadlines.</p></div>';
 
-    var boosters=DATA.filter(function(x){return x.cat==='Booster';});
+    var boosters=allApps().filter(function(x){return x.cat==='Booster';});
     $('learnBoosters').innerHTML=boosters.map(function(x){
       var s=get(x.id),dn=s.prep.length,tt=x.prep?x.prep.length:0;
       var prep=tt?'<div class="fld"><div class="sec">Steps — '+dn+' of '+tt+' done</div><ul class="prep">'+
@@ -1862,7 +2148,7 @@
 
     // company-specific interview intel pulled from the data
     var iv_re=/interview|hirevue|recruiter screen|portfolio review|assessment centre|design challenge|stage|loop|whiteboard/i;
-    var companies=DATA.filter(function(x){return x.boost&&iv_re.test(x.boost)&&x.cat!=='Booster';});
+    var companies=allApps().filter(function(x){return x.boost&&iv_re.test(x.boost)&&x.cat!=='Booster';});
     var comp=companies.map(function(x){
       return '<div class="company"><div class="cnm"><b>'+esc(x.n)+'</b> — has specific interview-process notes in its card.</div><button class="minibtn" data-open="'+x.id+'">Open →</button></div>';
     }).join('');
@@ -1880,6 +2166,7 @@
       el.onclick=function(){var i=parseInt(el.getAttribute('data-iv'),10);var a=ivState();var k=a.indexOf(i);if(k>-1)a.splice(k,1);else a.push(i);save();renderInterview();};});
     Array.prototype.forEach.call($('interview').querySelectorAll('[data-open]'),function(el){
       el.onclick=function(){openEntry(el.getAttribute('data-open'));};});
+    renderStar();
   }
 
   // ═══════════ RESOURCES ═══════════
@@ -1894,8 +2181,8 @@
     ['Nomination (Eiffel)','You can’t apply directly; a French institution must put you forward. Ask in September.'],
     ['STAR','Situation–Task–Action–Result — the structure for behavioural interview answers.']
   ];
+  var RESTAB='guide';
   function renderResources(){
-    // gather unique official + learning links
     var learnLinks=[
       ['Google UX Certificate','https://www.coursera.org/professional-certificates/google-ux-design'],
       ['W3C Web Accessibility (edX)','https://www.edx.org/learn/web-accessibility/the-world-wide-web-consortium-w3c-introduction-to-web-accessibility'],
@@ -1912,17 +2199,19 @@
       ['10,000 Black Interns','https://www.10000blackinterns.com/'],
       ['upReach','https://upreach.org.uk/']
     ];
-    function grid(arr){return '<div class="linkgrid">'+arr.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a>';}).join('')+'</div>';}
-
-    $('resources').innerHTML=
-      '<div class="guide"><h3>How this hub works</h3><p><b>Home</b> tells you what to do next. <b>Register</b> is every opportunity — tap a card for eligibility, deadline, prep and how to stand out. <b>Board</b> is your pipeline. <b>Schedule</b> plans your prep backward from each opening date. <b>Learning</b> is your boosters, <b>Interview</b> gets you ready to talk, and <b>You</b> keeps your story sharp.</p><p>Everything saves to this device automatically. Back it up now and then from the buttons at the bottom.</p></div>'+
-      '<div class="guide blue"><h3>Four things that actually move the needle</h3><p>♥ <b>Apply in the first two weeks</b> — rolling schemes fill before the stated deadline.<br>♥ <b>Warm contacts beat cold portals</b> — message Steven, Grace and Chiara before applying cold.<br>♥ <b>One strong certificate</b> beats a wall of them.<br>♥ <b>Frame EMOS as research</b>, not “an internship” — it turns you into a research applicant.</p></div>'+
-      '<div class="guide mint"><h3>⚠ Confirmed vs Estimated dates</h3><p>Cards marked <b>Estimated</b> are projected from last year’s cycle — always verify on the official page before you rely on them. “Check back” dates are when to re-check a listing that isn’t public yet.</p></div>'+
-      '<div class="panel"><div class="panel-h">📖 Plain-English glossary</div><ul class="gloss">'+
-        GLOSS.map(function(g){return '<li><b>'+esc(g[0])+'</b> — '+esc(g[1])+'</li>';}).join('')+'</ul></div>'+
-      '<div class="panel"><div class="panel-h">🔗 Links you’ll reuse</div>'+
-        '<div class="linkcat">Learning &amp; boosters</div>'+grid(learnLinks)+
-        '<div class="linkcat">Key application portals</div>'+grid(applyLinks)+'</div>';
+    function grid(arr){ return '<div class="linkgrid">'+arr.map(function(l){ return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a>'; }).join('')+'</div>'; }
+    var guide=
+      '<div class="guide"><h3>How this hub works</h3><p><b>Home</b> tells you what to do next. <b>Register</b> is every opportunity — tap a card for eligibility, deadline, prep and how to stand out. <b>Board</b> is your pipeline. <b>Schedule</b> plans your prep backward from each opening date. <b>Learning</b> is your boosters, <b>Interview</b> gets you ready to talk, and <b>You</b> keeps your story sharp.</p><p>Everything saves to this device automatically. Back it up now and then from the footer.</p></div>'+
+      '<div class="guide blue"><h3>Four things that actually move the needle</h3><p>♥ <b>Apply in the first two weeks</b> — rolling schemes fill before the stated deadline.<br>♥ <b>Warm contacts beat cold portals</b> — message Steven, Grace and Chiara before applying cold.<br>♥ <b>One strong certificate</b> beats a wall of them.<br>♥ <b>Frame EMOS as research</b>, not “an internship”.</p></div>'+
+      '<div class="guide mint"><h3>⚠ Confirmed vs Estimated dates</h3><p>Cards marked <b>Estimated</b> are projected from last year’s cycle — always verify on the official page. “Check back” dates are when to re-check a listing that isn’t public yet.</p></div>';
+    var glossary='<div class="panel"><div class="panel-h">📖 Plain-English glossary</div><ul class="gloss">'+
+      GLOSS.map(function(g){ return '<li><b>'+esc(g[0])+'</b> — '+esc(g[1])+'</li>'; }).join('')+'</ul></div>';
+    var links='<div class="panel"><div class="panel-h">🔗 Links you’ll reuse</div><div class="linkcat">Learning &amp; boosters</div>'+grid(learnLinks)+'<div class="linkcat">Key application portals</div>'+grid(applyLinks)+'</div>';
+    var tabs=[['guide','How it works'],['glossary','Glossary'],['links','Links']];
+    var bar='<div class="subtabs">'+tabs.map(function(t){ return '<button class="subtab'+(t[0]===RESTAB?' on':'')+'" data-restab="'+t[0]+'">'+t[1]+'</button>'; }).join('')+'</div>';
+    var body=RESTAB==='guide'?guide:(RESTAB==='glossary'?glossary:links);
+    $('resources').innerHTML=bar+'<div class="tabbody">'+body+'</div>';
+    Array.prototype.forEach.call($('resources').querySelectorAll('[data-restab]'),function(b){ b.onclick=function(){ RESTAB=b.getAttribute('data-restab'); renderResources(); };});
   }
 
   // ═══════════ PROFILE / YOU ═══════════
@@ -1994,6 +2283,26 @@
   $('hideDone').onclick=function(){f.hideDone=!f.hideDone;render();};
   $('onlyStar').onclick=function(){f.starOnly=!f.starOnly;render();};
   $('hideIneligible').onclick=function(){f.hideNo=!f.hideNo;render();};
+  $('dFrom').onchange=function(){f.dFrom=this.value;renderList();};
+  $('dTo').onchange=function(){f.dTo=this.value;renderList();};
+  $('dClear').onclick=function(){f.dFrom='';f.dTo='';$('dFrom').value='';$('dTo').value='';renderList();};
+  $('addSave').onclick=function(){
+    var n=$('add-n').value.trim(); if(!n){ alert('Give it a name first ♥'); return; }
+    var d=$('add-d').value, o=$('add-o').value;
+    if(!d && !o){ alert('Add at least a deadline (or an opens date).'); return; }
+    if(!d)d=o;
+    var prep=$('add-prep').value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s;});
+    var e=$('add-e').value.trim();
+    var ent={id:'u-'+Date.now(),n:n,cat:$('add-cat').value,o:(o||d),d:d,c:'est',p:parseInt($('add-p').value,10)||2,
+      li:'Added by you',v:($('add-v').value.trim()||'Your own addition to the register.'),
+      e:(e||'You added this one — edit the details any time.'),ev:'check',l:$('add-l').value.trim(),
+      note:'You added this to your register on '+fmt(ymd(new Date()))+'.',prep:prep};
+    custom().push(ent);
+    ['add-n','add-d','add-o','add-l','add-v','add-e','add-prep'].forEach(function(idd){ $(idd).value=''; });
+    $('addbox').open=false; save(); flash(); open[ent.id]=true; go('apps');
+    setTimeout(function(){ var h=document.querySelector('[data-toggle="'+ent.id+'"]'); if(h)h.scrollIntoView({behavior:'smooth',block:'center'}); },80);
+  };
+  initPopovers();
   load();
 })();
 </script>
