@@ -249,6 +249,102 @@
     #app{padding:34px 15px 40px;box-shadow:6px 6px 0 0 var(--ink);}
     .strip .cell{flex-basis:78px;}
   }
+
+  /* ═══════════ multi-section hub ═══════════ */
+  .nav{position:sticky;top:8px;z-index:30;display:flex;gap:8px;overflow-x:auto;padding:9px;margin:0 -6px 26px;background:var(--pink-2);border:3px solid var(--ink);border-radius:var(--pill);box-shadow:var(--sh);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .nav::-webkit-scrollbar{display:none;}
+  .navpill{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:9px 15px;font-family:'Patrick Hand',cursive;font-size:15px;color:var(--ink);background:#fff;border:2.5px solid var(--ink);border-radius:var(--pill);cursor:pointer;white-space:nowrap;box-shadow:var(--sh-lift);transition:transform .1s,background .1s;}
+  .navpill .nemo{font-size:16px;}
+  .navpill:hover{transform:rotate(-2deg);background:var(--pink);}
+  .navpill.on{background:var(--accent);color:#fff;transform:rotate(1deg);}
+  .view{animation:pop .18s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .sectionlede{margin-bottom:20px;}
+  .sh{font-size:30px;color:var(--ink);margin-bottom:6px;transform:rotate(-.6deg);}
+  .shp{font-size:14.5px;color:var(--ink-2);line-height:1.55;max-width:60ch;}
+
+  /* home */
+  .greet{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh);padding:20px 22px;margin-bottom:24px;position:relative;transform:rotate(-.5deg);}
+  .greet::before{content:"";position:absolute;top:-13px;right:26px;width:88px;height:26px;transform:rotate(4deg);background:rgba(255,120,175,.4);border:2px dashed rgba(216,27,116,.4);border-radius:6px;}
+  .greet h2{font-size:30px;color:var(--ink);margin-bottom:6px;}
+  .greet .gday{font-size:13px;color:var(--accent-deep);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+  .greet .genc{font-size:16px;color:var(--ink);line-height:1.5;}
+  .panel{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh-soft);padding:18px 20px;margin-bottom:22px;}
+  .panel-h{font-family:'Kalam',cursive;font-weight:700;font-size:20px;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .nextrow{display:flex;gap:11px;align-items:flex-start;padding:9px 0;font-size:14px;line-height:1.4;border-bottom:2px dashed var(--rule-2);}
+  .nextrow:last-of-type{border-bottom:none;}
+  .nextrow .nx{flex-shrink:0;width:24px;height:24px;background:var(--accent);color:#fff;border-radius:60% 40% 55% 45%;display:flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:13px;}
+  .nextrow .nxg{flex-shrink:0;width:24px;height:24px;background:var(--mint);color:#fff;border-radius:60% 40% 55% 45%;display:flex;align-items:center;justify-content:center;font-size:13px;}
+  .nextrow b{color:var(--accent-deep);}
+  .pbar{margin-bottom:15px;}
+  .pbar:last-child{margin-bottom:0;}
+  .pbar .pl{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink);margin-bottom:6px;}
+  .pbar .pl b{color:var(--accent-deep);}
+  .ptrack{height:16px;background:var(--pink-2);border:2.5px solid var(--ink);border-radius:12px;overflow:hidden;}
+  .pfill{height:100%;background:repeating-linear-gradient(45deg,var(--accent) 0 9px,#ff6ba6 9px 18px);border-right:2.5px solid var(--ink);transition:width .4s;}
+  .pfill.mint{background:repeating-linear-gradient(45deg,var(--mint) 0 9px,#5cc196 9px 18px);}
+  .pfill.gold{background:repeating-linear-gradient(45deg,var(--gold) 0 9px,#eab84f 9px 18px);}
+  .qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;}
+  .qtile{display:flex;align-items:center;gap:10px;padding:14px 15px;background:var(--pink-2);border:2.5px solid var(--ink);border-radius:var(--w-sm);box-shadow:var(--sh-lift);cursor:pointer;font-family:'Kalam',cursive;font-weight:700;font-size:16px;color:var(--ink);transition:transform .1s,background .1s;}
+  .qtile:hover{transform:rotate(-1.5deg);background:var(--pink);}
+  .qtile .qe{font-size:22px;}
+
+  /* board */
+  .board{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+  .bcol{flex:0 0 240px;background:var(--pink-2);border:3px solid var(--ink);border-radius:var(--w);padding:12px;box-shadow:var(--sh-soft);}
+  .bcol-h{font-family:'Kalam',cursive;font-weight:700;font-size:16px;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+  .bcol-h .bdot{width:14px;height:14px;border-radius:60% 40% 55% 45%;border:2px solid var(--ink);}
+  .bcol-h .bct{margin-left:auto;font-family:'Patrick Hand',cursive;font-size:13px;color:var(--ink-2);}
+  .bcard{background:#fff;border:2.5px solid var(--ink);border-radius:var(--w-sm);box-shadow:var(--sh-lift);padding:11px 12px;margin-bottom:9px;cursor:pointer;transition:transform .1s;}
+  .bcard:hover{transform:rotate(-1.5deg);}
+  .bcard .bcat{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-deep);font-weight:700;}
+  .bcard .bnm{font-size:14px;color:var(--ink);line-height:1.25;margin:3px 0 5px;}
+  .bcard .bwhen{font-size:12px;color:var(--ink-2);}
+  .bempty{font-size:12.5px;color:var(--ink-3);font-style:italic;padding:8px 2px;}
+
+  /* learning + generic guidance cards */
+  .guide{background:var(--note);border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh);padding:16px 18px;margin-bottom:18px;transform:rotate(-.4deg);}
+  .guide h3{font-size:19px;color:var(--ink);margin-bottom:8px;}
+  .guide p{font-size:14px;line-height:1.65;color:var(--ink);margin-bottom:8px;}
+  .guide p:last-child{margin-bottom:0;}
+  .guide b{color:var(--accent-deep);}
+  .guide.blue{background:#eef1fc;}
+  .guide.mint{background:#e4f5ec;}
+  .lcard{background:#fff;border:3px solid var(--ink);border-radius:var(--w);box-shadow:var(--sh-soft);padding:16px 18px;margin-bottom:15px;}
+  .lcard .lc-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+  .lcard .lc-title{font-family:'Kalam',cursive;font-weight:700;font-size:18px;color:var(--ink);flex:1;line-height:1.2;}
+  .lcard .lc-prog{flex-shrink:0;font-size:12px;font-weight:700;color:#fff;background:var(--accent);padding:2px 9px;border-radius:12px 6px 10px 7px/7px 10px 6px 12px;}
+  .lcard .lc-sub{font-size:12.5px;color:var(--ink-2);margin-bottom:9px;line-height:1.45;}
+  .lcard .lc-why{font-size:13.5px;color:var(--ink);line-height:1.55;margin-bottom:11px;}
+
+  /* interview + glossary + resources */
+  .ivq{list-style:none;}
+  .ivq li{font-size:14px;line-height:1.5;color:var(--ink);padding:7px 0 7px 22px;position:relative;}
+  .ivq li::before{content:"♥";position:absolute;left:0;color:var(--accent);}
+  .company{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:2px dashed var(--rule-2);}
+  .company:last-child{border-bottom:none;}
+  .company .cnm{flex:1;font-size:14px;color:var(--ink);line-height:1.4;}
+  .company .cnm b{color:var(--accent-deep);}
+  .minibtn{flex-shrink:0;padding:6px 12px;font-size:12px;font-family:'Patrick Hand',cursive;background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:var(--pill);cursor:pointer;box-shadow:var(--sh-lift);white-space:nowrap;transition:background .1s,transform .1s;}
+  .minibtn:hover{background:var(--accent);color:#fff;transform:rotate(-2deg);}
+  .gloss{list-style:none;}
+  .gloss li{padding:10px 0;border-bottom:2px dashed var(--rule-2);font-size:14px;line-height:1.55;}
+  .gloss li:last-child{border-bottom:none;}
+  .gloss b{color:var(--accent-deep);}
+  .linkcat{font-family:'Kalam',cursive;font-weight:700;font-size:16px;color:var(--accent-deep);margin:16px 0 9px;}
+  .linkgrid{display:flex;flex-wrap:wrap;gap:8px;}
+  .linkgrid a{display:inline-block;padding:8px 13px;font-size:13.5px;font-family:'Patrick Hand',cursive;color:var(--ink);text-decoration:none;background:#fff;border:2.5px solid var(--ink);border-radius:var(--pill);box-shadow:var(--sh-lift);transition:background .1s,transform .1s;}
+  .linkgrid a:hover{background:var(--accent);color:#fff;transform:rotate(-1.5deg);}
+
+  /* profile */
+  .facts{list-style:none;}
+  .facts li{display:flex;gap:10px;padding:8px 0;border-bottom:2px dashed var(--rule-2);font-size:14px;line-height:1.5;color:var(--ink);}
+  .facts li:last-child{border-bottom:none;}
+  .facts .fe{flex-shrink:0;font-size:17px;}
+  .facts b{color:var(--accent-deep);}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+  .tags span{font-size:13px;font-family:'Patrick Hand',cursive;background:var(--pink-2);color:var(--ink);border:2px solid var(--ink);padding:4px 11px;border-radius:var(--pill);}
+  .plabel{font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--accent-deep);margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -258,24 +354,23 @@
     <h1>My <em>Application</em> HQ <span class="bang">!</span></h1>
     <div class="sub">Scholarships &middot; Fellowships &middot; Internships &middot; Grad Schemes &nbsp;♥&nbsp; 2026/27 &rarr; 2027/28</div>
   </div>
-  <div class="strip" id="strip"></div>
-  <div id="agendaBox"></div>
-  <details class="studyplan">
-    <summary><span class="kicker">Booster sequence</span> &nbsp;The learning plan &mdash; tap to open</summary>
-    <div class="sp-body">
-      <p class="sp-intro">At 3&ndash;5 hrs/day this whole set is done before the autumn deadline wave. Do them in this order so each cert is finished (or provably in-progress) before the application that needs it. Everything below is also a dated entry in the register.</p>
-      <div class="sp-phase"><b>Now &middot; weeks 1&ndash;2 (early Aug)</b> &mdash; foundation that gates everything<br>Portfolio + LinkedIn + CV fix &middot; start Google UX Certificate (list as "in progress" immediately, chip away all autumn)</div>
-      <div class="sp-phase"><b>August &middot; the UX&times;AI differentiators</b><br>Generative AI for UI/UX (IBM) &middot; IxDF: AI for Designers &middot; Google AI Essentials &middot; one Figma course</div>
-      <div class="sp-phase"><b>Late Aug&ndash;early Sept &middot; HCI credibility for the scholarships</b><br>IxDF: HCI Foundations (before Cambridge/Saclay proposals) &middot; W3C Accessibility (for JP Morgan DDP) &middot; start CS50 AI with Python</div>
-      <div class="sp-phase"><b>Sept&ndash;Oct &middot; technical heavyweight + polish, alongside applying</b><br>CS50 Intro to CS (the long Harvard one, background) &middot; book &amp; sit French DELF/DALF so the cert lands before Entente Cordiale</div>
-      <div class="sp-skip"><b>Deliberately skipped:</b> IBM UX cert &amp; third UX cert (redundant with Google UX) &middot; Adobe XD (being sunset for Figma) &middot; CS50 Cybersecurity / 2D Games / Scratch (off-target for your applications) &middot; standalone Product Design course (redundant) &middot; the second Figma course (do one only). Doing all UX certs is the "wall of certificates" trap &mdash; one strong one is enough.</div>
+  <nav class="nav" id="nav"></nav>
+
+  <section class="view" id="view-home">
+    <div id="homeGreet"></div>
+    <div class="strip" id="strip"></div>
+    <div id="homeNext"></div>
+    <div id="agendaBox"></div>
+    <div id="homeProgress"></div>
+    <div id="homeQuick"></div>
+  </section>
+
+  <section class="view" id="view-apps" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">The Register ♥</h2>
+      <p class="shp">Every scholarship, fellowship, internship and grad scheme — tap any card to open eligibility, the deadline, your prep checklist and how to be the ideal candidate.</p>
     </div>
-  </details>
-  <div class="viewtabs">
-    <button class="vt on" id="vt-register">The Register</button>
-    <button class="vt" id="vt-daily">Daily Plan</button>
-  </div>
-  <div class="controls" id="controls">
+    <div class="controls" id="controls">
     <input class="search" id="search" placeholder="Search the register…" />
     <div class="fl">Category</div><div class="chips" id="catChips"></div>
     <div class="fl">Status</div><div class="chips" id="statChips"></div>
@@ -286,8 +381,68 @@
       <button class="chip" id="hideIneligible">Hide ineligible</button>
     </div>
   </div>
-  <div class="list" id="list"></div>
-  <div id="daily" style="display:none"></div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <section class="view" id="view-board" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">The Board 🗂️</h2>
+      <p class="shp">Your whole pipeline at a glance. Tap a card to jump to it. Swipe sideways to see every column.</p>
+    </div>
+    <div id="board"></div>
+  </section>
+
+  <section class="view" id="view-schedule" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Daily Plan 🗓️</h2>
+      <p class="shp">Your prep, scheduled backward from each opening date so you&rsquo;re ready on day one.</p>
+    </div>
+    <div id="daily"></div>
+  </section>
+
+  <section class="view" id="view-learning" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Learning &amp; boosters 🎓</h2>
+      <p class="shp">The credentials that make the rest of the register stronger. Do them in order — one strong certificate beats a wall of them.</p>
+    </div>
+    <div id="learnGuide"></div>
+    <details class="studyplan">
+    <summary><span class="kicker">Booster sequence</span> &nbsp;The learning plan &mdash; tap to open</summary>
+    <div class="sp-body">
+      <p class="sp-intro">At 3&ndash;5 hrs/day this whole set is done before the autumn deadline wave. Do them in this order so each cert is finished (or provably in-progress) before the application that needs it. Everything below is also a dated entry in the register.</p>
+      <div class="sp-phase"><b>Now &middot; weeks 1&ndash;2 (early Aug)</b> &mdash; foundation that gates everything<br>Portfolio + LinkedIn + CV fix &middot; start Google UX Certificate (list as "in progress" immediately, chip away all autumn)</div>
+      <div class="sp-phase"><b>August &middot; the UX&times;AI differentiators</b><br>Generative AI for UI/UX (IBM) &middot; IxDF: AI for Designers &middot; Google AI Essentials &middot; one Figma course</div>
+      <div class="sp-phase"><b>Late Aug&ndash;early Sept &middot; HCI credibility for the scholarships</b><br>IxDF: HCI Foundations (before Cambridge/Saclay proposals) &middot; W3C Accessibility (for JP Morgan DDP) &middot; start CS50 AI with Python</div>
+      <div class="sp-phase"><b>Sept&ndash;Oct &middot; technical heavyweight + polish, alongside applying</b><br>CS50 Intro to CS (the long Harvard one, background) &middot; book &amp; sit French DELF/DALF so the cert lands before Entente Cordiale</div>
+      <div class="sp-skip"><b>Deliberately skipped:</b> IBM UX cert &amp; third UX cert (redundant with Google UX) &middot; Adobe XD (being sunset for Figma) &middot; CS50 Cybersecurity / 2D Games / Scratch (off-target for your applications) &middot; standalone Product Design course (redundant) &middot; the second Figma course (do one only). Doing all UX certs is the "wall of certificates" trap &mdash; one strong one is enough.</div>
+    </div>
+  </details>
+    <div id="learnBoosters"></div>
+  </section>
+
+  <section class="view" id="view-interview" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Interview prep 🎤</h2>
+      <p class="shp">The bit most people leave too late. Rehearse out loud, know your stories, and walk in as the person they already want.</p>
+    </div>
+    <div id="interview"></div>
+  </section>
+
+  <section class="view" id="view-resources" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Resources &amp; guidance 📚</h2>
+      <p class="shp">How this hub works, honest advice, a plain-English glossary, and the links you&rsquo;ll keep coming back to.</p>
+    </div>
+    <div id="resources"></div>
+  </section>
+
+  <section class="view" id="view-profile" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">You ✨</h2>
+      <p class="shp">Your story in one place — the facts, angles, people and pitch you&rsquo;ll reuse across every application. Keep it sharp; copy from it often.</p>
+    </div>
+    <div id="profile"></div>
+  </section>
   <div class="backup">
     <button class="bk-btn" id="exportBtn">⬇ Back up my progress</button>
     <button class="bk-btn" id="importBtn">⬆ Restore from backup</button>
@@ -1503,19 +1658,311 @@
     return 'Week of '+monday.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   }
 
-  function switchView(v){
-    VIEW=v;
-    $('vt-register').className='vt'+(v==='register'?' on':'');
-    $('vt-daily').className='vt'+(v==='daily'?' on':'');
-    $('controls').style.display=(v==='register')?'block':'none';
-    $('list').style.display=(v==='register')?'block':'none';
-    $('daily').style.display=(v==='daily')?'block':'none';
-    if(v==='daily')renderDaily(); else renderList();
+  // ═══════════ NAVIGATION / HUB SHELL ═══════════
+  var NAVITEMS=[
+    {id:'home',label:'Home',emo:'🏠'},
+    {id:'apps',label:'Register',emo:'📋'},
+    {id:'board',label:'Board',emo:'🗂️'},
+    {id:'schedule',label:'Schedule',emo:'🗓️'},
+    {id:'learning',label:'Learning',emo:'🎓'},
+    {id:'interview',label:'Interview',emo:'🎤'},
+    {id:'resources',label:'Resources',emo:'📚'},
+    {id:'profile',label:'You',emo:'✨'}
+  ];
+  var CUR='home';
+  function renderNav(){
+    $('nav').innerHTML=NAVITEMS.map(function(n){
+      return '<button class="navpill'+(n.id===CUR?' on':'')+'" data-nav="'+n.id+'"><span class="nemo">'+n.emo+'</span>'+n.label+'</button>';
+    }).join('');
+    Array.prototype.forEach.call($('nav').querySelectorAll('[data-nav]'),function(b){
+      b.onclick=function(){go(b.getAttribute('data-nav'));};
+    });
+  }
+  function go(id){
+    CUR=id;
+    Array.prototype.forEach.call(document.querySelectorAll('.view'),function(v){v.hidden=true;});
+    var el=$('view-'+id); if(el)el.hidden=false;
+    renderNav(); renderCurrent();
+    try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}
+  }
+  function renderCurrent(){
+    if(CUR==='home')renderHome();
+    else if(CUR==='apps')renderList();
+    else if(CUR==='board')renderBoard();
+    else if(CUR==='schedule')renderDaily();
+    else if(CUR==='learning')renderLearning();
+    else if(CUR==='interview')renderInterview();
+    else if(CUR==='resources')renderResources();
+    else if(CUR==='profile')renderProfile();
+  }
+  function render(){renderNav();renderStrip();renderAgenda();renderChips();renderCurrent();}
+
+  function openEntry(id){
+    open[id]=true;
+    f.q='';f.cats={};f.stats={};f.hideDone=false;f.starOnly=false;f.hideNo=false;
+    var sb=$('search'); if(sb)sb.value='';
+    go('apps');
+    setTimeout(function(){
+      var h=document.querySelector('[data-toggle="'+id+'"]');
+      if(h){try{h.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){h.scrollIntoView();}}
+    },70);
   }
 
-  function render(){renderStrip();renderAgenda();renderChips();if(VIEW==='daily')renderDaily();else renderList();}
-  $('vt-register').onclick=function(){switchView('register');};
-  $('vt-daily').onclick=function(){switchView('daily');};
+  // shared task wiring for sections that reuse prep/status/notes controls
+  function bindTasks(root){
+    Array.prototype.forEach.call(root.querySelectorAll('[data-status]'),function(el){
+      el.onchange=function(){get(el.getAttribute('data-status')).status=el.value;save();render();};
+      el.onclick=function(e){e.stopPropagation();};});
+    Array.prototype.forEach.call(root.querySelectorAll('[data-prep]'),function(el){
+      el.onclick=function(e){e.stopPropagation();
+        var s=get(el.getAttribute('data-prep')),i=parseInt(el.getAttribute('data-i'),10);
+        var k=s.prep.indexOf(i); if(k>-1)s.prep.splice(k,1); else s.prep.push(i);
+        save();renderCurrent();};});
+    Array.prototype.forEach.call(root.querySelectorAll('[data-notes]'),function(el){
+      el.oninput=function(){get(el.getAttribute('data-notes')).notes=el.value;save();};
+      el.onclick=function(e){e.stopPropagation();};});
+  }
+
+  // ═══════════ HOME ═══════════
+  var ENC=[
+    "You’ve got this, superstar. ♥",
+    "One tiny task today beats a perfect plan tomorrow.",
+    "Future-Blessing is going to thank you so much. ✨",
+    "Deadlines are just confetti waiting to happen. 🎉",
+    "Small steps, big dreams — keep going. 🌸",
+    "You are closer than you think. Brew a tea, tick one box.",
+    "Proud of you already. Now go be brilliant. ⚡"
+  ];
+  function renderHome(){
+    var now=new Date();
+    var day=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    var enc=ENC[Math.floor(now.getTime()/86400000)%ENC.length];
+    $('homeGreet').innerHTML='<div class="greet"><div class="gday">'+day+'</div><h2>Hey Blessing ♥</h2><div class="genc">'+enc+'</div></div>';
+
+    // next actions: today’s scheduled tasks + soonest deadlines
+    var R=buildSchedule();
+    var todayKey=ymd(TODAY);
+    var todayTasks=(R.byDate[todayKey]||[]).filter(function(t){return get(t.app).prep.indexOf(t.i)<0;});
+    var ovOpen=R.overdue.filter(function(t){return get(t.app).prep.indexOf(t.i)<0;});
+    var rows='';
+    var shown=0;
+    todayTasks.slice(0,4).forEach(function(t){
+      rows+='<div class="nextrow"><span class="nx">♥</span><span><b>'+esc(t.appName)+'</b> — '+esc(t.label)+'</span></div>'; shown++;
+    });
+    if(shown<4){
+      // fill with soonest upcoming deadlines
+      var up=DATA.filter(function(x){return isLive(get(x.id).status)&&x.ev!=='no'&&days(x.d)>=0;})
+        .sort(function(a,b){return new Date(a.d)-new Date(b.d);}).slice(0,4-shown);
+      up.forEach(function(x){var n=days(x.d);
+        rows+='<div class="nextrow"><span class="nxg">⚑</span><span><b>'+esc(x.n)+'</b> — due in '+n+' day'+(n===1?'':'s')+' ('+fmt(x.d)+')</span></div>';});
+    }
+    var ovNote=ovOpen.length?'<div class="nextrow"><span class="nx" style="background:var(--alarm)">!</span><span><b>'+ovOpen.length+' overdue task'+(ovOpen.length>1?'s':'')+'</b> waiting in your Schedule — nothing’s lost, they roll forward.</span></div>':'';
+    $('homeNext').innerHTML='<div class="panel"><div class="panel-h">🌟 Do this next</div>'+(rows||'<div class="bempty">All caught up — lovely. ✨</div>')+ovNote+'</div>';
+
+    // progress
+    var total=DATA.length, submitted=0, offers=0, prepDone=0, prepTot=0, elig=0, bTot=0, bStart=0;
+    DATA.forEach(function(x){
+      var s=get(x.id);
+      if(s.status==='Applied'||s.status==='Interview'||s.status==='Offer')submitted++;
+      if(s.status==='Offer')offers++;
+      if(x.ev!=='no')elig++;
+      if(x.prep){prepTot+=x.prep.length;prepDone+=s.prep.filter(function(i){return i<x.prep.length;}).length;}
+      if(x.cat==='Booster'){bTot++;if(s.status!=='Not started')bStart++;}
+    });
+    function bar(label,val,max,cls){
+      var pct=max?Math.round(val/max*100):0;
+      return '<div class="pbar"><div class="pl"><span>'+label+'</span><b>'+val+'/'+max+'</b></div><div class="ptrack"><div class="pfill '+cls+'" style="width:'+pct+'%"></div></div></div>';
+    }
+    $('homeProgress').innerHTML='<div class="panel"><div class="panel-h">🎀 Your progress</div>'+
+      bar('Prep tasks ticked',prepDone,prepTot,'')+
+      bar('Applications submitted',submitted,elig,'mint')+
+      bar('Boosters underway',bStart,bTot,'gold')+
+      (offers?'<div class="genc" style="margin-top:12px">🎉 '+offers+' offer'+(offers>1?'s':'')+' so far — look at you go!</div>':'')+
+      '</div>';
+
+    // quick links
+    var q=[['apps','📋','The Register'],['board','🗂️','The Board'],['schedule','🗓️','Daily Plan'],['learning','🎓','Boosters'],['interview','🎤','Interview prep'],['profile','✨','Your story']];
+    $('homeQuick').innerHTML='<div class="qgrid">'+q.map(function(t){
+      return '<div class="qtile" data-goto="'+t[0]+'"><span class="qe">'+t[1]+'</span>'+t[2]+'</div>';
+    }).join('')+'</div>';
+    Array.prototype.forEach.call($('homeQuick').querySelectorAll('[data-goto]'),function(el){
+      el.onclick=function(){go(el.getAttribute('data-goto'));};});
+  }
+
+  // ═══════════ BOARD ═══════════
+  function renderBoard(){
+    var cols=['Not started','Preparing','Applied','Interview','Offer'];
+    var closed=['Rejected','Skipped'];
+    function card(x){
+      var n=days(x.d);
+      var wtxt=(n<0?'passed':(n===0?'today!':n+' day'+(n===1?'':'s')+' left'));
+      return '<div class="bcard" data-open="'+x.id+'">'+
+        '<div class="bcat">'+x.cat+'</div>'+
+        '<div class="bnm">'+(x.p===1?'♥ ':'')+esc(x.n)+'</div>'+
+        '<div class="bwhen">'+wtxt+' · '+fmt(x.d)+'</div></div>';
+    }
+    var html='<div class="board">';
+    cols.concat([null]).forEach(function(st){
+      var list, title, col;
+      if(st===null){ list=DATA.filter(function(x){var s=get(x.id).status;return closed.indexOf(s)>-1;}); title='Closed'; col='var(--ink-3)'; }
+      else { list=DATA.filter(function(x){return get(x.id).status===st;}); title=st; col=SC[st]; }
+      list.sort(function(a,b){return a.p-b.p || (new Date(a.d)-new Date(b.d));});
+      html+='<div class="bcol"><div class="bcol-h"><span class="bdot" style="background:'+col+'"></span>'+title+'<span class="bct">'+list.length+'</span></div>'+
+        (list.length?list.map(card).join(''):'<div class="bempty">nothing here yet</div>')+'</div>';
+    });
+    html+='</div>';
+    $('board').innerHTML=html;
+    Array.prototype.forEach.call($('board').querySelectorAll('[data-open]'),function(el){
+      el.onclick=function(){openEntry(el.getAttribute('data-open'));};});
+  }
+
+  // ═══════════ LEARNING ═══════════
+  function renderLearning(){
+    $('learnGuide').innerHTML=
+      '<div class="guide"><h3>✨ The one rule</h3><p>Doing every UX certificate is the <b>“wall of certificates” trap</b>. Panels can tell. One strong, finished credential (your Google UX cert) plus proof you can talk about it beats ten half-watched courses.</p></div>'+
+      '<div class="guide blue"><h3>Are online certificates worth anything?</h3><p>On their own, not much. As <b>evidence attached to a real project</b>, a lot. The Google UX cert matters because it produces three portfolio pieces; IxDF HCI Foundations matters because it gives you the exact vocabulary Cambridge and Paris-Saclay use. Always pair a cert with something you built.</p></div>'+
+      '<div class="guide mint"><h3>Do them in this order</h3><p><b>Foundation first:</b> Portfolio + LinkedIn, then start Google UX (list it “in progress” straight away). <b>Then differentiators:</b> IxDF HCI Foundations, Generative AI for UI/UX, accessibility. <b>Then the heavy technical one</b> (CS50 AI) in parallel — don’t wait for a free month, it won’t come before the autumn deadlines.</p></div>';
+
+    var boosters=DATA.filter(function(x){return x.cat==='Booster';});
+    $('learnBoosters').innerHTML=boosters.map(function(x){
+      var s=get(x.id),dn=s.prep.length,tt=x.prep?x.prep.length:0;
+      var prep=tt?'<div class="fld"><div class="sec">Steps — '+dn+' of '+tt+' done</div><ul class="prep">'+
+        x.prep.map(function(p,i){var on=s.prep.indexOf(i)>-1;
+          return '<li class="'+(on?'on':'')+'" data-prep="'+x.id+'" data-i="'+i+'"><span class="box '+(on?'on':'')+'">'+(on?'✓':'')+'</span><span>'+esc(p)+'</span></li>';}).join('')+'</ul></div>':'';
+      return '<div class="lcard">'+
+        '<div class="lc-top"><div class="lc-title">'+(x.p===1?'♥ ':'')+esc(x.n)+'</div>'+(tt?'<span class="lc-prog">'+dn+'/'+tt+'</span>':'')+'</div>'+
+        '<div class="lc-sub">'+esc(x.li)+'</div>'+
+        '<div class="lc-why">'+x.v+'</div>'+
+        '<div class="fld"><div class="sec">Status</div><select data-status="'+x.id+'">'+
+          STATUSES.map(function(o){return '<option'+(o===s.status?' selected':'')+'>'+o+'</option>';}).join('')+'</select></div>'+
+        prep+
+        (x.boost?'<div class="boost"><div class="boost-h">♥ Why it helps</div><p>'+x.boost+'</p></div>':'')+
+        '<a class="btn" href="'+x.l+'" target="_blank" rel="noopener">Open course</a>'+
+        '</div>';
+    }).join('');
+    bindTasks($('learnBoosters'));
+  }
+
+  // ═══════════ INTERVIEW PREP ═══════════
+  var IVP=[
+    'Record a 30-minute walkthrough of your 1–2 strongest projects (EMOS + PrepTrack)',
+    'Nail your “tell me about yourself” in 90 seconds',
+    'Write STAR stories: EMOS redesign, PrepTrack ownership, a real conflict',
+    'Prepare 3 genuine questions to ask each panel',
+    'Practise a HireVue-style video answer to camera (for JP Morgan)',
+    'Rehearse defending one design decision with logic + data, not taste',
+    'Research the team, product and recent work before every interview'
+  ];
+  function ivState(){ if(!state.__iv)state.__iv=[]; return state.__iv; }
+  function renderInterview(){
+    var iv=ivState();
+    var checklist=IVP.map(function(p,i){var on=iv.indexOf(i)>-1;
+      return '<li class="prep-i'+(on?' on':'')+'" data-iv="'+i+'" style="display:flex;gap:11px;align-items:flex-start;padding:9px 0;font-size:14px;line-height:1.45;cursor:pointer;border-bottom:2px dashed var(--rule-2)"><span class="box '+(on?'on':'')+'">'+(on?'✓':'')+'</span><span style="'+(on?'text-decoration:line-through;color:var(--ink-3)':'')+'">'+esc(p)+'</span></li>';
+    }).join('');
+
+    // company-specific interview intel pulled from the data
+    var iv_re=/interview|hirevue|recruiter screen|portfolio review|assessment centre|design challenge|stage|loop|whiteboard/i;
+    var companies=DATA.filter(function(x){return x.boost&&iv_re.test(x.boost)&&x.cat!=='Booster';});
+    var comp=companies.map(function(x){
+      return '<div class="company"><div class="cnm"><b>'+esc(x.n)+'</b> — has specific interview-process notes in its card.</div><button class="minibtn" data-open="'+x.id+'">Open →</button></div>';
+    }).join('');
+
+    $('interview').innerHTML=
+      '<div class="panel"><div class="panel-h">✅ Your prep checklist</div><ul class="prep" style="list-style:none">'+checklist+'</ul></div>'+
+      '<div class="guide"><h3>The STAR method (your secret weapon)</h3><p><b>S</b>ituation – <b>T</b>ask – <b>A</b>ction – <b>R</b>esult. Every behavioural answer should land a measurable result at the end. “Users struggled with the lab OS → I ran testing and redesigned the flow → task time dropped / errors fell.” Practise three stories until they’re smooth, not scripted.</p></div>'+
+      '<div class="guide blue"><h3>The portfolio walkthrough</h3><p>Most design interviews are won here. Present <b>1–2 projects deeply</b>, not five shallowly. Lead with the <b>problem and your thinking</b>, show trade-offs and micro-interactions, and defend each decision with a reason. Talk <i>through</i> the work — don’t read the slides.</p></div>'+
+      '<div class="guide mint"><h3>Questions to rehearse</h3><ul class="ivq">'+
+        ['Tell me about yourself.','Why this company / programme specifically?','Walk me through a project you’re proud of.','Tell me about a time you disagreed with an engineer or stakeholder.','How do you handle ambiguity?','A design decision you got wrong — and what you learned.','What questions do you have for us?']
+        .map(function(q){return '<li>'+esc(q)+'</li>';}).join('')+'</ul></div>'+
+      (comp?'<div class="panel"><div class="panel-h">🎯 Company-specific intel</div><p class="shp" style="margin-bottom:6px">These cards already contain the real interview stages — read them before you apply.</p>'+comp+'</div>':'');
+
+    Array.prototype.forEach.call($('interview').querySelectorAll('[data-iv]'),function(el){
+      el.onclick=function(){var i=parseInt(el.getAttribute('data-iv'),10);var a=ivState();var k=a.indexOf(i);if(k>-1)a.splice(k,1);else a.push(i);save();renderInterview();};});
+    Array.prototype.forEach.call($('interview').querySelectorAll('[data-open]'),function(el){
+      el.onclick=function(){openEntry(el.getAttribute('data-open'));};});
+  }
+
+  // ═══════════ RESOURCES ═══════════
+  var GLOSS=[
+    ['2:1 / 2:2','Upper / lower second-class UK degree. Many schemes accept a 2:1; some a 2:2. You hold a 2:1.'],
+    ['Home fee status','You’re treated as a UK student for fees — required by most UK scholarships.'],
+    ['Widening participation (WP)','Programmes for under-represented backgrounds (low income, first-gen, state school). Your profile qualifies.'],
+    ['Means-tested','Assessed on financial need. Works in your favour.'],
+    ['HCI','Human–Computer Interaction — the research field your master’s targets sit in.'],
+    ['Rolling basis','Reviewed as they arrive and closed once full — so apply in the first two weeks, not near the deadline.'],
+    ['FTC','Fixed-Term Contract — a role for a set period rather than permanent.'],
+    ['Nomination (Eiffel)','You can’t apply directly; a French institution must put you forward. Ask in September.'],
+    ['STAR','Situation–Task–Action–Result — the structure for behavioural interview answers.']
+  ];
+  function renderResources(){
+    // gather unique official + learning links
+    var learnLinks=[
+      ['Google UX Certificate','https://www.coursera.org/professional-certificates/google-ux-design'],
+      ['W3C Web Accessibility (edX)','https://www.edx.org/learn/web-accessibility/the-world-wide-web-consortium-w3c-introduction-to-web-accessibility'],
+      ['Interaction Design Foundation','https://www.interaction-design.org/'],
+      ['CS50 AI with Python','https://pll.harvard.edu/course/cs50s-introduction-artificial-intelligence-python'],
+      ['Forage virtual experiences','https://www.theforage.com/'],
+      ['IBM Enterprise Design Thinking','https://www.ibm.com/design/thinking/']
+    ];
+    var applyLinks=[
+      ['Martingale Foundation','https://www.martingale.foundation/'],
+      ['Cambridge Postgraduate','https://www.postgraduate.study.cam.ac.uk/'],
+      ['Campus France (UK)','https://www.uk.campusfrance.org/'],
+      ['Kennedy Trust','https://www.kennedytrust.org.uk/'],
+      ['10,000 Black Interns','https://www.10000blackinterns.com/'],
+      ['upReach','https://upreach.org.uk/']
+    ];
+    function grid(arr){return '<div class="linkgrid">'+arr.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a>';}).join('')+'</div>';}
+
+    $('resources').innerHTML=
+      '<div class="guide"><h3>How this hub works</h3><p><b>Home</b> tells you what to do next. <b>Register</b> is every opportunity — tap a card for eligibility, deadline, prep and how to stand out. <b>Board</b> is your pipeline. <b>Schedule</b> plans your prep backward from each opening date. <b>Learning</b> is your boosters, <b>Interview</b> gets you ready to talk, and <b>You</b> keeps your story sharp.</p><p>Everything saves to this device automatically. Back it up now and then from the buttons at the bottom.</p></div>'+
+      '<div class="guide blue"><h3>Four things that actually move the needle</h3><p>♥ <b>Apply in the first two weeks</b> — rolling schemes fill before the stated deadline.<br>♥ <b>Warm contacts beat cold portals</b> — message Steven, Grace and Chiara before applying cold.<br>♥ <b>One strong certificate</b> beats a wall of them.<br>♥ <b>Frame EMOS as research</b>, not “an internship” — it turns you into a research applicant.</p></div>'+
+      '<div class="guide mint"><h3>⚠ Confirmed vs Estimated dates</h3><p>Cards marked <b>Estimated</b> are projected from last year’s cycle — always verify on the official page before you rely on them. “Check back” dates are when to re-check a listing that isn’t public yet.</p></div>'+
+      '<div class="panel"><div class="panel-h">📖 Plain-English glossary</div><ul class="gloss">'+
+        GLOSS.map(function(g){return '<li><b>'+esc(g[0])+'</b> — '+esc(g[1])+'</li>';}).join('')+'</ul></div>'+
+      '<div class="panel"><div class="panel-h">🔗 Links you’ll reuse</div>'+
+        '<div class="linkcat">Learning &amp; boosters</div>'+grid(learnLinks)+
+        '<div class="linkcat">Key application portals</div>'+grid(applyLinks)+'</div>';
+  }
+
+  // ═══════════ PROFILE / YOU ═══════════
+  function renderProfile(){
+    var facts=[
+      ['🎓','BSc Creative Computing (2:1), graduated <b>June 2026</b>. Based in <b>Milton Keynes</b>.'],
+      ['🧠','<b>DeepMind Research Ready</b> selection + the <b>EMOS redesign</b> at Edinburgh’s APRIL AI Hub — real HCI research with real users.'],
+      ['🇫🇷','<b>Fluent French</b> (get DELF/DALF to prove it) — opens the entire France cluster.'],
+      ['🌟','First-generation, low-income, state-school — you meet WP criteria across the board.'],
+      ['💄','Luxury beauty counters: <b>Chanel, Tom Ford, NARS, Bobbi Brown</b> — genuine commercial instinct for fashion/beauty roles.'],
+      ['💻','Built things: <b>PrepTrack</b> (Product Owner), <b>Harmonia AI</b> (Flask), <b>Apple Tabs</b> concept, EMOS redesign.']
+    ];
+    var angles=['EMOS → HCI research trajectory','Human-centred / responsible AI','“Money without borders” (Wise)','Complex-systems UX (Palantir, BAE, National Grid)','Beauty + UX + French (L’Oréal, Condé, Estée)','Accessibility &amp; inclusive design'];
+    var people=[
+      ['Anastasia','Edinburgh / APRIL supervisor — your key academic referee (EMOS).'],
+      ['Atish &amp; Alexandros','Edinburgh supervisors — possible CHI co-authors.'],
+      ['Steven Postlethwaite','Condé Nast — already interviewed & offered you. Message directly.'],
+      ['Grace Ogunleye-Wright','Capgemini (your Step UP mentor) — referral + inside guidance.'],
+      ['Chiara','Did the Cambridge MPhil — ask how the process really runs.']
+    ];
+    var pitch=(state.__pitch||'');
+    var about=(state.__about||'');
+
+    $('profile').innerHTML=
+      '<div class="panel"><div class="plabel">Your one-liner · keep it sharp, copy it often</div>'+
+        '<textarea id="pf-pitch" placeholder="e.g. A UX designer moving into HCI research — I make complex, expert software usable. DeepMind-selected, EMOS redesign at Edinburgh, fluent French." style="min-height:80px">'+esc(pitch)+'</textarea></div>'+
+      '<div class="panel"><div class="panel-h">⭐ The facts</div><ul class="facts">'+
+        facts.map(function(f){return '<li><span class="fe">'+f[0]+'</span><span>'+f[1]+'</span></li>';}).join('')+'</ul></div>'+
+      '<div class="panel"><div class="panel-h">🎯 Angles you can lead with</div><div class="tags">'+
+        angles.map(function(a){return '<span>'+a+'</span>';}).join('')+'</div></div>'+
+      '<div class="panel"><div class="panel-h">💛 Your people</div><ul class="facts">'+
+        people.map(function(p){return '<li><span class="fe">♥</span><span><b>'+p[0]+'</b> — '+p[1]+'</span></li>';}).join('')+'</ul></div>'+
+      '<div class="panel"><div class="plabel">Anything else to remember about you</div>'+
+        '<textarea id="pf-about" placeholder="Wins, awards, links, the version of your CV that’s current…">'+esc(about)+'</textarea></div>';
+
+    $('pf-pitch').oninput=function(){state.__pitch=this.value;save();};
+    $('pf-about').oninput=function(){state.__about=this.value;save();};
+  }
+
+  renderNav();
 
   // ── backup / restore ──
   $('exportBtn').onclick=function(){
