@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#fbf6f8">
 <title>Blessing's Application HQ ♥</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500;1,9..144,600&display=swap');
   *{box-sizing:border-box;margin:0;padding:0;}
   html{-webkit-text-size-adjust:100%;}
   body{
@@ -465,13 +466,89 @@
   .todo-add input{flex:1;font-family:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1.5px solid var(--border);border-radius:var(--pill);padding:12px 16px;outline:none;box-shadow:var(--sh-lift);transition:border-color .2s,box-shadow .2s;}
   .todo-add input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(203,90,134,.13);}
   .todo-add .btn{padding:12px 20px;}
+
+  /* ═══════════════════════════════════════════════════════════
+     /frontend-design polish — "Atelier Rose" editorial layer
+     (SF Pro stays the UI + heading face per request; Fraunces
+      italic is used only for couture accent moments)
+     ═══════════════════════════════════════════════════════════ */
+  :root{--display:'Fraunces',Georgia,'Times New Roman',serif;}
+  #app{text-rendering:optimizeLegibility;}
+
+  /* editorial serif accents — showpieces only */
+  .greet h2{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(31px,4.2vw,40px);letter-spacing:-.012em;line-height:1.05;}
+  .empty{font-family:var(--display);font-style:italic;font-size:20px;}
+
+  /* refined numerics (SF has gorgeous tabular figures) */
+  .strip .cell .n,.when .big,.cc-when b,.ring span,.pbar .pl b,.lc-prog,.day-h .dc{font-variant-numeric:tabular-nums;}
+
+  /* film-grain over the blush mesh — atmosphere, not noise */
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27150%27%20height%3D%27150%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.82%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");background-size:150px 150px;}
+  .topbar,.main,.site-foot{position:relative;z-index:1;}
+
+  /* oversized soft orb behind the hero — editorial depth */
+  .mast.hero{position:relative;}
+  .mast.hero>*{position:relative;z-index:1;}
+  .mast.hero::after{content:"";position:absolute;z-index:0;top:-70px;right:-20px;
+    width:min(360px,48vw);height:min(360px,48vw);pointer-events:none;
+    background:radial-gradient(circle at 34% 34%,rgba(215,106,149,.22),rgba(215,106,149,0) 68%);}
+
+  /* primary button: a slow sheen sweep on hover */
+  .btn{position:relative;overflow:hidden;}
+  .btn::after{content:"";position:absolute;top:0;left:-130%;width:65%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);
+    transform:skewX(-18deg);transition:left .6s ease;pointer-events:none;}
+  .btn:hover::after{left:150%;}
+
+  /* accessible focus — solid rose ring (no reliance on shadow depth) */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+  textarea:focus-visible,summary:focus-visible,[data-nav]:focus-visible,[data-open]:focus-visible,
+  .cell:focus-visible,.chip:focus-visible,.navpill:focus-visible{
+    outline:none;box-shadow:0 0 0 3px #fff,0 0 0 5.5px var(--accent);border-radius:12px;}
+
+  /* couture scrollbar */
+  *{scrollbar-width:thin;scrollbar-color:var(--pink) transparent;}
+  ::-webkit-scrollbar{width:11px;height:11px;}
+  ::-webkit-scrollbar-thumb{background:var(--pink);border-radius:99px;border:3px solid transparent;background-clip:content-box;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--accent);background-clip:content-box;}
+
+  /* orchestrated page-load reveal — one well-staged entrance */
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes riseIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    .mast.hero .rt,.mast.hero h1,.mast.hero .sub{opacity:0;animation:riseIn .7s cubic-bezier(.2,.7,.3,1) both;}
+    .mast.hero h1{animation-delay:.07s}
+    .mast.hero .sub{animation-delay:.14s}
+    .home-grid>*{opacity:0;animation:riseIn .72s cubic-bezier(.2,.7,.3,1) both;}
+    .home-grid>*:nth-child(1){animation-delay:.10s}
+    .home-grid>*:nth-child(2){animation-delay:.16s}
+    .home-grid>*:nth-child(3){animation-delay:.22s}
+    .home-grid>*:nth-child(4){animation-delay:.28s}
+    .home-grid>*:nth-child(5){animation-delay:.34s}
+    .home-grid>*:nth-child(6){animation-delay:.40s}
+    .home-grid>*:nth-child(n+7){animation-delay:.46s}
+    .cc-card{opacity:0;animation:riseIn .6s cubic-bezier(.2,.7,.3,1) both;}
+    .cc-card:nth-child(2){animation-delay:.05s}
+    .cc-card:nth-child(3){animation-delay:.10s}
+    .cc-card:nth-child(4){animation-delay:.15s}
+    .cc-card:nth-child(n+5){animation-delay:.20s}
+  }
+
+  /* ── sleek line-icon system ── */
+  .ic{width:1em;height:1em;display:inline-block;vertical-align:-.16em;flex:0 0 auto;}
+  .navpill .nemo{display:inline-flex;align-items:center;}
+  .navpill .nemo .ic{width:18px;height:18px;stroke-width:1.55;}
+  .brand-mk .ic{width:16px;height:16px;fill:#fff;stroke:none;}
+  .qtile .qe{display:inline-flex;align-items:center;justify-content:center;color:var(--accent);}
+  .qtile .qe .ic{width:23px;height:23px;stroke-width:1.55;}
+  .panel-h .ic{width:20px;height:20px;color:var(--accent);stroke-width:1.7;}
 </style>
 </head>
 <body>
 <div id="app">
   <header class="topbar">
     <div class="topbar-in">
-      <button class="brand" data-nav="home"><span class="brand-mk">♥</span> Application&nbsp;HQ <em>Blessing</em></button>
+      <button class="brand" data-nav="home"><span class="brand-mk"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.3S4.2 15.7 4.2 10.2A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.8 3.2c0 5.5-7.8 10.1-7.8 10.1z"/></svg></span> Application&nbsp;HQ <em>Blessing</em></button>
       <nav class="nav" id="nav"></nav>
     </div>
   </header>
@@ -498,7 +575,7 @@
 
   <section class="view" id="view-apps" hidden>
     <div class="sectionlede">
-      <h2 class="sh">The Register ♥</h2>
+      <h2 class="sh">The Register</h2>
       <p class="shp">Every scholarship, fellowship, internship and grad scheme — tap any card to open eligibility, the deadline, your prep checklist and how to be the ideal candidate.</p>
     </div>
     <details class="addbox" id="addbox">
@@ -547,7 +624,7 @@
 
   <section class="view" id="view-board" hidden>
     <div class="sectionlede">
-      <h2 class="sh">The Board 🗂️</h2>
+      <h2 class="sh">The Board</h2>
       <p class="shp">Your whole pipeline at a glance. Tap a card to jump to it. Swipe sideways to see every column.</p>
     </div>
     <div id="board"></div>
@@ -555,7 +632,7 @@
 
   <section class="view" id="view-schedule" hidden>
     <div class="sectionlede">
-      <h2 class="sh">Daily Plan 🗓️</h2>
+      <h2 class="sh">Daily Plan</h2>
       <p class="shp">Your prep, scheduled backward from each opening date so you&rsquo;re ready on day one.</p>
     </div>
     <div id="daily"></div>
@@ -563,7 +640,7 @@
 
   <section class="view" id="view-learning" hidden>
     <div class="sectionlede">
-      <h2 class="sh">Learning &amp; boosters 🎓</h2>
+      <h2 class="sh">Learning &amp; boosters</h2>
       <p class="shp">The credentials that make the rest of the register stronger. Do them in order — one strong certificate beats a wall of them.</p>
     </div>
     <div id="learnGuide"></div>
@@ -583,7 +660,7 @@
 
   <section class="view" id="view-interview" hidden>
     <div class="sectionlede">
-      <h2 class="sh">Interview prep 🎤</h2>
+      <h2 class="sh">Interview prep</h2>
       <p class="shp">The bit most people leave too late. Rehearse out loud, know your stories, and walk in as the person they already want.</p>
     </div>
     <div id="interview"></div>
@@ -591,7 +668,7 @@
 
   <section class="view" id="view-resources" hidden>
     <div class="sectionlede">
-      <h2 class="sh">Resources &amp; guidance 📚</h2>
+      <h2 class="sh">Resources &amp; guidance</h2>
       <p class="shp">How this hub works, honest advice, a plain-English glossary, and the links you&rsquo;ll keep coming back to.</p>
     </div>
     <div id="resources"></div>
@@ -599,7 +676,7 @@
 
   <section class="view" id="view-profile" hidden>
     <div class="sectionlede">
-      <h2 class="sh">You ✨</h2>
+      <h2 class="sh">You</h2>
       <p class="shp">Your story in one place — the facts, angles, people and pitch you&rsquo;ll reuse across every application. Keep it sharp; copy from it often.</p>
     </div>
     <div id="profile"></div>
@@ -1844,7 +1921,7 @@
     var rows=t.length?t.map(function(o,i){
       return '<li class="todo'+(o.done?' on':'')+'"><span class="box '+(o.done?'on':'')+'" data-todo="'+i+'">'+(o.done?'✓':'')+'</span><span class="tt">'+esc(o.t)+'</span><button class="todo-x" data-todo-del="'+i+'">✕</button></li>';
     }).join(''):'<div class="bempty">Nothing yet — jot a quick task below. 🌸</div>';
-    host.innerHTML='<div class="panel"><div class="panel-h">📝 Your own to-dos</div><ul class="todolist">'+rows+
+    host.innerHTML='<div class="panel"><div class="panel-h">'+ic('todo')+' Your own to-dos</div><ul class="todolist">'+rows+
       '</ul><div class="todo-add"><input id="todo-in" type="text" placeholder="Add a quick task…"><button class="btn" id="todo-add-btn">Add</button></div></div>';
     function add(){ var v=$('todo-in').value.trim(); if(!v)return; todos().push({t:v,done:false}); save(); renderTodos(); }
     $('todo-add-btn').onclick=add;
@@ -1864,7 +1941,7 @@
         '<p><b>Action</b> '+esc(s.a||'—')+'</p><p><b>Result</b> '+esc(s.r||'—')+'</p>'+
         '<button class="btn danger sm" data-story-del="'+i+'">Delete story</button></details>';
     }).join(''):'<div class="bempty">No stories yet — write your first one below. ✨</div>';
-    var html='<div class="panel"><div class="panel-h">🌟 Your STAR story bank</div>'+
+    var html='<div class="panel"><div class="panel-h">'+ic('sparkle')+' Your STAR story bank</div>'+
       '<p class="shp" style="margin-bottom:12px">Write your best answers once, reuse them in every interview.</p>'+saved+
       '<div class="addform" style="margin-top:14px">'+
       '<label>Story title<input id="st-t" type="text" placeholder="e.g. Redesigning EMOS under pressure"></label>'+
@@ -1892,7 +1969,7 @@
     var cards=up.map(function(x){ var n=days(x.d);
       return '<div class="cc-card" data-open="'+x.id+'"><div class="cc-cat">'+x.cat+'</div><div class="cc-n">'+(x.p===1?'♥ ':'')+esc(x.n)+'</div><div class="cc-when"><b>'+n+'</b> day'+(n===1?'':'s')+' left</div><div class="cc-date">'+fmt(x.d)+'</div></div>';
     }).join('');
-    host.innerHTML='<div class="panel cc-panel"><div class="panel-h" style="justify-content:space-between"><span>🎠 Coming up ♥</span><span class="cc-nav"><button class="cc-arrow" data-cc="-1">‹</button><button class="cc-arrow" data-cc="1">›</button></span></div><div class="cc-track" id="ccTrack">'+cards+'</div></div>';
+    host.innerHTML='<div class="panel cc-panel"><div class="panel-h" style="justify-content:space-between"><span>'+ic('clock')+' Coming up</span><span class="cc-nav"><button class="cc-arrow" data-cc="-1">‹</button><button class="cc-arrow" data-cc="1">›</button></span></div><div class="cc-track" id="ccTrack">'+cards+'</div></div>';
     var track=$('ccTrack');
     Array.prototype.forEach.call(host.querySelectorAll('[data-cc]'),function(b){ b.onclick=function(){ track.scrollBy({left:parseInt(b.getAttribute('data-cc'),10)*252,behavior:'smooth'}); };});
     Array.prototype.forEach.call(host.querySelectorAll('[data-open]'),function(el){ el.onclick=function(){ openEntry(el.getAttribute('data-open')); };});
@@ -1924,20 +2001,43 @@
   }
 
   // ═══════════ NAVIGATION / HUB SHELL ═══════════
+  var IC={
+    home:'<path d="M4 10.5 12 4l8 6.5"/><path d="M6 9.5V20h12V9.5"/>',
+    register:'<rect x="5.5" y="4" width="13" height="17" rx="2.4"/><path d="M9.5 3.2h5v3.2h-5z"/><path d="M9 11.6h6M9 15.1h4"/>',
+    board:'<rect x="4" y="5" width="4.6" height="14" rx="1.3"/><rect x="9.7" y="5" width="4.6" height="9" rx="1.3"/><rect x="15.4" y="5" width="4.6" height="12" rx="1.3"/>',
+    schedule:'<rect x="4" y="6" width="16" height="14.5" rx="2.4"/><path d="M4 10.2h16M8.5 3.5v4.4M15.5 3.5v4.4"/>',
+    learning:'<path d="M12 5 2.8 9.3 12 13.6l9.2-4.3z"/><path d="M6.4 11.4V16c0 1.2 2.5 2.4 5.6 2.4s5.6-1.2 5.6-2.4v-4.6"/>',
+    interview:'<rect x="9" y="3.4" width="6" height="11" rx="3"/><path d="M6 11.2a6 6 0 0 0 12 0"/><path d="M12 17.3V20.6M9 20.6h6"/>',
+    resources:'<path d="M12 6.6C10.4 5.1 8 4.6 5 5.1v12c3-.5 5.4 0 7 1.5 1.6-1.5 4-2 7-1.5v-12c-3-.5-5.4 0-7 1.5z"/><path d="M12 6.6v12"/>',
+    profile:'<circle cx="12" cy="8.2" r="3.6"/><path d="M5.5 20c.4-3.6 3.2-5.6 6.5-5.6s6.1 2 6.5 5.6"/>',
+    sparkle:'<path d="M12 3.5c.5 4 1.9 5.4 5.9 5.9-4 .5-5.4 1.9-5.9 5.9-.5-4-1.9-5.4-5.9-5.9 4-.5 5.4-1.9 5.9-5.9Z"/><path d="M18.7 14.9c.2 1.7.9 2.4 2.6 2.6-1.7.2-2.4.9-2.6 2.6-.2-1.7-.9-2.4-2.6-2.6 1.7-.2 2.4-.9 2.6-2.6Z"/>',
+    next:'<circle cx="12" cy="12" r="8.2"/><path d="M10.6 8.6 14 12l-3.4 3.4"/>',
+    progress:'<path d="M12 3.8a8.2 8.2 0 1 1-8.2 8.2"/><path d="M12 7.7a4.3 4.3 0 1 1-4.3 4.3"/>',
+    todo:'<path d="M15.6 4.8 19.2 8.4 9.4 18.2l-4.2 1 1-4.2z"/><path d="M13.9 6.5 17.5 10.1"/>',
+    clock:'<circle cx="12" cy="12" r="8.2"/><path d="M12 7.4V12l3.2 2"/>',
+    check:'<circle cx="12" cy="12" r="8.2"/><path d="M8.4 12.2 11 14.8l4.6-5"/>',
+    target:'<circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r=".7" fill="currentColor" stroke="none"/>',
+    book:'<rect x="6" y="3.8" width="12" height="16.4" rx="1.8"/><path d="M9 3.8v16.4"/>',
+    link:'<path d="M10.2 13.6a3.5 3.5 0 0 0 5 0l2.4-2.4a3.5 3.5 0 0 0-5-5l-1 1"/><path d="M13.8 10.4a3.5 3.5 0 0 0-5 0L6.4 12.8a3.5 3.5 0 0 0 5 5l1-1"/>',
+    star:'<path d="M12 3.9l2.5 5.1 5.6.8-4.05 3.95 1 5.55L12 16.7 6.95 19.3l1-5.55L3.9 9.8l5.6-.8z"/>',
+    people:'<circle cx="9" cy="9" r="3"/><path d="M3.6 19c.3-3 2.7-4.8 5.4-4.8s5.1 1.8 5.4 4.8"/><path d="M15.6 6.5a3 3 0 0 1 0 5.6"/><path d="M16.6 14.5c2.2.3 3.9 2 4.2 4.5"/>',
+    heart:'<path d="M12 20.3S4.2 15.7 4.2 10.2A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.8 3.2c0 5.5-7.8 10.1-7.8 10.1z"/>'
+  };
+  function ic(n){return IC[n]?'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>':'';}
   var NAVITEMS=[
-    {id:'home',label:'Home',emo:'🏠'},
-    {id:'apps',label:'Register',emo:'📋'},
-    {id:'board',label:'Board',emo:'🗂️'},
-    {id:'schedule',label:'Schedule',emo:'🗓️'},
-    {id:'learning',label:'Learning',emo:'🎓'},
-    {id:'interview',label:'Interview',emo:'🎤'},
-    {id:'resources',label:'Resources',emo:'📚'},
-    {id:'profile',label:'You',emo:'✨'}
+    {id:'home',label:'Home',emo:'home'},
+    {id:'apps',label:'Register',emo:'register'},
+    {id:'board',label:'Board',emo:'board'},
+    {id:'schedule',label:'Schedule',emo:'schedule'},
+    {id:'learning',label:'Learning',emo:'learning'},
+    {id:'interview',label:'Interview',emo:'interview'},
+    {id:'resources',label:'Resources',emo:'resources'},
+    {id:'profile',label:'You',emo:'profile'}
   ];
   var CUR='home';
   function renderNav(){
     $('nav').innerHTML=NAVITEMS.map(function(n){
-      return '<button class="navpill'+(n.id===CUR?' on':'')+'" data-nav="'+n.id+'"><span class="nemo">'+n.emo+'</span>'+n.label+'</button>';
+      return '<button class="navpill'+(n.id===CUR?' on':'')+'" data-nav="'+n.id+'"><span class="nemo">'+ic(n.emo)+'</span>'+n.label+'</button>';
     }).join('');
     Array.prototype.forEach.call($('nav').querySelectorAll('[data-nav]'),function(b){
       b.onclick=function(){go(b.getAttribute('data-nav'));};
@@ -2023,7 +2123,7 @@
         rows+='<div class="nextrow"><span class="nxg">⚑</span><span><b>'+esc(x.n)+'</b> — due in '+n+' day'+(n===1?'':'s')+' ('+fmt(x.d)+')</span></div>';});
     }
     var ovNote=ovOpen.length?'<div class="nextrow"><span class="nx" style="background:var(--alarm)">!</span><span><b>'+ovOpen.length+' overdue task'+(ovOpen.length>1?'s':'')+'</b> waiting in your Schedule — nothing’s lost, they roll forward.</span></div>':'';
-    $('homeNext').innerHTML='<div class="panel"><div class="panel-h">🌟 Do this next</div>'+(rows||'<div class="bempty">All caught up — lovely. ✨</div>')+ovNote+'</div>';
+    $('homeNext').innerHTML='<div class="panel"><div class="panel-h">'+ic('next')+' Do this next</div>'+(rows||'<div class="bempty">All caught up — lovely. ✨</div>')+ovNote+'</div>';
 
     // progress
     var total=allApps().length, submitted=0, offers=0, prepDone=0, prepTot=0, elig=0, bTot=0, bStart=0;
@@ -2040,7 +2140,7 @@
       return '<div class="pbar"><div class="pl"><span>'+label+'</span><b>'+val+'/'+max+'</b></div><div class="ptrack"><div class="pfill '+cls+'" style="width:'+pct+'%"></div></div></div>';
     }
     var opct=prepTot?Math.round(prepDone/prepTot*100):0;
-    $('homeProgress').innerHTML='<div class="panel"><div class="panel-h">🎀 Your progress</div>'+
+    $('homeProgress').innerHTML='<div class="panel"><div class="panel-h">'+ic('progress')+' Your progress</div>'+
       '<div class="ring" style="background:conic-gradient(var(--accent) '+opct+'%, var(--pink-2) 0)"><span>'+opct+'%</span></div>'+
       bar('Prep tasks ticked',prepDone,prepTot,'')+
       bar('Applications submitted',submitted,elig,'mint')+
@@ -2049,9 +2149,9 @@
       '</div>';
 
     // quick links
-    var q=[['apps','📋','The Register'],['board','🗂️','The Board'],['schedule','🗓️','Daily Plan'],['learning','🎓','Boosters'],['interview','🎤','Interview prep'],['profile','✨','Your story']];
+    var q=[['apps','register','The Register'],['board','board','The Board'],['schedule','schedule','Daily Plan'],['learning','learning','Boosters'],['interview','interview','Interview prep'],['profile','sparkle','Your story']];
     $('homeQuick').innerHTML='<div class="qgrid">'+q.map(function(t){
-      return '<div class="qtile" data-goto="'+t[0]+'"><span class="qe">'+t[1]+'</span>'+t[2]+'</div>';
+      return '<div class="qtile" data-goto="'+t[0]+'"><span class="qe">'+ic(t[1])+'</span>'+t[2]+'</div>';
     }).join('')+'</div>';
     Array.prototype.forEach.call($('homeQuick').querySelectorAll('[data-goto]'),function(el){
       el.onclick=function(){go(el.getAttribute('data-goto'));};});
@@ -2137,13 +2237,13 @@
     }).join('');
 
     $('interview').innerHTML=
-      '<div class="panel"><div class="panel-h">✅ Your prep checklist</div><ul class="prep" style="list-style:none">'+checklist+'</ul></div>'+
+      '<div class="panel"><div class="panel-h">'+ic('check')+' Your prep checklist</div><ul class="prep" style="list-style:none">'+checklist+'</ul></div>'+
       '<div class="guide"><h3>The STAR method (your secret weapon)</h3><p><b>S</b>ituation – <b>T</b>ask – <b>A</b>ction – <b>R</b>esult. Every behavioural answer should land a measurable result at the end. “Users struggled with the lab OS → I ran testing and redesigned the flow → task time dropped / errors fell.” Practise three stories until they’re smooth, not scripted.</p></div>'+
       '<div class="guide blue"><h3>The portfolio walkthrough</h3><p>Most design interviews are won here. Present <b>1–2 projects deeply</b>, not five shallowly. Lead with the <b>problem and your thinking</b>, show trade-offs and micro-interactions, and defend each decision with a reason. Talk <i>through</i> the work — don’t read the slides.</p></div>'+
       '<div class="guide mint"><h3>Questions to rehearse</h3><ul class="ivq">'+
         ['Tell me about yourself.','Why this company / programme specifically?','Walk me through a project you’re proud of.','Tell me about a time you disagreed with an engineer or stakeholder.','How do you handle ambiguity?','A design decision you got wrong — and what you learned.','What questions do you have for us?']
         .map(function(q){return '<li>'+esc(q)+'</li>';}).join('')+'</ul></div>'+
-      (comp?'<div class="panel"><div class="panel-h">🎯 Company-specific intel</div><p class="shp" style="margin-bottom:6px">These cards already contain the real interview stages — read them before you apply.</p>'+comp+'</div>':'');
+      (comp?'<div class="panel"><div class="panel-h">'+ic('target')+' Company-specific intel</div><p class="shp" style="margin-bottom:6px">These cards already contain the real interview stages — read them before you apply.</p>'+comp+'</div>':'');
 
     Array.prototype.forEach.call($('interview').querySelectorAll('[data-iv]'),function(el){
       el.onclick=function(){var i=parseInt(el.getAttribute('data-iv'),10);var a=ivState();var k=a.indexOf(i);if(k>-1)a.splice(k,1);else a.push(i);save();renderInterview();};});
@@ -2187,9 +2287,9 @@
       '<div class="guide"><h3>How this hub works</h3><p><b>Home</b> tells you what to do next. <b>Register</b> is every opportunity — tap a card for eligibility, deadline, prep and how to stand out. <b>Board</b> is your pipeline. <b>Schedule</b> plans your prep backward from each opening date. <b>Learning</b> is your boosters, <b>Interview</b> gets you ready to talk, and <b>You</b> keeps your story sharp.</p><p>Everything saves to this device automatically. Back it up now and then from the footer.</p></div>'+
       '<div class="guide blue"><h3>Four things that actually move the needle</h3><p>♥ <b>Apply in the first two weeks</b> — rolling schemes fill before the stated deadline.<br>♥ <b>Warm contacts beat cold portals</b> — message Steven, Grace and Chiara before applying cold.<br>♥ <b>One strong certificate</b> beats a wall of them.<br>♥ <b>Frame EMOS as research</b>, not “an internship”.</p></div>'+
       '<div class="guide mint"><h3>⚠ Confirmed vs Estimated dates</h3><p>Cards marked <b>Estimated</b> are projected from last year’s cycle — always verify on the official page. “Check back” dates are when to re-check a listing that isn’t public yet.</p></div>';
-    var glossary='<div class="panel"><div class="panel-h">📖 Plain-English glossary</div><ul class="gloss">'+
+    var glossary='<div class="panel"><div class="panel-h">'+ic('book')+' Plain-English glossary</div><ul class="gloss">'+
       GLOSS.map(function(g){ return '<li><b>'+esc(g[0])+'</b> — '+esc(g[1])+'</li>'; }).join('')+'</ul></div>';
-    var links='<div class="panel"><div class="panel-h">🔗 Links you’ll reuse</div><div class="linkcat">Learning &amp; boosters</div>'+grid(learnLinks)+'<div class="linkcat">Key application portals</div>'+grid(applyLinks)+'</div>';
+    var links='<div class="panel"><div class="panel-h">'+ic('link')+' Links you’ll reuse</div><div class="linkcat">Learning &amp; boosters</div>'+grid(learnLinks)+'<div class="linkcat">Key application portals</div>'+grid(applyLinks)+'</div>';
     var tabs=[['guide','How it works'],['glossary','Glossary'],['links','Links']];
     var bar='<div class="subtabs">'+tabs.map(function(t){ return '<button class="subtab'+(t[0]===RESTAB?' on':'')+'" data-restab="'+t[0]+'">'+t[1]+'</button>'; }).join('')+'</div>';
     var body=RESTAB==='guide'?guide:(RESTAB==='glossary'?glossary:links);
@@ -2221,11 +2321,11 @@
     $('profile').innerHTML=
       '<div class="panel"><div class="plabel">Your one-liner · keep it sharp, copy it often</div>'+
         '<textarea id="pf-pitch" placeholder="e.g. A UX designer moving into HCI research — I make complex, expert software usable. DeepMind-selected, EMOS redesign at Edinburgh, fluent French." style="min-height:80px">'+esc(pitch)+'</textarea></div>'+
-      '<div class="panel"><div class="panel-h">⭐ The facts</div><ul class="facts">'+
+      '<div class="panel"><div class="panel-h">'+ic('star')+' The facts</div><ul class="facts">'+
         facts.map(function(f){return '<li><span class="fe">'+f[0]+'</span><span>'+f[1]+'</span></li>';}).join('')+'</ul></div>'+
-      '<div class="panel"><div class="panel-h">🎯 Angles you can lead with</div><div class="tags">'+
+      '<div class="panel"><div class="panel-h">'+ic('target')+' Angles you can lead with</div><div class="tags">'+
         angles.map(function(a){return '<span>'+a+'</span>';}).join('')+'</div></div>'+
-      '<div class="panel"><div class="panel-h">💛 Your people</div><ul class="facts">'+
+      '<div class="panel"><div class="panel-h">'+ic('people')+' Your people</div><ul class="facts">'+
         people.map(function(p){return '<li><span class="fe">♥</span><span><b>'+p[0]+'</b> — '+p[1]+'</span></li>';}).join('')+'</ul></div>'+
       '<div class="panel"><div class="plabel">Anything else to remember about you</div>'+
         '<textarea id="pf-about" placeholder="Wins, awards, links, the version of your CV that’s current…">'+esc(about)+'</textarea></div>';
