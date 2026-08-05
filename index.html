@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Blessing's HQ">
+<meta name="apple-mobile-web-app-title" content="Blessing's Life OS">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#fbf6f8">
-<title>Blessing's Application HQ ♥</title>
+<title>Blessing's Life OS ♥</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&display=swap');
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -337,6 +337,25 @@
   .facts b{color:var(--accent-deep);}
   .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
   .tags span{font-size:13px;font-weight:500;background:var(--pink-2);color:var(--accent-deep);border:none;padding:6px 13px;border-radius:var(--tag);box-shadow:var(--sh-lift);}
+
+  /* life tier — vision/self-care/skin/inner-work/friendships */
+  .panel.soft{background:linear-gradient(135deg,#faf3ea 0%,#f8eef3 100%);}
+  .panel.soft .panel-h{color:var(--gold-deep);}
+  .chk{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--rule-2);font-size:14px;color:var(--ink);}
+  .chk:last-child{border-bottom:none;}
+  .chk input[type=checkbox]{accent-color:var(--accent);width:18px;height:18px;flex:0 0 auto;cursor:pointer;}
+  .panel.soft .chk input[type=checkbox]{accent-color:var(--gold-deep);}
+  .chk .chk-note{margin-left:auto;font-size:12px;color:var(--ink-3);font-weight:600;white-space:nowrap;}
+  .chip-log{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;font-size:13.5px;font-weight:600;color:var(--ink);background:var(--muted);border:none;border-radius:var(--pill);cursor:pointer;font-family:inherit;transition:background .2s,color .2s;}
+  .chip-log:hover{background:var(--pink-2);color:var(--accent-deep);}
+  .chip-log b{color:var(--accent-deep);}
+  .lifegrid{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+  .due-soon{color:var(--gold-deep);font-weight:700;}
+  .listrow{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:1px solid var(--rule-2);font-size:14px;line-height:1.5;color:var(--ink);}
+  .listrow:last-child{border-bottom:none;}
+  .listrow .lr-body{flex:1;min-width:0;}
+  .listrow .lr-body b{color:var(--accent-deep);}
+  .listrow .lr-when{font-size:12px;color:var(--ink-3);}
   .plabel{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--accent-deep);margin-bottom:9px;}
 
   /* ═══════════ full-bleed website layout ═══════════ */
@@ -347,6 +366,8 @@
   .brand em{font-style:normal;background:var(--accent-grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .brand:hover .brand-mk{transform:scale(1.1) rotate(-6deg);}
   .nav{margin:0 0 0 auto;display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .nav.subnav{flex:0 0 100%;margin:2px 0 0;justify-content:flex-end;}
+  .navpill.sub{padding:7px 12px;font-size:12.5px;background:var(--muted);}
   .nav::-webkit-scrollbar{display:none;}
   @media(max-width:760px){
     .topbar-in{padding:11px 14px;gap:10px;}
@@ -714,8 +735,9 @@
 <div id="app">
   <header class="topbar">
     <div class="topbar-in">
-      <button class="brand" data-nav="home"><span class="brand-mk"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.3S4.2 15.7 4.2 10.2A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.8 3.2c0 5.5-7.8 10.1-7.8 10.1z"/></svg></span> Application&nbsp;HQ <em>Blessing</em></button>
+      <button class="brand" data-nav="home"><span class="brand-mk"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.3S4.2 15.7 4.2 10.2A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.8 3.2c0 5.5-7.8 10.1-7.8 10.1z"/></svg></span> Life&nbsp;OS <em>Blessing</em></button>
       <nav class="nav" id="nav"></nav>
+      <nav class="nav subnav" id="subnav" hidden></nav>
     </div>
   </header>
 
@@ -723,9 +745,9 @@
 
   <section class="view" id="view-home">
     <div class="mast hero">
-      <div class="rt"><span class="kicker">Blessing's big plan &#9829; post-grad adventures</span></div>
-      <h1>My <em>Application</em> HQ <span class="bang">!</span></h1>
-      <div class="sub">Scholarships &middot; Fellowships &middot; Internships &middot; Grad Schemes &nbsp;&#9829;&nbsp; 2026/27 &rarr; 2027/28</div>
+      <div class="rt"><span class="kicker">Blessing's big plan &#9829; the whole life, one place</span></div>
+      <h1>My <em>Life</em> OS <span class="bang">!</span></h1>
+      <div class="sub">Habits &middot; Self-care &middot; Money &middot; Career &middot; Heart &nbsp;&#9829;&nbsp; 2026/27 &rarr; 2027/28</div>
     </div>
     <div class="home-grid">
       <div id="homeGreet"></div>
@@ -737,6 +759,46 @@
       <div id="agendaBox"></div>
       <div id="homeQuick"></div>
     </div>
+  </section>
+
+  <section class="view" id="view-vision" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Vision &amp; habits</h2>
+      <p class="shp">The 12-month north star, and the daily anchors that get you there. Wins count broadly — gym, a dance class, a walk, guitar practice, showing up all count.</p>
+    </div>
+    <div id="vision"></div>
+  </section>
+
+  <section class="view" id="view-selfcare" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Self-care</h2>
+      <p class="shp">Hair, nails and the room reset — on a cadence, not a scramble.</p>
+    </div>
+    <div id="selfcare"></div>
+  </section>
+
+  <section class="view" id="view-skin" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Skin &amp; body</h2>
+      <p class="shp">The hyperpigmentation routine, restock tracking, and admin-only notes for anything medical — never advice, just the practical steps.</p>
+    </div>
+    <div id="skin"></div>
+  </section>
+
+  <section class="view" id="view-inner" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Inner work</h2>
+      <p class="shp">The foundation, not a side item. Encouragement first — this is how are you actually feeling, not did you tick the box.</p>
+    </div>
+    <div id="inner"></div>
+  </section>
+
+  <section class="view" id="view-friends" hidden>
+    <div class="sectionlede">
+      <h2 class="sh">Friendships</h2>
+      <p class="shp">Keeping the people you love close — who you owe a reply, who's gone quiet, what's coming up, and the lovely moments too.</p>
+    </div>
+    <div id="friends"></div>
   </section>
 
   <section class="view" id="view-apps" hidden>
@@ -2201,28 +2263,62 @@
     flag:'<path d="M6 20.5V4"/><path d="M6 4.6c3.2-1.7 6.4 1.7 9.6 0V12c-3.2 1.7-6.4-1.7-9.6 0"/>',
     coin:'<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.66 3.13 3 7 3s7-1.34 7-3V7"/><path d="M5 12v5c0 1.66 3.13 3 7 3s7-1.34 7-3v-5"/>',
     chart:'<path d="M4 4v15.5a.5.5 0 0 0 .5.5H20"/><path d="M7.5 14.5 11 10.5l3 2.5 4.5-6"/>',
-    gauge:'<path d="M4.5 18a7.5 7.5 0 1 1 15 0"/><path d="M12 18l3.6-4.3"/><circle cx="12" cy="18" r="1.4" fill="currentColor" stroke="none"/>'
+    gauge:'<path d="M4.5 18a7.5 7.5 0 1 1 15 0"/><path d="M12 18l3.6-4.3"/><circle cx="12" cy="18" r="1.4" fill="currentColor" stroke="none"/>',
+    leaf:'<path d="M6 18c-2-6 1-13 12-14 1 9-4 13-12 14Z"/><path d="M8 16c2-4 5-7 9-9"/>',
+    compass:'<circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2 13 13l-3.8 1.8L11 11Z"/>',
+    briefcase:'<rect x="3.5" y="8" width="17" height="11" rx="2"/><path d="M8.5 8V6.2A2 2 0 0 1 10.5 4.2h3A2 2 0 0 1 15.5 6.2V8"/><path d="M3.5 13h17"/>'
   };
   function ic(n){return IC[n]?'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>':'';}
-  var NAVITEMS=[
-    {id:'home',label:'Home',emo:'home'},
-    {id:'apps',label:'Register',emo:'register'},
-    {id:'board',label:'Board',emo:'board'},
-    {id:'schedule',label:'Schedule',emo:'schedule'},
-    {id:'learning',label:'Learning',emo:'learning'},
-    {id:'interview',label:'Interview',emo:'interview'},
-    {id:'resources',label:'Resources',emo:'resources'},
-    {id:'finance',label:'Finances',emo:'wallet'},
-    {id:'profile',label:'You',emo:'profile'}
+  var TIERS=[
+    {id:'home',label:'Home',emo:'home',view:'home'},
+    {id:'life',label:'Life',emo:'heart',children:[
+      {id:'vision',label:'Vision & Habits',emo:'compass'},
+      {id:'selfcare',label:'Self-care',emo:'sparkle'},
+      {id:'skin',label:'Skin & Body',emo:'leaf'},
+      {id:'inner',label:'Inner Work',emo:'star'},
+      {id:'friends',label:'Friendships',emo:'people'}
+    ]},
+    {id:'career',label:'Career',emo:'briefcase',children:[
+      {id:'apps',label:'Register',emo:'register'},
+      {id:'board',label:'Board',emo:'board'},
+      {id:'schedule',label:'Schedule',emo:'schedule'},
+      {id:'learning',label:'Learning',emo:'learning'},
+      {id:'interview',label:'Interview',emo:'interview'},
+      {id:'resources',label:'Resources',emo:'resources'}
+    ]},
+    {id:'finance',label:'Money',emo:'wallet',view:'finance'},
+    {id:'profile',label:'You',emo:'profile',view:'profile'}
   ];
   var CUR='home';
+  function tierOf(id){
+    for(var i=0;i<TIERS.length;i++){
+      var t=TIERS[i];
+      if(t.view===id)return t;
+      if(t.children&&t.children.some(function(c){return c.id===id;}))return t;
+    }
+    return TIERS[0];
+  }
   function renderNav(){
-    $('nav').innerHTML=NAVITEMS.map(function(n){
-      return '<button class="navpill'+(n.id===CUR?' on':'')+'" data-nav="'+n.id+'"><span class="nemo">'+ic(n.emo)+'</span>'+n.label+'</button>';
+    var ct=tierOf(CUR);
+    $('nav').innerHTML=TIERS.map(function(t){
+      return '<button class="navpill'+(t.id===ct.id?' on':'')+'" data-tier="'+t.id+'"><span class="nemo">'+ic(t.emo)+'</span>'+t.label+'</button>';
     }).join('');
-    Array.prototype.forEach.call($('nav').querySelectorAll('[data-nav]'),function(b){
-      b.onclick=function(){go(b.getAttribute('data-nav'));};
+    Array.prototype.forEach.call($('nav').querySelectorAll('[data-tier]'),function(b){
+      b.onclick=function(){
+        var t=TIERS.filter(function(x){return x.id===b.getAttribute('data-tier');})[0];
+        go(t.view||t.children[0].id);
+      };
     });
+    var sub=$('subnav');
+    if(ct.children){
+      sub.hidden=false;
+      sub.innerHTML=ct.children.map(function(c){
+        return '<button class="navpill sub'+(c.id===CUR?' on':'')+'" data-nav="'+c.id+'"><span class="nemo">'+ic(c.emo)+'</span>'+c.label+'</button>';
+      }).join('');
+      Array.prototype.forEach.call(sub.querySelectorAll('[data-nav]'),function(b){
+        b.onclick=function(){go(b.getAttribute('data-nav'));};
+      });
+    } else { sub.hidden=true; sub.innerHTML=''; }
     var br=document.querySelector('.brand'); if(br)br.onclick=function(){go('home');};
   }
   function go(id){
@@ -2234,6 +2330,11 @@
   }
   function renderCurrent(){
     if(CUR==='home')renderHome();
+    else if(CUR==='vision')renderVision();
+    else if(CUR==='selfcare')renderSelfcare();
+    else if(CUR==='skin')renderSkin();
+    else if(CUR==='inner')renderInner();
+    else if(CUR==='friends')renderFriends();
     else if(CUR==='apps')renderList();
     else if(CUR==='board')renderBoard();
     else if(CUR==='schedule')renderDaily();
@@ -2514,6 +2615,237 @@
 
     $('pf-pitch').oninput=function(){state.__pitch=this.value;save();};
     $('pf-about').oninput=function(){state.__about=this.value;save();};
+  }
+
+  // ═══════════ LIFE — vision/habits, self-care, skin & body, inner work, friendships ═══════════
+  function lifeState(){
+    if(!state.__life){
+      state.__life={
+        habits:{
+          anchors:[
+            {label:'Shower first thing',streak:0,lastDone:null},
+            {label:'Wake 7–8am',streak:0,lastDone:null},
+            {label:'10k steps',streak:0,lastDone:null},
+            {label:'Sleep on time',streak:0,lastDone:null},
+            {label:'Eat well (home-cooked)',streak:0,lastDone:null}
+          ],
+          movement:[
+            {label:'Gym',thisWeek:0},
+            {label:'Dance class',thisWeek:0},
+            {label:'Guitar practice',thisWeek:0}
+          ],
+          theoryTestBooked:false,
+          log:[]
+        },
+        selfcare:{
+          hair:{cadenceWeeks:null,last:null},
+          nails:{cadenceWeeks:null,last:null},
+          roomReorgDone:false
+        },
+        skin:{
+          products:['Mandelic acid','Kojic acid','Alpha arbutin','Vitamin C','Azelaic acid','Niacinamide','SPF 50+'].map(function(n){return {name:n,have:false,low:false};}),
+          medical:{botox:{research:false,consult:false,budget:false},glp1:{research:false,consult:false,budget:false}}
+        },
+        inner:{
+          practice:{affirmations:false,journal:false,prayer:false,bible:false},
+          gratitude:[],
+          feeling:''
+        },
+        friends:{oweReply:[],goingQuiet:[],upcoming:[],lovely:[]}
+      };
+    }
+    var l=state.__life;
+    if(!l.habits)l.habits={anchors:[],movement:[],log:[]};
+    if(!l.habits.anchors)l.habits.anchors=[];
+    if(!l.habits.movement)l.habits.movement=[];
+    if(!l.habits.log)l.habits.log=[];
+    if(!l.selfcare)l.selfcare={hair:{},nails:{}};
+    if(!l.selfcare.hair)l.selfcare.hair={};
+    if(!l.selfcare.nails)l.selfcare.nails={};
+    if(!l.skin)l.skin={products:[],medical:{botox:{},glp1:{}}};
+    if(!l.skin.products)l.skin.products=[];
+    if(!l.skin.medical)l.skin.medical={botox:{},glp1:{}};
+    if(!l.skin.medical.botox)l.skin.medical.botox={};
+    if(!l.skin.medical.glp1)l.skin.medical.glp1={};
+    if(!l.inner)l.inner={practice:{},gratitude:[],feeling:''};
+    if(!l.inner.practice)l.inner.practice={};
+    if(!l.inner.gratitude)l.inner.gratitude=[];
+    if(!l.friends)l.friends={oweReply:[],goingQuiet:[],upcoming:[],lovely:[]};
+    ['oweReply','goingQuiet','upcoming','lovely'].forEach(function(k){if(!l.friends[k])l.friends[k]=[];});
+    return l;
+  }
+  function nextDue(cad,last){
+    if(!cad||!last)return null;
+    var d=new Date(last+'T00:00:00'); d.setDate(d.getDate()+cad*7);
+    return d.toISOString().slice(0,10);
+  }
+  function dueBadge(nd){
+    if(!nd)return '';
+    var dd=days(nd);
+    if(dd<=7)return '<span class="due-soon">'+(dd<0?'overdue':dd===0?'today':'due in '+dd+'d')+'</span>';
+    return '<span class="chk-note">next '+fmt(nd)+'</span>';
+  }
+  function todayStr(){return TODAY.toISOString().slice(0,10);}
+
+  function renderVision(){
+    var l=lifeState(), h=l.habits, today=todayStr();
+    var anchorsHtml=h.anchors.map(function(a,i){
+      var doneToday=a.lastDone===today;
+      return '<div class="chk"><input type="checkbox" data-anchor="'+i+'"'+(doneToday?' checked':'')+'><span>'+esc(a.label)+'</span><span class="chk-note">streak '+(a.streak||0)+'</span></div>';
+    }).join('');
+    var moveHtml=h.movement.map(function(m,i){
+      return '<button class="chip-log" data-move="'+i+'">'+esc(m.label)+' <b>'+(m.thisWeek||0)+'</b> this week</button>';
+    }).join('');
+    $('vision').innerHTML=
+      '<div class="panel"><div class="panel-h">'+ic('compass')+' The north star</div>'+
+        '<p class="shp">Gym consistency (not obsession), 10k steps, eating well, sleeping on time. Clear skin, hair and nails always done. Funded master&rsquo;s for 2027/28, and retiring around 40&ndash;45 on your own terms. The insecurity under the confident exterior is what all of this is in service of &mdash; not a side box.</p>'+
+      '</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('check')+' Daily anchors</div>'+anchorsHtml+'</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('sparkle')+' Movement &amp; joy — tap to log</div>'+
+        '<div class="lifegrid">'+moveHtml+'</div>'+
+      '</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('flag')+' Near-term sprint</div>'+
+        '<div class="chk"><input type="checkbox" id="vis-theory"'+(h.theoryTestBooked?' checked':'')+'><span>Book the theory test</span></div>'+
+      '</div>';
+    Array.prototype.forEach.call($('vision').querySelectorAll('[data-anchor]'),function(inp){
+      inp.onchange=function(){
+        var i=+inp.getAttribute('data-anchor'), a=h.anchors[i];
+        if(inp.checked){ if(a.lastDone!==today){a.streak=(a.streak||0)+1; a.lastDone=today;} }
+        else { a.lastDone=null; }
+        save(); renderVision();
+      };
+    });
+    Array.prototype.forEach.call($('vision').querySelectorAll('[data-move]'),function(b){
+      b.onclick=function(){ h.movement[+b.getAttribute('data-move')].thisWeek++; save(); renderVision(); };
+    });
+    $('vis-theory').onchange=function(){ h.theoryTestBooked=this.checked; save(); };
+  }
+
+  function renderSelfcare(){
+    var l=lifeState(), sc=l.selfcare;
+    function cadRow(key,label){
+      var c=sc[key], nd=nextDue(c.cadenceWeeks,c.last);
+      return '<div class="panel"><div class="panel-h">'+ic('sparkle')+' '+label+'</div>'+
+        '<div class="fin-star-controls">'+
+          '<label>Cadence <input class="fin-in" type="number" min="0" step="1" data-cad="'+key+'" value="'+(c.cadenceWeeks||'')+'"> weeks</label>'+
+          '<label>Last done <input class="fin-in" type="date" data-last="'+key+'" value="'+(c.last||'')+'" style="width:auto"></label>'+
+        '</div>'+
+        '<div style="margin-top:10px">'+(nd?dueBadge(nd):'<span class="chk-note">set a cadence + last date</span>')+'</div>'+
+      '</div>';
+    }
+    $('selfcare').innerHTML=
+      cadRow('hair','Hair')+cadRow('nails','Nails')+
+      '<div class="panel"><div class="panel-h">'+ic('leaf')+' Room reorg</div>'+
+        '<p class="shp" style="margin-bottom:10px">Gated on purpose: a cooler day (below 20&deg;C, ideally windows-open weather) AND a weekend when someone else has the baby &mdash; never a fixed date regardless of mood.</p>'+
+        '<div class="chk"><input type="checkbox" id="sc-room"'+(sc.roomReorgDone?' checked':'')+'><span>Room reorg done</span></div>'+
+      '</div>';
+    ['hair','nails'].forEach(function(key){
+      var cadInp=$('selfcare').querySelector('[data-cad="'+key+'"]');
+      cadInp.oninput=function(){ sc[key].cadenceWeeks=+this.value||null; save(); renderSelfcare(); };
+      var lastInp=$('selfcare').querySelector('[data-last="'+key+'"]');
+      lastInp.onchange=function(){ sc[key].last=this.value||null; save(); renderSelfcare(); };
+    });
+    $('sc-room').onchange=function(){ sc.roomReorgDone=this.checked; save(); };
+  }
+
+  function renderSkin(){
+    var l=lifeState(), sk=l.skin;
+    var rows=sk.products.map(function(p,i){
+      return '<div class="mrow"><span class="fin-line" style="flex:2">'+esc(p.name)+'</span>'+
+        '<label class="txn-adj"><input type="checkbox" data-have="'+i+'"'+(p.have?' checked':'')+'> have it</label>'+
+        '<label class="txn-adj"><input type="checkbox" data-low="'+i+'"'+(p.low?' checked':'')+'> running low</label></div>';
+    }).join('');
+    function medRow(key,label){
+      var m=sk.medical[key];
+      return '<div class="panel"><div class="panel-h">'+ic('leaf')+' '+label+' — admin only</div>'+
+        '<div class="chk"><input type="checkbox" data-med="'+key+'.research"'+(m.research?' checked':'')+'><span>Research done</span></div>'+
+        '<div class="chk"><input type="checkbox" data-med="'+key+'.consult"'+(m.consult?' checked':'')+'><span>Consult booked</span></div>'+
+        '<div class="chk"><input type="checkbox" data-med="'+key+'.budget"'+(m.budget?' checked':'')+'><span>Budget saved</span></div>'+
+      '</div>';
+    }
+    $('skin').innerHTML=
+      '<div class="panel"><div class="panel-h">'+ic('leaf')+' Hyperpigmentation routine</div>'+
+        '<div class="mcap">SPF 50+ every morning, non-negotiable. Check this before ordering &mdash; don&rsquo;t buy redundant products.</div>'+
+        rows+
+      '</div>'+
+      medRow('botox','Botox (hyperhidrosis)')+medRow('glp1','GLP-1');
+    Array.prototype.forEach.call($('skin').querySelectorAll('[data-have]'),function(inp){
+      inp.onchange=function(){ sk.products[+inp.getAttribute('data-have')].have=inp.checked; save(); };
+    });
+    Array.prototype.forEach.call($('skin').querySelectorAll('[data-low]'),function(inp){
+      inp.onchange=function(){ sk.products[+inp.getAttribute('data-low')].low=inp.checked; save(); };
+    });
+    Array.prototype.forEach.call($('skin').querySelectorAll('[data-med]'),function(inp){
+      inp.onchange=function(){
+        var parts=inp.getAttribute('data-med').split('.');
+        sk.medical[parts[0]][parts[1]]=inp.checked; save();
+      };
+    });
+  }
+
+  function renderInner(){
+    var l=lifeState(), inn=l.inner;
+    var plabels={affirmations:'Affirmations (written down)',journal:'Journaling what I&rsquo;m manifesting',prayer:'Prayer',bible:'Bible reading'};
+    var practiceHtml=['affirmations','journal','prayer','bible'].map(function(k){
+      return '<div class="chk"><input type="checkbox" data-practice="'+k+'"'+(inn.practice[k]?' checked':'')+'><span>'+plabels[k]+'</span></div>';
+    }).join('');
+    var gratHtml=inn.gratitude.slice().reverse().map(function(g,ri){
+      var i=inn.gratitude.length-1-ri;
+      return '<div class="listrow"><div class="lr-body">'+esc(g)+'</div><button class="fin-del" data-gratdel="'+i+'">×</button></div>';
+    }).join('');
+    $('inner').innerHTML=
+      '<div class="panel soft"><div class="panel-h">'+ic('star')+' Today&rsquo;s practice</div>'+practiceHtml+'</div>'+
+      '<div class="panel soft"><div class="panel-h">'+ic('heart')+' Gratitude — what&rsquo;s already landed</div>'+
+        (gratHtml||'<div class="bempty">Nothing logged yet — 2026 has been a year of opportunities, track it here.</div>')+
+        '<div class="fin-addrow" style="margin-top:14px"><input id="grat-new" placeholder="Something good that landed…"><button class="btn sm" id="grat-add">Add</button></div>'+
+      '</div>'+
+      '<div class="panel soft"><div class="plabel">How are you actually feeling today</div>'+
+        '<textarea id="inn-feeling" placeholder="No pressure — just how it actually feels under the confident exterior.">'+esc(inn.feeling||'')+'</textarea>'+
+      '</div>';
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-practice]'),function(inp){
+      inp.onchange=function(){ inn.practice[inp.getAttribute('data-practice')]=inp.checked; save(); };
+    });
+    $('grat-add').onclick=function(){
+      var v=$('grat-new').value.trim(); if(!v)return;
+      inn.gratitude.push(v); save(); renderInner();
+    };
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-gratdel]'),function(b){
+      b.onclick=function(){ inn.gratitude.splice(+b.getAttribute('data-gratdel'),1); save(); renderInner(); };
+    });
+    $('inn-feeling').oninput=function(){ inn.feeling=this.value; save(); };
+  }
+
+  function renderFriends(){
+    var l=lifeState(), fr=l.friends;
+    function listPanel(key,label,icon,placeholder){
+      var items=fr[key];
+      var rows=items.map(function(it,i){
+        return '<div class="listrow"><div class="lr-body">'+esc(it)+'</div><button class="fin-del" data-frdel="'+key+'.'+i+'">×</button></div>';
+      }).join('');
+      return '<div class="panel"><div class="panel-h">'+ic(icon)+' '+label+'</div>'+
+        (rows||'<div class="bempty">Nothing here yet.</div>')+
+        '<div class="fin-addrow"><input data-frnew="'+key+'" placeholder="'+placeholder+'"><button class="btn sm" data-fradd="'+key+'">Add</button></div>'+
+      '</div>';
+    }
+    $('friends').innerHTML=
+      listPanel('oweReply','Owe a reply / said I&rsquo;d follow up','next','e.g. Sarah — send the photos')+
+      listPanel('goingQuiet','Going quiet — reach out','clock','e.g. Priya — haven&rsquo;t spoken in a while')+
+      listPanel('upcoming','Coming up — birthdays, plans, events','star','e.g. Mum&rsquo;s birthday — 12 Sep')+
+      listPanel('lovely','Just did / lovely moments','heart','e.g. Coffee with Jade — so good')+
+      '<div class="cmd-note" style="margin-top:4px">Claude Code can keep this current from your Messages/Calendar (see life-os/friendships.md) — or just add to it yourself.</div>';
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-fradd]'),function(b){
+      b.onclick=function(){
+        var key=b.getAttribute('data-fradd'), inp=$('friends').querySelector('[data-frnew="'+key+'"]');
+        var v=inp.value.trim(); if(!v)return;
+        fr[key].push(v); save(); renderFriends();
+      };
+    });
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-frdel]'),function(b){
+      b.onclick=function(){
+        var parts=b.getAttribute('data-frdel').split('.'), key=parts[0], i=+parts[1];
+        fr[key].splice(i,1); save(); renderFriends();
+      };
+    });
   }
 
   // ═══════════ FINANCES ═══════════
@@ -3142,7 +3474,7 @@
       var url=URL.createObjectURL(blob);
       var a=document.createElement('a');
       var d=new Date();
-      a.href=url; a.download='application-tracker-backup-'+d.toISOString().slice(0,10)+'.json';
+      a.href=url; a.download='life-os-backup-'+d.toISOString().slice(0,10)+'.json';
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(function(){URL.revokeObjectURL(url);},1000);
     }catch(e){ alert('Backup failed: '+e.message); }
