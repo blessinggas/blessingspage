@@ -685,6 +685,21 @@
   .txn-amt.neg{color:var(--alarm-deep);}
   .txn-amt.pos{color:var(--mint-deep);}
   @media(max-width:560px){.txn-catsel{display:none;}.txn-d{width:64px;}}
+
+  /* ── credit score ── */
+  .cr-top{display:flex;align-items:center;gap:22px;}
+  .cr-top .ring{margin:0;flex:0 0 auto;}
+  .cr-info{flex:1;min-width:0;}
+  .cr-band{font-family:var(--display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.05;}
+  .cr-sub{font-size:13px;color:var(--ink-2);margin-top:5px;font-weight:500;}
+  .cr-sparkwrap{margin-top:16px;}
+  .cr-spark{width:100%;height:46px;display:block;overflow:visible;}
+  .cr-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule-2);font-size:13.5px;}
+  .cr-row:last-child{border-bottom:none;}
+  .cr-row span{color:var(--ink-3);font-variant-numeric:tabular-nums;}
+  .cr-row b{margin-left:auto;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;padding-right:4px;}
+  .cr-tips li{font-size:13.5px;color:var(--ink);padding:6px 0 6px 24px;}
+  .cr-tips li::before{content:"↑";color:var(--mint-deep);font-weight:800;}
 </style>
 </head>
 <body>
@@ -2177,7 +2192,8 @@
     wallet:'<rect x="3.5" y="6.5" width="17" height="12" rx="2.4"/><path d="M16 12.4h4.5V15H16a1.3 1.3 0 0 1 0-2.6Z"/><path d="M3.5 9.2h13"/>',
     flag:'<path d="M6 20.5V4"/><path d="M6 4.6c3.2-1.7 6.4 1.7 9.6 0V12c-3.2 1.7-6.4-1.7-9.6 0"/>',
     coin:'<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.66 3.13 3 7 3s7-1.34 7-3V7"/><path d="M5 12v5c0 1.66 3.13 3 7 3s7-1.34 7-3v-5"/>',
-    chart:'<path d="M4 4v15.5a.5.5 0 0 0 .5.5H20"/><path d="M7.5 14.5 11 10.5l3 2.5 4.5-6"/>'
+    chart:'<path d="M4 4v15.5a.5.5 0 0 0 .5.5H20"/><path d="M7.5 14.5 11 10.5l3 2.5 4.5-6"/>',
+    gauge:'<path d="M4.5 18a7.5 7.5 0 1 1 15 0"/><path d="M12 18l3.6-4.3"/><circle cx="12" cy="18" r="1.4" fill="currentColor" stroke="none"/>'
   };
   function ic(n){return IC[n]?'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>':'';}
   var NAVITEMS=[
@@ -2535,6 +2551,7 @@
     if(!f.bills)f.bills=[{name:'Phone',amt:20,day:1},{name:'Subscriptions',amt:30,day:1}];
     if(f.takehome==null)f.takehome=0;
     if(!f.txns)f.txns=[];
+    if(!f.credit)f.credit={provider:'Experian',max:999,score:0,target:0,history:[]};
     return f;
   }
   var GOALCOL={accent:'',mint:'mint',gold:'gold',violet:'violet'};
@@ -2702,6 +2719,17 @@
         '<div class="fin-star-controls" style="margin-top:16px"><label>Monthly take-home <span class="fin-cur">£</span><input class="fin-in" type="number" step="50" id="money-take" value="'+(+f.takehome||0)+'"></label></div>'+
       '</div>'+
       '<div class="panel">'+
+        '<div class="panel-h">'+ic('gauge')+' Credit score</div>'+
+        '<div id="credit-out"></div>'+
+        '<div class="fin-star-controls" style="margin-top:16px">'+
+          '<label>Provider <select class="fin-kind" id="cr-prov" style="flex:0 0 auto">'+['Experian','Equifax','TransUnion','ClearScore','Credit Karma','Other'].map(function(p){return '<option'+(f.credit.provider===p?' selected':'')+'>'+p+'</option>';}).join('')+'</select></label>'+
+          '<label>Score <input class="fin-in" type="number" min="0" max="1000" id="cr-score" value="'+(+f.credit.score||0)+'"></label>'+
+          '<label>Target <input class="fin-in" type="number" min="0" max="1000" id="cr-target" value="'+(+f.credit.target||0)+'"></label>'+
+        '</div>'+
+        '<div class="fin-addrow" style="margin-top:10px"><button class="btn sm" id="cr-log">Log today’s score</button></div>'+
+        '<div class="cmd-note">Check it free on ClearScore or the Experian app, then log it here — on-time payments and low card use lift it most.</div>'+
+      '</div>'+
+      '<div class="panel">'+
         '<div class="panel-h">'+ic('coin')+' Accounts &amp; cards</div>'+
         '<div class="mcap">Name · type · balance (credit cards count as money owed)</div>'+
         accHtml+
@@ -2851,6 +2879,38 @@
     Array.prototype.forEach.call(out.querySelectorAll('[data-tcat]'),function(sel){sel.onchange=function(){f.txns[+sel.getAttribute('data-tcat')].cat=this.value;save();paintTxns();};});
     Array.prototype.forEach.call(out.querySelectorAll('[data-tdel]'),function(b){b.onclick=function(){f.txns.splice(+b.getAttribute('data-tdel'),1);save();renderFinance();};});
   }
+  function creditMax(p){return {'Experian':999,'Equifax':1000,'TransUnion':710,'ClearScore':710,'Credit Karma':710,'Other':999}[p]||999;}
+  function creditBand(pct){ if(pct>=96)return['Excellent','#2e9e7e']; if(pct>=88)return['Good','#4a9d84']; if(pct>=72)return['Fair','#c79a4e']; if(pct>=56)return['Poor','#dd8f2b']; return['Building','#d65c72']; }
+  function creditTips(f){
+    var cards=(f.accounts||[]).filter(function(a){return a.kind==='Credit'&&(+a.bal||0)>0;});
+    var tips=[];
+    if(cards.length) tips.push('You’re carrying a balance on '+cards.length+' card'+(cards.length>1?'s':'')+' — clearing it (or staying under 30% of the limit) is the fastest lift.');
+    tips=tips.concat(['Pay every bill on time — the single biggest factor.','Keep card use under ~30% of each limit.','Register on the electoral roll at your address.','Don’t make several credit applications close together.','Keep older accounts open — length of history helps.','Check your report for errors and dispute any.']);
+    return '<div class="mcap" style="margin-top:18px">How to lift it</div><ul class="ivq cr-tips">'+tips.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>';
+  }
+  function paintCredit(){
+    var out=$('credit-out'); if(!out) return;
+    var f=finState(), c=f.credit||{}, max=creditMax(c.provider), score=+c.score||0;
+    var pct=max?Math.min(100,Math.round(score/max*100)):0, band=creditBand(pct), col=band[1];
+    var hist=(c.history||[]).slice(-12);
+    var spark='';
+    if(hist.length>1){ var vals=hist.map(function(h){return +h.score||0;}); var mn=Math.min.apply(null,vals), mx=Math.max.apply(null,vals), rng=(mx-mn)||1, W=260, H=46; var pts=vals.map(function(v,i){return (W*(i/(vals.length-1))).toFixed(1)+','+(H-4-(H-8)*((v-mn)/rng)).toFixed(1);}); spark='<svg class="cr-spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><polyline points="'+pts.join(' ')+'" fill="none" stroke="'+col+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+    var last=hist.length?hist[hist.length-1]:null, prev=hist.length>1?hist[hist.length-2]:null;
+    var delta=(last&&prev)?(+last.score-+prev.score):0;
+    var tgt=c.target?('<div class="cr-sub">Target '+c.target+' · '+(score>=+c.target?'hit ✓':((+c.target-score)+' to go'))+'</div>'):'';
+    out.innerHTML=
+      '<div class="cr-top">'+
+        '<div class="ring" style="background:conic-gradient('+col+' '+pct+'%, var(--muted-2) 0)"><span>'+(score||'–')+'</span></div>'+
+        '<div class="cr-info">'+
+          '<div class="cr-band" style="color:'+col+'">'+band[0]+'</div>'+
+          '<div class="cr-sub">'+score+' / '+max+' · '+(c.provider||'Experian')+(delta?(' · '+(delta>0?'▲ +'+delta:'▼ '+delta)):'')+'</div>'+
+          tgt+
+        '</div>'+
+      '</div>'+
+      (spark?'<div class="cr-sparkwrap">'+spark+'</div>':'')+
+      (hist.length?('<div class="mcap" style="margin-top:14px">History</div>'+hist.slice().reverse().map(function(h,i){var gi=c.history.length-1-i;return '<div class="cr-row"><span>'+esc(h.date||'')+'</span><b>'+esc(String(h.score))+'</b><button class="fin-del" data-crdel="'+gi+'">×</button></div>';}).join('')):'<div class="bempty" style="margin-top:12px">Log your score (from ClearScore / Experian) to track it over time.</div>')+creditTips(f);
+    Array.prototype.forEach.call(out.querySelectorAll('[data-crdel]'),function(b){b.onclick=function(){f.credit.history.splice(+b.getAttribute('data-crdel'),1);save();paintCredit();};});
+  }
   function renderFinance(){
     var f=finState();
     var fireNum=(+f.fireAnnual||0)*25;
@@ -2971,6 +3031,10 @@
     Array.prototype.forEach.call($('finance').querySelectorAll('.led-tog'),function(b){
       b.onclick=function(){f.ledger.real=(b.getAttribute('data-basis')==='1');save();renderFinance();};});
     $('money-take').oninput=function(){f.takehome=+this.value;save();paintMoney();};
+    if($('cr-prov'))$('cr-prov').onchange=function(){f.credit.provider=this.value;f.credit.max=creditMax(this.value);save();paintCredit();};
+    if($('cr-score'))$('cr-score').oninput=function(){f.credit.score=+this.value;save();paintCredit();};
+    if($('cr-target'))$('cr-target').oninput=function(){f.credit.target=+this.value;save();paintCredit();};
+    if($('cr-log'))$('cr-log').onclick=function(){f.credit.history=f.credit.history||[];f.credit.history.push({date:new Date().toISOString().slice(0,10),score:+f.credit.score||0});save();renderFinance();};
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-afield]'),function(inp){
       inp.oninput=function(){var i=+inp.getAttribute('data-ai'),k=inp.getAttribute('data-afield');f.accounts[i][k]=(k==='name'?this.value:+this.value);save();paintMoney();};});
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-akind]'),function(sel){
@@ -3004,6 +3068,7 @@
       save(); renderFinance();
     };
     paintMoney();
+    paintCredit();
     paintTxns();
     paintLedger();
   }

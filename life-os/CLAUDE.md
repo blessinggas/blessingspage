@@ -16,7 +16,11 @@ runs locally — no public server.
    same rules the dashboard uses: emergency fund (3× monthly bills) first → clear
    any debt at ≥6% APR (avalanche) → then LISA for the 25% bonus, then S&S ISA.
    Say what's safe to spend and what to move where.
-3. **Friendships & commitments** — via iMCP (Messages/Contacts/Calendar), surface
+3. **Credit score** — no consumer API exists, so read her ClearScore / Credit
+   Karma / Experian **score-update emails** via the Gmail connector and write the
+   new number into `dashboard-state.json` → `__fin.credit` (see `/credit`). Never
+   type a number she'd have to enter; pull it from the email.
+4. **Friendships & commitments** — via iMCP (Messages/Contacts/Calendar), surface
    who she owes a reply, whose birthday is near, and update `friendships.md`.
 4. **Check-ins** — pull from the trackers + calendar + inbox and produce ONE
    coherent message, not several pings.
