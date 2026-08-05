@@ -1,0 +1,6 @@
+# Local Life OS secrets & data — never commit these
+life-os/secrets*
+life-os/*.local.*
+life-os/dashboard-state.json
+.env
+*.key
