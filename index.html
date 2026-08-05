@@ -668,6 +668,23 @@
   .fin-suggest{display:inline-block;margin-top:11px;font-family:inherit;font-size:12px;font-weight:700;color:var(--accent-deep);background:var(--pink-2);border:none;border-radius:var(--pill);padding:7px 14px;cursor:pointer;transition:background .2s,color .2s;}
   .fin-suggest:hover{background:var(--accent);color:#fff;}
   .award-name{flex:1;min-width:70px;font-weight:700;color:var(--ink);padding:2px 0;}
+
+  /* ── statement import + transactions ── */
+  #txn-paste{width:100%;min-height:96px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.5;}
+  .txn-adj{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);font-weight:600;}
+  .txn-adj input{accent-color:var(--accent);width:16px;height:16px;}
+  .txn-io{display:flex;flex-wrap:wrap;gap:12px 28px;margin-bottom:18px;}
+  .txn-bars{display:flex;flex-direction:column;gap:13px;}
+  .txn-cat-top{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-2);font-weight:600;margin-bottom:6px;}
+  .txn-cat-top b{color:var(--ink);font-weight:700;}
+  .txn-row{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--rule-2);font-size:13.5px;}
+  .txn-row:last-child{border-bottom:none;}
+  .txn-d{color:var(--ink-3);font-size:12px;width:82px;flex:0 0 auto;font-variant-numeric:tabular-nums;}
+  .txn-desc{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);}
+  .txn-amt{font-weight:700;font-variant-numeric:tabular-nums;flex:0 0 auto;}
+  .txn-amt.neg{color:var(--alarm-deep);}
+  .txn-amt.pos{color:var(--mint-deep);}
+  @media(max-width:560px){.txn-catsel{display:none;}.txn-d{width:64px;}}
 </style>
 </head>
 <body>
@@ -2517,6 +2534,7 @@
     if(!f.debts)f.debts=[];
     if(!f.bills)f.bills=[{name:'Phone',amt:20,day:1},{name:'Subscriptions',amt:30,day:1}];
     if(f.takehome==null)f.takehome=0;
+    if(!f.txns)f.txns=[];
     return f;
   }
   var GOALCOL={accent:'',mint:'mint',gold:'gold',violet:'violet'};
@@ -2655,6 +2673,7 @@
   function moneyPanels(f){
     var acc=f.accounts||[], debts=f.debts||[], bills=f.bills||[];
     var KA=['Current','Savings','Credit'];
+    var acctOptions=acc.map(function(a){return '<option>'+esc(a.name)+'</option>';}).join('');
     var accHtml=acc.map(function(a,i){
       var opts=KA.map(function(k){return '<option'+(a.kind===k?' selected':'')+'>'+k+'</option>';}).join('');
       return '<div class="mrow">'+
@@ -2706,7 +2725,19 @@
         (lastCmdResp?'<div class="cmd-resp'+(lastCmdWarn?' warn':'')+'">'+lastCmdResp+'</div>':'')+
         '<div class="cmd-eg">Try: <b>got paid £2000</b> · <b>spent £40 on food</b> · <b>add account Monzo 1200</b> · <b>add card Amex 400</b> · <b>add debt Overdraft 500 at 39%</b> · <b>add bill Rent 800</b> · <b>how much can I invest?</b></div>'+
         '<div class="cmd-note">Understands simple commands and updates your numbers instantly. For real back-and-forth advice, connect Claude on your Mac (see life-os/MCP-SETUP.md).</div>'+
-      '</div>';
+      '</div>'+
+      '<div class="panel">'+
+        '<div class="panel-h">'+ic('coin')+' Import a statement</div>'+
+        '<div class="mcap">Export a CSV from your bank (or Emma / Plum) and paste it — I’ll sort it into transactions and spending. Works with date · description · amount, or paid-in / paid-out columns.</div>'+
+        '<textarea id="txn-paste" placeholder="Paste your CSV here…"></textarea>'+
+        '<div class="fin-addrow" style="margin-top:12px;align-items:center">'+
+          '<select class="fin-kind" id="txn-acct" style="flex:0 0 auto">'+acctOptions+'</select>'+
+          '<label class="txn-adj"><input type="checkbox" id="txn-adjbal" checked> update its balance</label>'+
+          '<button class="btn sm" id="txn-import">Import</button>'+
+        '</div>'+
+        (lastImportMsg?'<div class="cmd-resp'+(lastImportWarn?' warn':'')+'">'+lastImportMsg+'</div>':'')+
+      '</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('progress')+' Spending &amp; transactions</div><div id="txn-out"></div></div>';
   }
   function paintMoney(){
     var out=$('money-out'); if(!out) return;
@@ -2729,6 +2760,7 @@
     if(!t) return;
     if(/(safe to spend|how much.*spend|what can i spend)/.test(tl)){ var c=computeMoney(f); r= c.take>0? 'Safe to spend this month: '+gbp(c.spend)+'. Then '+gbp(c.toPriority)+' toward '+c.priority+'.' : 'Add your monthly take-home first and I’ll work it out.'; }
     else if(/(how much.*invest|can i invest|spare to invest)/.test(tl)){ var c2=computeMoney(f); r= c2.toInvest>0? 'About '+gbp(c2.toInvest)+' spare to invest this month — LISA first for the 25% bonus.' : 'Nothing spare to invest yet once bills, debt and your safety net are covered.'; }
+    else if(m=t.match(/set balances?\s+(.+)/i)){ var parts=m[1].split(/[,;]+/), done=[]; parts.forEach(function(p){var mm=p.trim().match(/(.+?)\s+(-?[\d.,]+)$/); if(mm){var nm=mm[1].trim(), val=num(mm[2]); var a=(f.accounts=f.accounts||[]).filter(function(x){return x.name.toLowerCase()===nm.toLowerCase();})[0]; if(!a){a={name:cap(nm),kind:'Current',bal:0}; f.accounts.push(a);} a.bal=val; done.push(cap(nm)+' '+gbp(val));}}); r=done.length?('Updated '+done.join(', ')+'.'):'Try: set balances Monzo 1200, Amex -400'; warn=!done.length; }
     else if(m=t.match(/(?:got paid|payday|paid in|income|received)\D*([\d.,]+)/i)){ var amt=num(m[1]); var a=firstCurrent(f); a.bal=(+a.bal||0)+amt; var c3=computeMoney(f); r='Nice — added '+gbp(amt)+' to '+a.name+'. Safe to spend '+gbp(c3.spend)+'; '+gbp(c3.toPriority)+' toward '+c3.priority+'.'; }
     else if(m=t.match(/spent\D*([\d.,]+)(?:\s*(?:on|for)\s+(.+))?/i)){ var amt2=num(m[1]); var a2=firstCurrent(f); a2.bal=(+a2.bal||0)-amt2; r='Logged '+gbp(amt2)+(m[2]?' on '+m[2].trim():'')+'. '+a2.name+' is now '+gbp(a2.bal)+'.'; if(a2.bal<0){warn=true; r+=' — heads up, that account is negative.';} }
     else if(m=t.match(/add (?:card|credit(?:\s*card)?)\s+(.+?)\s+([\d.,]+)/i)){ (f.accounts=f.accounts||[]).push({name:cap(m[1]),kind:'Credit',bal:num(m[2]),apr:22}); r='Added credit card '+cap(m[1])+' owing '+gbp(num(m[2]))+'.'; }
@@ -2748,6 +2780,77 @@
     return out;
   }
   function securedTotal(f){ var t=0; securedList(f).forEach(function(a){t+=a.amt;}); return t; }
+  var lastImportMsg='', lastImportWarn=false;
+  var TXCATS=['Income','Groceries','Eating out','Transport','Shopping','Bills','Subscriptions','Health & beauty','Cash','Other'];
+  function catColor(k){return {'Income':'#4a9d84','Groceries':'#cb5a86','Eating out':'#dd8f2b','Transport':'#7c6bae','Shopping':'#d65c72','Subscriptions':'#8a6fa8','Bills':'#b0446e','Health & beauty':'#c79a4e','Cash':'#9a929f','Other':'#b8a9b1'}[k]||'#cb5a86';}
+  function catFor(d){
+    d=(d||'').toLowerCase();
+    var R=[['Income',/salary|wages|payroll|hmrc|refund|interest|dividend|received|trading ?212|paid in|bonus|stipend/],
+      ['Groceries',/tesco|sainsbury|aldi|lidl|asda|morrison|waitrose|co-?op|iceland|ocado|m&s food|marks ?and ?spencer/],
+      ['Eating out',/mcdonald|kfc|nando|greggs|costa|starbucks|pret|deliveroo|uber ?eats|just ?eat|domino|pizza|restaurant|cafe|coffee|burger|wagamama/],
+      ['Transport',/uber|bolt|trainline|tfl|oyster|national ?rail|\brail\b|shell|\bbp\b|esso|fuel|petrol|parking|\bcar\b/],
+      ['Shopping',/amazon|asos|zara|boots|superdrug|primark|\bnext\b|apple\.com|argos|john ?lewis|shein|h&m|sephora|nike/],
+      ['Subscriptions',/netflix|spotify|disney|youtube|amazon ?prime|icloud|patreon|audible|notion|adobe|canva/],
+      ['Bills',/gym|virgin|\bsky\b|\bbt\b|\bee\b|\bo2\b|vodafone|\bthree\b|octopus|british ?gas|thames ?water|council ?tax|\brent\b|tv ?licen|insurance|\bwater\b|energy|electric|mobile/],
+      ['Health & beauty',/pharmacy|nails|hair|salon|beauty|barber|\bspa\b|dental|superdrug|lloyds ?pharmacy/],
+      ['Cash',/cash|\batm\b|withdrawal/]];
+    for(var i=0;i<R.length;i++){ if(R[i][1].test(d)) return R[i][0]; }
+    return 'Other';
+  }
+  function splitCsv(line,delim){var res=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(ch===delim&&!q){res.push(cur);cur='';}else cur+=ch;}res.push(cur);return res.map(function(s){return s.trim();});}
+  function normDate(d){if(!d)return '';d=String(d).trim();var m=d.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})$/);if(m){var y=m[3].length===2?'20'+m[3]:m[3];return y+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2);}if(/^\d{4}-\d{2}-\d{2}/.test(d))return d.slice(0,10);var dt=new Date(d);if(!isNaN(dt))return dt.toISOString().slice(0,10);return d;}
+  function parseStatement(text,acct){
+    var lines=String(text||'').split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean);
+    if(!lines.length) return [];
+    var header=null, delim=',';
+    if(/[,\t;]/.test(lines[0]) && /date|desc|amount|paid|debit|credit|balance|value|money/i.test(lines[0])){
+      delim = lines[0].indexOf('\t')>=0?'\t':(lines[0].indexOf(';')>=0?';':',');
+      header=lines[0].split(delim).map(function(h){return h.trim().toLowerCase();});
+      lines=lines.slice(1);
+    }
+    function idx(names){if(!header)return -1;for(var i=0;i<header.length;i++){for(var j=0;j<names.length;j++){if(header[i].indexOf(names[j])>=0)return i;}}return -1;}
+    var di=idx(['date']), dei=idx(['desc','reference','detail','narrative','memo','payee','name']), ai=idx(['amount','value']), pin=idx(['paid in','credit','money in','received','in ']), pout=idx(['paid out','debit','money out','spent','out ']);
+    var out=[];
+    lines.forEach(function(line){
+      var date='',desc='',amt=NaN,neg=false;
+      if(header){
+        var c=splitCsv(line,delim);
+        date=di>=0?c[di]:'';
+        desc=dei>=0?c[dei]:'';
+        if(ai>=0){ var raw=c[ai]||''; neg=/\(/.test(raw); amt=num(raw); if(neg)amt=-Math.abs(amt); }
+        else { var inn=pin>=0?num(c[pin]):0, outn=pout>=0?num(c[pout]):0; amt=inn-Math.abs(outn); }
+        if(!desc){ desc=c.filter(function(x,ix){return ix!==di&&ix!==ai&&ix!==pin&&ix!==pout;}).join(' ').trim(); }
+      } else {
+        var dm=line.match(/(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}|\d{4}-\d{2}-\d{2})/);
+        date=dm?dm[0]:'';
+        var all=line.match(/-?\(?£?\s?-?[\d,]+\.\d{2}\)?/g);
+        if(all&&all.length){ var raw2=all[all.length-1]; neg=/\(/.test(raw2)||/-/.test(raw2); amt=num(raw2); if(neg)amt=-Math.abs(amt); desc=line; if(dm)desc=desc.replace(dm[0],''); desc=desc.replace(raw2,''); }
+        desc=(desc||line).replace(/£/g,'').replace(/\s{2,}/g,' ').replace(/^[,\s]+|[,\s]+$/g,'').trim();
+      }
+      if(isNaN(amt)||amt===0) return;
+      out.push({date:normDate(date), desc:desc||'(no description)', amount:amt, cat:catFor(desc), acct:acct||''});
+    });
+    return out;
+  }
+  function paintTxns(){
+    var out=$('txn-out'); if(!out) return;
+    var f=finState(), tx=f.txns||[];
+    if(!tx.length){ out.innerHTML='<div class="bempty">No transactions yet — paste a statement above and I’ll sort your spending.</div>'; return; }
+    var now=new Date(), ym=now.getFullYear()+'-'+('0'+(now.getMonth()+1)).slice(-2);
+    function inMonth(d){ return !d || String(d).slice(0,7)===ym; }
+    var inSum=0,outSum=0,cats={};
+    tx.forEach(function(t){ if(!inMonth(t.date))return; if(t.amount>=0) inSum+=t.amount; else { outSum+=-t.amount; cats[t.cat]=(cats[t.cat]||0)+(-t.amount); } });
+    var arr=Object.keys(cats).map(function(k){return {k:k,v:cats[k]};}).sort(function(a,b){return b.v-a.v;});
+    var maxc=arr.length?arr[0].v:1;
+    var bars=arr.map(function(c){var pct=Math.round(c.v/maxc*100);return '<div class="txn-cat"><div class="txn-cat-top"><span>'+esc(c.k)+'</span><b>'+gbp(c.v)+'</b></div><div class="ptrack"><div class="pfill" style="width:'+pct+'%;background:'+catColor(c.k)+'"></div></div></div>';}).join('');
+    var recent=tx.slice(-30).reverse();
+    var rows=recent.map(function(t){var gi=tx.indexOf(t);var opts=TXCATS.map(function(k){return '<option'+(t.cat===k?' selected':'')+'>'+k+'</option>';}).join('');return '<div class="txn-row"><span class="txn-d">'+esc(t.date||'')+'</span><span class="txn-desc">'+esc(t.desc)+'</span><select class="fin-kind txn-catsel" data-tcat="'+gi+'">'+opts+'</select><span class="txn-amt '+(t.amount<0?'neg':'pos')+'">'+(t.amount<0?'−':'+')+gbp(Math.abs(t.amount))+'</span><button class="fin-del" data-tdel="'+gi+'">×</button></div>';}).join('');
+    out.innerHTML='<div class="txn-io"><span class="money-chip">In this month<b>'+gbp(inSum)+'</b></span><span class="money-chip neg">Out this month<b>'+gbp(outSum)+'</b></span></div>'+
+      (bars?'<div class="txn-bars">'+bars+'</div>':'')+
+      '<div class="mcap" style="margin:18px 0 4px">Recent transactions — fix a category with the dropdown</div>'+rows;
+    Array.prototype.forEach.call(out.querySelectorAll('[data-tcat]'),function(sel){sel.onchange=function(){f.txns[+sel.getAttribute('data-tcat')].cat=this.value;save();paintTxns();};});
+    Array.prototype.forEach.call(out.querySelectorAll('[data-tdel]'),function(b){b.onclick=function(){f.txns.splice(+b.getAttribute('data-tdel'),1);save();renderFinance();};});
+  }
   function renderFinance(){
     var f=finState();
     var fireNum=(+f.fireAnnual||0)*25;
@@ -2891,7 +2994,17 @@
       b.onclick=function(){f.goals[+b.getAttribute('data-esuggest')].target=+b.getAttribute('data-eval');save();renderFinance();};});
     $('money-cmdgo').onclick=function(){runMoneyCmd($('money-cmd').value);};
     $('money-cmd').onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();runMoneyCmd(this.value);}};
+    if($('txn-import'))$('txn-import').onclick=function(){
+      var parsed=parseStatement($('txn-paste').value, $('txn-acct')?$('txn-acct').value:'');
+      if(!parsed.length){ lastImportMsg='Couldn’t read any transactions — paste a CSV with date, description and amount (or paid-in / paid-out) columns.'; lastImportWarn=true; renderFinance(); return; }
+      f.txns=(f.txns||[]).concat(parsed);
+      var acct=$('txn-acct')?$('txn-acct').value:'', adj=$('txn-adjbal')&&$('txn-adjbal').checked;
+      if(adj&&acct){ var a=(f.accounts||[]).filter(function(x){return x.name===acct;})[0]; if(a){ var s=0; parsed.forEach(function(t){s+=t.amount;}); a.bal=(+a.bal||0)+(a.kind==='Credit'?-s:s); } }
+      lastImportMsg='Imported '+parsed.length+' transaction'+(parsed.length===1?'':'s')+(acct?' · '+acct:'')+'.'; lastImportWarn=false;
+      save(); renderFinance();
+    };
     paintMoney();
+    paintTxns();
     paintLedger();
   }
 
