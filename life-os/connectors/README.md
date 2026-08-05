@@ -23,16 +23,24 @@ You need Node 18+ ( `node --version` ). No packages to install.
    ```
    → prints your total/free/invested and writes `out/trading212.json`.
 
-## Bank + credit cards (Open Banking, free via GoCardless)
-1. Free account at <https://bankaccountdata.gocardless.com/> → create a secret
-   (Secret ID + Key) → put both in `.env`.
-2. Find your bank's id, then link and fetch:
-   ```bash
-   node gocardless.mjs institutions     # list bank IDs, copy yours into .env as GC_INSTITUTION
-   node gocardless.mjs link             # open the printed link, log in to your bank, approve
-   node gocardless.mjs fetch            # writes out/bank.json
-   ```
-   Access lasts ~90 days per approval, then you re-run `link`.
+## Bank + credit cards — use a consumer app (recommended)
+For personal use, **don't** use a developer Open Banking API. The simplest,
+right-fit tool is a consumer money app that connects your UK banks + cards for
+you — free, no code, no company:
+
+- **Snoop**, **Emma**, **Moneyhub**, or **Plum** — connect everything in-app,
+  see live balances + spending insights.
+- Then read the headline balances and put them in the dashboard: type them into
+  Accounts, or use the command box (`add account Monzo 1200`, `add card Amex 400`).
+
+This matches the "upload/paste periodically" approach — and it's minutes to set
+up versus the developer route.
+
+> **Note:** GoCardless Bank Account Data (ex-Nordigen) is **closed to new
+> signups since mid-2025**, so `gocardless.mjs` is kept only as a reference
+> template. If you ever want true programmatic auto-sync, the individual-friendly
+> APIs in 2026 are **Plaid** (free dev tier, UK) or **TrueLayer** (free sandbox +
+> pay-as-you-go, UK) — swap the base URL/auth in the template for those.
 
 ## Getting the numbers into the dashboard
 Each script writes a `dashboardAccount` block (name / kind / balance). Two ways

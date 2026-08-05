@@ -1,8 +1,23 @@
 #!/usr/bin/env node
 /**
+ * ⚠️ DEPRECATED — GoCardless Bank Account Data (ex-Nordigen) has been closed to
+ * NEW signups since mid-2025 and is winding down. Do not start here.
+ *
+ * FOR PERSONAL USE, the right tool is a consumer money app that connects your
+ * UK banks + cards for you (no code, no company, free): Snoop, Emma, Moneyhub
+ * or Plum. Read the balances there and type/paste them into the dashboard (or
+ * tell the command box, e.g. "add account Monzo 1200").
+ *
+ * Only if you later want programmatic auto-sync into this dashboard, the
+ * individual-friendly Open Banking APIs in 2026 are Plaid (free dev tier, UK)
+ * or TrueLayer (free sandbox + pay-as-you-go, UK). This file stays as a
+ * reference template — the requisition→fetch shape is similar across
+ * aggregators — but expect to swap the base URL/auth for whichever you pick.
+ *
+ * ── original notes ──
  * Open Banking → dashboard connector (read-only) via GoCardless Bank Account
- * Data (formerly Nordigen). Free tier covers UK + EU banks. Read-only: it can
- * see balances and transactions, it cannot move money.
+ * Data (formerly Nordigen). Read-only: it can see balances and transactions,
+ * it cannot move money.
  *
  * Because a bank login needs YOU to authorise in the browser, this runs in two
  * steps:

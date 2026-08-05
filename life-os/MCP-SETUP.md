@@ -80,7 +80,8 @@ The honest layout of what's possible today:
 | Source | How it connects | Live? | Notes |
 |---|---|---|---|
 | **Trading 212** | Official **public API** (beta), API key from the T212 mobile app | ✅ live (read) | Endpoints for account, portfolio, cash, pies. Live env is read + market orders only. Wrap it in a tiny local MCP server or let Claude Code call it with a script. |
-| **Banks + credit cards + debts** | **Open Banking** aggregator — [GoCardless Bank Account Data](https://gocardless.com/bank-account-data/) (free tier), [TrueLayer](https://truelayer.com), or [Plaid](https://plaid.com) | ✅ live (read) | UK banks require an FCA-registered aggregator (these are). Needs a small local server holding the token — never in the website. Community "Plaid MCP" servers exist. |
+| **Banks + credit cards + debts** | **Consumer app** (recommended for personal use): Snoop, Emma, Moneyhub or Plum — connect accounts in-app, glance + paste balances in | ✅ live (in the app) | No code, no company, free, minutes to set up. The right tool for personal banking; matches the "paste periodically" approach. |
+| _…or_ **Open Banking API** (only if you want programmatic auto-sync) | [Plaid](https://plaid.com) (free dev tier, UK) or [TrueLayer](https://truelayer.com) (free sandbox + PAYG, UK) | ✅ live (read) | Needs a small local server holding the token — never in the website. GoCardless/Nordigen's free tier is **closed to new signups (mid-2025)** — don't start there. |
 | **Manual / statements** | Type figures into the dashboard, or paste a statement to Claude | ⚪ manual | Your spec's stated preference. Works today with zero setup. |
 
 ### Security — non-negotiable
