@@ -700,6 +700,14 @@
   .cr-row b{margin-left:auto;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;padding-right:4px;}
   .cr-tips li{font-size:13.5px;color:var(--ink);padding:6px 0 6px 24px;}
   .cr-tips li::before{content:"↑";color:var(--mint-deep);font-weight:800;}
+
+  .cr-lever{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule-2);}
+  .cr-lever:last-child{border-bottom:none;}
+  .cr-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;margin-top:5px;box-shadow:0 0 0 4px rgba(0,0,0,.03);}
+  .cr-lv{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .cr-lv b{font-size:14px;color:var(--ink);font-weight:700;}
+  .cr-lv span{font-size:13px;color:var(--ink-2);line-height:1.5;}
+  .cr-plan li{cursor:pointer;}
 </style>
 </head>
 <body>
@@ -2552,6 +2560,22 @@
     if(f.takehome==null)f.takehome=0;
     if(!f.txns)f.txns=[];
     if(!f.credit)f.credit={provider:'Experian',max:999,score:0,target:0,history:[]};
+    if(f.credit.electoral==null)f.credit.electoral=false;
+    if(f.credit.missed==null)f.credit.missed=0;
+    if(f.credit.applications==null)f.credit.applications=0;
+    if(!f.credit.plan)f.credit.plan=[
+      {task:'Register on the electoral roll at your address',done:false},
+      {task:'Set up direct debits so no payment is ever late',done:false},
+      {task:'Add every card’s limit to the app to track utilisation',done:false},
+      {task:'Get total card use under 30%',done:false},
+      {task:'Then push card use under 10% (the sweet spot)',done:false},
+      {task:'Check your report on Experian, Equifax & TransUnion for errors',done:false},
+      {task:'Dispute any errors or wrong entries you find',done:false},
+      {task:'Avoid new credit applications for 6 months',done:false},
+      {task:'Keep your oldest card open — never close it',done:false},
+      {task:'Recheck & log your score every month',done:false},
+      {task:'Review progress at 12 months vs your target',done:false}
+    ];
     return f;
   }
   var GOALCOL={accent:'',mint:'mint',gold:'gold',violet:'violet'};
@@ -2697,6 +2721,7 @@
         '<input class="fin-line" data-afield="name" data-ai="'+i+'" value="'+escA(a.name)+'" placeholder="Account">'+
         '<select class="fin-kind mkind" data-akind="'+i+'">'+opts+'</select>'+
         '<span class="fin-cur">£</span><input class="fin-in mnum" type="number" step="10" data-afield="bal" data-ai="'+i+'" value="'+(+a.bal||0)+'">'+
+        (a.kind==='Credit'?'<span class="fin-cur">lim</span><input class="fin-in mapr" type="number" step="100" data-afield="limit" data-ai="'+i+'" value="'+(+a.limit||0)+'" title="Credit limit">':'')+
         '<button class="fin-del" data-adel="'+i+'" title="Remove">×</button></div>';
     }).join('');
     var debtHtml=debts.map(function(d,i){
@@ -2725,6 +2750,12 @@
           '<label>Provider <select class="fin-kind" id="cr-prov" style="flex:0 0 auto">'+['Experian','Equifax','TransUnion','ClearScore','Credit Karma','Other'].map(function(p){return '<option'+(f.credit.provider===p?' selected':'')+'>'+p+'</option>';}).join('')+'</select></label>'+
           '<label>Score <input class="fin-in" type="number" min="0" max="1000" id="cr-score" value="'+(+f.credit.score||0)+'"></label>'+
           '<label>Target <input class="fin-in" type="number" min="0" max="1000" id="cr-target" value="'+(+f.credit.target||0)+'"></label>'+
+        '</div>'+
+        '<div class="fin-star-controls" style="margin-top:12px">'+
+          '<label class="txn-adj"><input type="checkbox" id="cr-electoral"'+(f.credit.electoral?' checked':'')+'> On electoral roll</label>'+
+          '<label>Missed pmts (12m) <input class="fin-in" type="number" min="0" id="cr-missed" value="'+(+f.credit.missed||0)+'"></label>'+
+          '<label>New apps (12m) <input class="fin-in" type="number" min="0" id="cr-apps" value="'+(+f.credit.applications||0)+'"></label>'+
+          '<label>Oldest acct year <input class="fin-in" type="number" min="1990" max="2026" id="cr-oldest" value="'+(f.credit.oldestYear||'')+'"></label>'+
         '</div>'+
         '<div class="fin-addrow" style="margin-top:10px"><button class="btn sm" id="cr-log">Log today’s score</button></div>'+
         '<div class="cmd-note">Check it free on ClearScore or the Experian app, then log it here — on-time payments and low card use lift it most.</div>'+
@@ -2881,6 +2912,30 @@
   }
   function creditMax(p){return {'Experian':999,'Equifax':1000,'TransUnion':710,'ClearScore':710,'Credit Karma':710,'Other':999}[p]||999;}
   function creditBand(pct){ if(pct>=96)return['Excellent','#2e9e7e']; if(pct>=88)return['Good','#4a9d84']; if(pct>=72)return['Fair','#c79a4e']; if(pct>=56)return['Poor','#dd8f2b']; return['Building','#d65c72']; }
+  function creditLevers(f){
+    var c=f.credit||{};
+    var cards=(f.accounts||[]).filter(function(a){return a.kind==='Credit';});
+    var bal=0,lim=0; cards.forEach(function(a){bal+=(+a.bal||0);lim+=(+a.limit||0);});
+    var util= lim>0? Math.round(bal/lim*100) : null;
+    var now=new Date().getFullYear(), age= c.oldestYear? (now-(+c.oldestYear)) : null;
+    var L=[];
+    L.push(['Payment history', (+c.missed>0)?['action',(c.missed)+' missed in 12m — a single late mark can sting for years. Set direct debits for at least the minimum on everything.']:['good','No missed payments — this is the biggest factor. Keep it flawless.']]);
+    L.push(['Card utilisation', util==null?['watch','Add your card limit(s) above and I can track this — it’s ~30% of your score.']:(util<10?['good',util+'% used — ideal, under 10%.']:(util<30?['good',util+'% used — under 30%, healthy. Aim for 10%.']:['action',util+'% used — bring it under 30% first, then 10%. Pay down or ask for a limit rise.']))]);
+    L.push(['Length of history', age==null?['watch','Tell me your oldest account’s year and I’ll factor it in.']:(age>=4?['good',age+' years of history — solid. Never close your oldest card.']:['watch',age+' years — young file. Time helps; keep old accounts open.'])]);
+    L.push(['Electoral roll', c.electoral?['good','Registered — confirms your identity, easy points banked.']:['action','Not registered — a fast, free win. Do this first.']]);
+    L.push(['Recent applications', (+c.applications>=4)?['action',c.applications+' in 12m — each hard search dents you. Pause new credit for 6 months.']:((+c.applications>=2)?['watch',c.applications+' in 12m — ease off; space applications out.']:['good',(c.applications||0)+' in 12m — nicely low.'])]);
+    return {levers:L, util:util};
+  }
+  function creditLeversHtml(f){
+    var r=creditLevers(f), dot={good:'#2e9e7e',watch:'#c79a4e',action:'#d65c72'};
+    return '<div class="mcap" style="margin-top:18px">The 5 levers that move your score</div>'+
+      r.levers.map(function(l){var st=l[1];return '<div class="cr-lever"><span class="cr-dot" style="background:'+dot[st[0]]+'"></span><div class="cr-lv"><b>'+esc(l[0])+'</b><span>'+esc(st[1])+'</span></div></div>';}).join('');
+  }
+  function creditPlanHtml(f){
+    var plan=f.credit.plan||[], done=plan.filter(function(p){return p.done;}).length;
+    return '<div class="mcap" style="margin-top:18px">Your 12-month plan · '+done+'/'+plan.length+'</div><ul class="prep cr-plan">'+
+      plan.map(function(p,i){return '<li class="'+(p.done?'on':'')+'" data-cplan="'+i+'"><span class="box '+(p.done?'on':'')+'">'+(p.done?'✓':'')+'</span><span>'+esc(p.task)+'</span></li>';}).join('')+'</ul>';
+  }
   function creditTips(f){
     var cards=(f.accounts||[]).filter(function(a){return a.kind==='Credit'&&(+a.bal||0)>0;});
     var tips=[];
@@ -2908,8 +2963,9 @@
         '</div>'+
       '</div>'+
       (spark?'<div class="cr-sparkwrap">'+spark+'</div>':'')+
-      (hist.length?('<div class="mcap" style="margin-top:14px">History</div>'+hist.slice().reverse().map(function(h,i){var gi=c.history.length-1-i;return '<div class="cr-row"><span>'+esc(h.date||'')+'</span><b>'+esc(String(h.score))+'</b><button class="fin-del" data-crdel="'+gi+'">×</button></div>';}).join('')):'<div class="bempty" style="margin-top:12px">Log your score (from ClearScore / Experian) to track it over time.</div>')+creditTips(f);
+      (hist.length?('<div class="mcap" style="margin-top:14px">History</div>'+hist.slice().reverse().map(function(h,i){var gi=c.history.length-1-i;return '<div class="cr-row"><span>'+esc(h.date||'')+'</span><b>'+esc(String(h.score))+'</b><button class="fin-del" data-crdel="'+gi+'">×</button></div>';}).join('')):'<div class="bempty" style="margin-top:12px">Log your score (from ClearScore / Experian) to track it over time.</div>')+creditLeversHtml(f)+creditPlanHtml(f)+creditTips(f);
     Array.prototype.forEach.call(out.querySelectorAll('[data-crdel]'),function(b){b.onclick=function(){f.credit.history.splice(+b.getAttribute('data-crdel'),1);save();paintCredit();};});
+    Array.prototype.forEach.call(out.querySelectorAll('[data-cplan]'),function(li){li.onclick=function(){var i=+li.getAttribute('data-cplan');f.credit.plan[i].done=!f.credit.plan[i].done;save();paintCredit();};});
   }
   function renderFinance(){
     var f=finState();
@@ -3035,8 +3091,12 @@
     if($('cr-score'))$('cr-score').oninput=function(){f.credit.score=+this.value;save();paintCredit();};
     if($('cr-target'))$('cr-target').oninput=function(){f.credit.target=+this.value;save();paintCredit();};
     if($('cr-log'))$('cr-log').onclick=function(){f.credit.history=f.credit.history||[];f.credit.history.push({date:new Date().toISOString().slice(0,10),score:+f.credit.score||0});save();renderFinance();};
+    if($('cr-electoral'))$('cr-electoral').onchange=function(){f.credit.electoral=this.checked;save();paintCredit();};
+    if($('cr-missed'))$('cr-missed').oninput=function(){f.credit.missed=+this.value;save();paintCredit();};
+    if($('cr-apps'))$('cr-apps').oninput=function(){f.credit.applications=+this.value;save();paintCredit();};
+    if($('cr-oldest'))$('cr-oldest').oninput=function(){f.credit.oldestYear=+this.value;save();paintCredit();};
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-afield]'),function(inp){
-      inp.oninput=function(){var i=+inp.getAttribute('data-ai'),k=inp.getAttribute('data-afield');f.accounts[i][k]=(k==='name'?this.value:+this.value);save();paintMoney();};});
+      inp.oninput=function(){var i=+inp.getAttribute('data-ai'),k=inp.getAttribute('data-afield');f.accounts[i][k]=(k==='name'?this.value:+this.value);save();paintMoney();paintCredit();};});
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-akind]'),function(sel){
       sel.onchange=function(){f.accounts[+sel.getAttribute('data-akind')].kind=this.value;save();paintMoney();};});
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-adel]'),function(b){
