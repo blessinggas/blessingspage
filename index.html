@@ -775,6 +775,49 @@
   .skin-picks{font-size:12px;color:var(--ink-3);margin-top:7px;line-height:1.5;}
   .skin-low{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);font-weight:600;margin-top:9px;cursor:pointer;}
   .skin-low input{width:15px;height:15px;accent-color:var(--accent);}
+
+  /* ── body & habits tracker (program style) ── */
+  .prog-panel{background:var(--accent-grad);color:#fff;}
+  .prog-panel .panel-h,.prog-panel .prog-name{color:#fff;}
+  .prog-head{display:flex;align-items:center;gap:18px;}
+  .prog-head>div:first-child{flex:1;}
+  .prog-name{font-family:var(--display);font-weight:600;font-size:clamp(24px,4vw,32px);letter-spacing:-.02em;}
+  .prog-day{font-size:13px;color:rgba(255,255,255,.9);font-weight:600;margin-top:5px;text-transform:uppercase;letter-spacing:.06em;}
+  .prog-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:14px;}
+  .prog-panel .ring{margin:0;box-shadow:none;background:conic-gradient(#fff 0,#fff 0);}
+  .prog-panel .ring span{background:transparent;color:#fff;border:2.5px solid rgba(255,255,255,.5);width:74px;height:74px;}
+  .day-checks{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  @media(max-width:560px){.day-checks{grid-template-columns:1fr;}}
+  .day-check{display:flex;align-items:center;gap:11px;padding:12px 13px;background:var(--muted);border-radius:var(--w-sm);cursor:pointer;transition:background .2s;}
+  .day-check.on{background:linear-gradient(135deg,#fdeff4,#fbe6ef);}
+  .day-check input{display:none;}
+  .dc-box{flex:0 0 auto;width:22px;height:22px;border:2px solid var(--rule);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;}
+  .day-check.on .dc-box{background:var(--accent-grad);border-color:transparent;}
+  .dc-label{flex:1;font-size:14px;font-weight:600;color:var(--ink);}
+  .dc-streak{font-size:12px;font-weight:700;color:var(--accent-deep);}
+  .grid-wrap{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;}
+  @media(max-width:560px){.grid-wrap{grid-template-columns:repeat(7,1fr);}}
+  .grid-day{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink-3);background:var(--muted-2);}
+  .grid-day.some{background:var(--pink-3);color:var(--accent-deep);}
+  .grid-day.part{background:var(--pink);color:var(--accent-deep);}
+  .grid-day.full{background:var(--accent-grad);color:#fff;}
+  .grid-day.tdy{outline:2px solid var(--accent);outline-offset:1px;}
+  .body-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+  @media(max-width:560px){.body-stats{grid-template-columns:1fr;}}
+  .body-stat{background:var(--muted);border-radius:var(--w-sm);padding:14px;}
+  .bs-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);font-weight:700;}
+  .body-stat b{display:block;font-family:var(--display);font-weight:600;font-size:22px;color:var(--ink);margin-top:4px;letter-spacing:-.02em;}
+  .body-chg{font-size:12px;font-weight:700;}.body-chg.down{color:var(--mint-deep);}.body-chg.up{color:var(--gold-deep);}
+  .body-spark{width:100%;height:34px;display:block;margin-top:8px;overflow:visible;}
+  .body-log{display:flex;gap:9px;flex-wrap:wrap;}
+  .body-log .fin-in{width:110px;}
+  .move-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule-2);font-size:14.5px;color:var(--ink);font-weight:600;}
+  .move-row:last-of-type{border-bottom:none;}
+  .move-ctl{display:flex;align-items:center;gap:12px;}
+  .move-btn{width:30px;height:30px;border:none;background:var(--muted-2);border-radius:50%;font-size:17px;cursor:pointer;color:var(--ink);}
+  .move-btn:hover{background:var(--accent);color:#fff;}
+  .move-ctl b{font-family:var(--display);font-size:19px;color:var(--accent-deep);min-width:18px;text-align:center;}
+  .move-wk{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;}
 </style>
 </head>
 <body>
@@ -2734,37 +2777,63 @@
   function todayStr(){return TODAY.toISOString().slice(0,10);}
 
   function renderVision(){
-    var l=lifeState(), h=l.habits, today=todayStr();
-    var anchorsHtml=h.anchors.map(function(a,i){
-      var doneToday=a.lastDone===today;
-      return '<div class="chk"><input type="checkbox" data-anchor="'+i+'"'+(doneToday?' checked':'')+'><span>'+esc(a.label)+'</span><span class="chk-note">streak '+(a.streak||0)+'</span></div>';
-    }).join('');
-    var moveHtml=h.movement.map(function(m,i){
-      return '<button class="chip-log" data-move="'+i+'">'+esc(m.label)+' <b>'+(m.thisWeek||0)+'</b> this week</button>';
-    }).join('');
+    var l=lifeState(), h=l.habits;
+    h.daily=h.daily||{}; h.body=h.body||[];
+    if(!h.program) h.program={start:new Date().toISOString().slice(0,10),length:90,name:'90-day glow-up'};
+    if(!h.identity) h.identity=['Warm, funny, the person people want around','Confident — actually holding it, not performing','Dream body: strong, toned, glutes + waist','Hair & nails always done, skin even and glowing'];
+    var DAILY=[['shower','Shower first thing'],['wake','Wake 7–8am'],['workout','Move / gym'],['steps','10k steps'],['eat','Ate well'],['skinAM','Skincare + SPF (AM)'],['skinPM','Skincare (PM)'],['inner','Affirmations / prayer'],['sleep','Sleep on time']];
+    var today=new Date().toISOString().slice(0,10);
+    var td=h.daily[today]=h.daily[today]||{};
+    function comp(d){var m=h.daily[d];if(!m)return 0;var c=0;DAILY.forEach(function(x){if(m[x[0]])c++;});return c/DAILY.length;}
+    var todayPct=Math.round(comp(today)*100);
+    function streakOf(key){var s=0,day=new Date();for(var i=0;i<500;i++){var ds=day.toISOString().slice(0,10);var m=h.daily[ds];if(m&&m[key])s++;else if(ds===today){}else break;day.setDate(day.getDate()-1);}return s;}
+    var checkHtml=DAILY.map(function(x){var on=!!td[x[0]];var st=streakOf(x[0]);return '<label class="day-check'+(on?' on':'')+'"><input type="checkbox" data-daily="'+x[0]+'"'+(on?' checked':'')+'><span class="dc-box">'+(on?'✓':'')+'</span><span class="dc-label">'+x[1]+'</span>'+(st>0?'<span class="dc-streak">🔥 '+st+'</span>':'')+'</label>';}).join('');
+    var grid='';
+    for(var i=27;i>=0;i--){var g=new Date();g.setDate(g.getDate()-i);var ds=g.toISOString().slice(0,10);var pc=comp(ds);var cls=pc>=0.99?'full':(pc>=0.6?'part':(pc>0?'some':'none'));grid+='<div class="grid-day '+cls+(ds===today?' tdy':'')+'" title="'+ds+' · '+Math.round(pc*100)+'%">'+g.getDate()+'</div>';}
+    var start=new Date(h.program.start), dayN=Math.floor((new Date(today)-start)/864e5)+1; dayN=Math.max(1,Math.min(+h.program.length||90,dayN));
+    var progPct=Math.round(dayN/(+h.program.length||90)*100);
+    var doneDays=Object.keys(h.daily).filter(function(d){return comp(d)>=0.6;}).length;
+    var body=h.body.slice().sort(function(a,b){return (a.date||'').localeCompare(b.date||'');});
+    var latest=body[body.length-1]||{}, first=body[0]||{};
+    function spark(field){var vals=body.map(function(b){return +b[field];}).filter(function(v){return !isNaN(v);});if(vals.length<2)return '';var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),rg=(mx-mn)||1,W=200,H=38;var pts=vals.map(function(v,i){return (W*i/(vals.length-1)).toFixed(1)+','+(H-3-(H-6)*((v-mn)/rg)).toFixed(1);});return '<svg class="body-spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><polyline points="'+pts.join(' ')+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+    function chg(field,unit){if(latest[field]==null||first[field]==null||body.length<2)return '';var d=(+latest[field]-+first[field]);return '<span class="body-chg '+(d<0?'down':'up')+'">'+(d>0?'+':'')+d.toFixed(1)+unit+'</span>';}
+    var movementHtml=h.movement.map(function(m,i){return '<div class="move-row"><span>'+esc(m.label)+'</span><div class="move-ctl"><button class="move-btn" data-move="'+i+'.-1">−</button><b>'+(+m.thisWeek||0)+'</b><button class="move-btn" data-move="'+i+'.1">+</button><span class="move-wk">this week</span></div></div>';}).join('');
+    var idHtml=h.identity.map(function(t,i){return '<div class="tl-row"><input class="fin-line" data-ident="'+i+'" value="'+escA(t)+'"><button class="fin-del" data-iddel="'+i+'">×</button></div>';}).join('');
+
     $('vision').innerHTML=
-      '<div class="panel"><div class="panel-h">'+ic('compass')+' The north star</div>'+
-        '<p class="shp">Gym consistency (not obsession), 10k steps, eating well, sleeping on time. Clear skin, hair and nails always done. Funded master&rsquo;s for 2027/28, and retiring around 40&ndash;45 on your own terms. The insecurity under the confident exterior is what all of this is in service of &mdash; not a side box.</p>'+
+      '<div class="panel prog-panel"><div class="prog-head"><div><div class="prog-name">'+esc(h.program.name)+'</div><div class="prog-day">Day '+dayN+' of '+(h.program.length)+' · '+doneDays+' strong days logged</div></div>'+
+        '<div class="ring" style="background:conic-gradient(var(--accent) '+todayPct+'%, var(--muted-2) 0)"><span>'+todayPct+'%</span></div></div>'+
+        '<div class="prog-sub">Today’s completion. Tick things off below — the ring fills in real time.</div>'+
       '</div>'+
-      '<div class="panel"><div class="panel-h">'+ic('check')+' Daily anchors</div>'+anchorsHtml+'</div>'+
-      '<div class="panel"><div class="panel-h">'+ic('sparkle')+' Movement &amp; joy — tap to log</div>'+
-        '<div class="lifegrid">'+moveHtml+'</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('check')+' Today</div>'+
+        '<div class="day-checks">'+checkHtml+'</div>'+
       '</div>'+
-      '<div class="panel"><div class="panel-h">'+ic('flag')+' Near-term sprint</div>'+
-        '<div class="chk"><input type="checkbox" id="vis-theory"'+(h.theoryTestBooked?' checked':'')+'><span>Book the theory test</span></div>'+
+      '<div class="panel"><div class="panel-h">'+ic('progress')+' Last 28 days — see everything</div>'+
+        '<p class="help-note">Each square is a day. Solid = a strong day, faded = partial. Watch the wall fill up.</p>'+
+        '<div class="grid-wrap">'+grid+'</div>'+
+      '</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('drop')+' Body progress</div>'+
+        '<p class="help-note">Log weekly — trends matter, not single days. Muscle, tone, glutes, waist.</p>'+
+        '<div class="body-stats">'+
+          '<div class="body-stat"><span class="bs-label">Weight</span><b>'+(latest.weight!=null?latest.weight+' kg':'—')+'</b>'+chg('weight','kg')+spark('weight')+'</div>'+
+          '<div class="body-stat"><span class="bs-label">Waist</span><b>'+(latest.waist!=null?latest.waist+' cm':'—')+'</b>'+chg('waist','cm')+spark('waist')+'</div>'+
+          '<div class="body-stat"><span class="bs-label">Glutes</span><b>'+(latest.glutes!=null?latest.glutes+' cm':'—')+'</b>'+chg('glutes','cm')+spark('glutes')+'</div>'+
+        '</div>'+
+        '<div class="body-log"><input class="fin-in" type="number" step="0.1" id="b-weight" placeholder="Weight kg"><input class="fin-in" type="number" step="0.1" id="b-waist" placeholder="Waist cm"><input class="fin-in" type="number" step="0.1" id="b-glutes" placeholder="Glutes cm"><button class="btn sm" id="b-log">Log today</button></div>'+
+      '</div>'+
+      '<div class="panel"><div class="panel-h">'+ic('sparkle')+' Movement this week</div>'+movementHtml+
+        '<p class="cmd-note">Every session counts as a win — gym, a dance class, or guitar practice.</p></div>'+
+      '<div class="panel"><div class="panel-h">'+ic('star')+' Who I’m becoming</div>'+
+        '<p class="help-note">Your north star. Read it on the hard days.</p>'+idHtml+
+        '<div class="fin-addrow"><input id="ident-new" placeholder="Add an anchor…"><button class="btn sm" id="ident-add">Add</button></div>'+
       '</div>';
-    Array.prototype.forEach.call($('vision').querySelectorAll('[data-anchor]'),function(inp){
-      inp.onchange=function(){
-        var i=+inp.getAttribute('data-anchor'), a=h.anchors[i];
-        if(inp.checked){ if(a.lastDone!==today){a.streak=(a.streak||0)+1; a.lastDone=today;} }
-        else { a.lastDone=null; }
-        save(); renderVision();
-      };
-    });
-    Array.prototype.forEach.call($('vision').querySelectorAll('[data-move]'),function(b){
-      b.onclick=function(){ h.movement[+b.getAttribute('data-move')].thisWeek++; save(); renderVision(); };
-    });
-    $('vis-theory').onchange=function(){ h.theoryTestBooked=this.checked; save(); };
+
+    Array.prototype.forEach.call($('vision').querySelectorAll('[data-daily]'),function(inp){inp.onchange=function(){td[inp.getAttribute('data-daily')]=inp.checked;save();renderVision();};});
+    $('b-log').onclick=function(){var w=$('b-weight').value,wa=$('b-waist').value,g=$('b-glutes').value;if(!w&&!wa&&!g)return;var e={date:today};if(w)e.weight=+w;if(wa)e.waist=+wa;if(g)e.glutes=+g;var ex=h.body.filter(function(b){return b.date===today;})[0];if(ex){Object.assign(ex,e);}else h.body.push(e);save();renderVision();};
+    Array.prototype.forEach.call($('vision').querySelectorAll('[data-move]'),function(b){b.onclick=function(){var p=b.getAttribute('data-move').split('.');h.movement[+p[0]].thisWeek=Math.max(0,(+h.movement[+p[0]].thisWeek||0)+(+p[1]));save();renderVision();};});
+    Array.prototype.forEach.call($('vision').querySelectorAll('[data-ident]'),function(inp){inp.oninput=function(){h.identity[+inp.getAttribute('data-ident')]=this.value;save();};});
+    Array.prototype.forEach.call($('vision').querySelectorAll('[data-iddel]'),function(b){b.onclick=function(){h.identity.splice(+b.getAttribute('data-iddel'),1);save();renderVision();};});
+    $('ident-add').onclick=function(){var v=$('ident-new').value.trim();if(!v)return;h.identity.push(v);save();renderVision();};
   }
 
   function renderSelfcare(){
