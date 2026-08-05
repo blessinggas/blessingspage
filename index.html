@@ -619,6 +619,24 @@
   .led-dot{fill:#fff;stroke:var(--accent);stroke-width:3;}
   .led-ax{fill:var(--ink-3);font-size:11px;font-weight:600;}
   .led-axf{fill:var(--accent-deep);font-size:11px;font-weight:700;}
+
+  /* ── per-item accounts / pots / goals ── */
+  .fin-goal-name{flex:1;min-width:0;font-family:inherit;font-weight:700;font-size:15.5px;color:var(--ink);background:transparent;border:none;border-bottom:1.5px solid transparent;padding:2px 0;outline:none;}
+  .fin-goal-name:focus{border-bottom-color:var(--accent);}
+  .fin-kind{flex:0 0 auto;font-family:inherit;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-deep);background:var(--pink-2);border:none;border-radius:var(--tag);padding:5px 10px;cursor:pointer;outline:none;}
+  .fin-goal-rem{font-size:12.5px;color:var(--ink-2);margin-top:9px;font-weight:600;}
+  /* ── ledger: basis toggle + breakdown ── */
+  .led-basis{display:inline-flex;background:var(--muted);border-radius:var(--pill);padding:4px;margin:14px 0 4px;}
+  .led-tog{border:none;background:transparent;font-family:inherit;font-weight:600;font-size:13px;color:var(--ink-2);padding:8px 16px;border-radius:var(--pill);cursor:pointer;transition:background .2s,color .2s;}
+  .led-tog.on{background:var(--accent-grad);color:#fff;box-shadow:0 4px 12px rgba(184,71,110,.26);}
+  .led-target{stroke:var(--ink-3);stroke-width:1.4;stroke-dasharray:5 6;fill:none;}
+  .led-break{display:flex;flex-wrap:wrap;gap:9px 20px;margin-top:14px;font-size:13.5px;color:var(--ink-2);}
+  .led-break .lb{display:inline-flex;align-items:center;gap:8px;}
+  .led-break .lb b{color:var(--ink);font-weight:800;}
+  .led-swatch{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .led-bonus{margin-top:10px;font-size:13px;color:var(--mint-deep);font-weight:700;}
+  .led-cap{margin-top:8px;font-size:12px;color:var(--gold-deep);font-weight:600;}
+  .led-note{margin-top:9px;font-size:12px;color:var(--ink-3);font-style:italic;}
 </style>
 </head>
 <body>
@@ -2433,16 +2451,17 @@
       state.__fin={
         fireAge:43, fireAnnual:40000,
         goals:[
-          {label:'Lifetime ISA — house deposit', target:25000, saved:3200, col:'accent'},
-          {label:'Stocks & Shares ISA — freedom fund', target:20000, saved:5400, col:'mint'},
-          {label:'Emergency fund — 6 months', target:9000, saved:2100, col:'gold'}
+          {label:'Lifetime ISA — house deposit', kind:'LISA', target:25000, saved:3200, col:'accent'},
+          {label:'Stocks & Shares ISA — freedom fund', kind:'ISA', target:20000, saved:5400, col:'violet'},
+          {label:'Emergency fund — 6 months', kind:'Pot', target:9000, saved:2100, col:'gold'},
+          {label:'Boob job fund', kind:'Goal', target:6500, saved:0, col:'mint'}
         ],
         income:[
           {src:'Graduate role (gap year)', note:'Primary salary — automate a transfer on payday, before it disappears.'},
           {src:'Clinical trial income', note:'Treat as a lump sum: split across invest / emergency / venture / spend.'},
           {src:'Scholarship & stipend awards', note:'Log each secured offer here as it lands — it all counts.'}
         ],
-        ledger:{age:22,pot:10700,monthly:500,ret:7,lump:2000,swr:4}
+        ledger:{age:22,lisaPot:0,isaPot:10700,lisaMonthly:170,isaMonthly:330,ret:7,lump:2000,swr:4,infl:2.5,real:true}
       };
     }
     var f=state.__fin;
@@ -2450,7 +2469,19 @@
     if(f.fireAnnual==null)f.fireAnnual=40000;
     if(!f.goals)f.goals=[];
     if(!f.income)f.income=[];
-    if(!f.ledger)f.ledger={age:22,pot:10700,monthly:500,ret:7,lump:2000,swr:4};
+    if(!f.ledger)f.ledger={};
+    var lg=f.ledger;
+    if(lg.age==null)lg.age=22;
+    if(lg.lisaPot==null)lg.lisaPot=0;
+    if(lg.isaPot==null)lg.isaPot=(lg.pot!=null?+lg.pot:10700);
+    if(lg.lisaMonthly==null)lg.lisaMonthly=170;
+    if(lg.isaMonthly==null)lg.isaMonthly=(lg.monthly!=null?+lg.monthly:330);
+    if(lg.ret==null)lg.ret=7;
+    if(lg.lump==null)lg.lump=2000;
+    if(lg.swr==null)lg.swr=4;
+    if(lg.infl==null)lg.infl=2.5;
+    if(lg.real==null)lg.real=true;
+    f.goals.forEach(function(g){if(g.kind==null)g.kind='Goal';});
     return f;
   }
   var GOALCOL={accent:'',mint:'mint',gold:'gold',violet:'violet'};
@@ -2462,73 +2493,111 @@
 
   function computeLedger(f){
     var l=f.ledger||{};
-    var age=+l.age||22, pot=+l.pot||0, monthly=+l.monthly||0, r=(+l.ret||0)/100, lump=+l.lump||0, swr=(+l.swr||4)/100;
+    var age=+l.age||22;
+    var lisaPot=+l.lisaPot||0, isaPot=+l.isaPot||0;
+    var lisaM=+l.lisaMonthly||0, isaM=+l.isaMonthly||0;
+    var r=(+l.ret||0)/100, lump=+l.lump||0, swr=(+l.swr||4)/100, infl=(+l.infl||0)/100;
+    var real=(l.real!==false);
     var annual=+f.fireAnnual||0;
     var fireNum= swr>0 ? annual/swr : annual*25;
-    var series=[{age:age,pot:pot}], p=pot, yr=0, freeYr=null;
-    if(fireNum>0 && pot>=fireNum) freeYr=0;
+    var gr=(1+r)/(1+infl)-1;                 // simulate in real terms always
+    var lp=lisaPot, ip=isaPot, yr=0, freeYr=null, bonusTot=0;
+    var raw=[{yr:0,age:age,lisa:lp,isa:ip}];
+    if(fireNum>0 && (lp+ip)>=fireNum) freeYr=0;
     while(yr<50){
-      yr++; p = p*(1+r) + monthly*12 + lump;
-      series.push({age:age+yr,pot:p});
-      if(freeYr===null && fireNum>0 && p>=fireNum) freeYr=yr;
+      yr++;
+      var cAge=age+yr-1;
+      var lisaC=(cAge<50)?Math.min(lisaM*12,4000):0;
+      var bonus=lisaC*0.25;
+      var isaC=Math.max(0,Math.min(isaM*12+lump,20000-lisaC));
+      lp=lp*(1+gr)+lisaC+bonus;
+      ip=ip*(1+gr)+isaC;
+      bonusTot+=bonus;
+      raw.push({yr:yr,age:age+yr,lisa:lp,isa:ip});
+      if(freeYr===null && fireNum>0 && (lp+ip)>=fireNum) freeYr=yr;
       if(freeYr!==null && yr>=Math.max(freeYr+1,6)) break;
       if(freeYr===null && yr>=45) break;
     }
-    return {fireNum:fireNum, freeYr:freeYr, freeAge:(freeYr==null?null:age+freeYr), series:series};
+    var series=raw.map(function(d){
+      var k= real?1:Math.pow(1+infl,d.yr);
+      return {age:d.age, lisa:d.lisa*k, isa:d.isa*k, pot:(d.lisa+d.isa)*k, target:fireNum*k};
+    });
+    var idx=freeYr!=null?Math.min(freeYr,series.length-1):series.length-1;
+    return {fireNum:fireNum, freeYr:freeYr, freeAge:(freeYr==null?null:age+freeYr),
+      series:series, bonusTot:bonusTot, real:real, infl:(+l.infl||0),
+      lisaAt:series[idx].lisa, isaAt:series[idx].isa,
+      lisaCapped:(lisaM*12>4000), isaCapped:((Math.min(lisaM*12,4000)+isaM*12+lump)>20000)};
   }
   function ledgerChart(c){
-    var s=c.series, n=s.length; if(n<2) return '';
-    var W=680,H=190,pL=6,pR=6,pT=18,pB=24;
-    var maxPot=Math.max(c.fireNum, s[n-1].pot, 1);
+    var s=c.series,n=s.length; if(n<2) return '';
+    var W=680,H=200,pL=6,pR=6,pT=18,pB=24;
+    var maxV=Math.max(s[n-1].pot,s[n-1].target,1);
     function X(i){return pL+(W-pL-pR)*(i/(n-1));}
-    function Y(v){return pT+(H-pT-pB)*(1-Math.min(v,maxPot)/maxPot);}
+    function Y(v){return pT+(H-pT-pB)*(1-Math.min(v,maxV)/maxV);}
     var pts=s.map(function(d,i){return X(i).toFixed(1)+','+Y(d.pot).toFixed(1);});
-    var line='M'+pts.join(' L');
+    var tpts=s.map(function(d,i){return X(i).toFixed(1)+','+Y(d.target).toFixed(1);});
+    var line='M'+pts.join(' L'), tline='M'+tpts.join(' L');
     var area='M'+X(0).toFixed(1)+','+(H-pB)+' L'+pts.join(' L')+' L'+X(n-1).toFixed(1)+','+(H-pB)+' Z';
-    var fy=Y(c.fireNum);
     var dot='';
-    if(c.freeYr!=null){ var i=c.freeYr<n?c.freeYr:n-1; dot='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(s[i].pot).toFixed(1)+'" r="5.5" class="led-dot"/>'; }
+    if(c.freeYr!=null){var i=Math.min(c.freeYr,n-1);dot='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(s[i].pot).toFixed(1)+'" r="5.5" class="led-dot"/>';}
     return '<svg class="ledger-chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Projected net worth over time">'+
       '<defs><linearGradient id="ledgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d76a95" stop-opacity=".30"/><stop offset="1" stop-color="#d76a95" stop-opacity="0"/></linearGradient></defs>'+
       '<path d="'+area+'" fill="url(#ledgrad)"/>'+
-      '<line class="led-fire" x1="'+pL+'" y1="'+fy.toFixed(1)+'" x2="'+(W-pR)+'" y2="'+fy.toFixed(1)+'"/>'+
+      '<path d="'+tline+'" class="led-target"/>'+
       '<path d="'+line+'" class="led-line"/>'+dot+
       '<text class="led-ax" x="'+pL+'" y="'+(H-6)+'">Age '+s[0].age+'</text>'+
       '<text class="led-ax" x="'+(W-pR)+'" y="'+(H-6)+'" text-anchor="end">Age '+s[n-1].age+'</text>'+
-      '<text class="led-axf" x="'+(W-pR)+'" y="'+Math.max(pT+11,fy-7).toFixed(1)+'" text-anchor="end">Freedom · '+gbp(c.fireNum)+'</text>'+
+      '<text class="led-axf" x="'+(W-pR)+'" y="'+Math.max(pT+11,Y(s[n-1].target)-7).toFixed(1)+'" text-anchor="end">Freedom · '+gbp(c.fireNum)+'</text>'+
     '</svg>';
   }
   function paintLedger(){
     var out=$('ledger-out'); if(!out) return;
     var f=finState(), c=computeLedger(f), target=+f.fireAge||43, verdict;
-    if(c.freeYr==null) verdict='<span class="led-late">Not reaching it within 45 years yet — nudge the monthly or return up.</span>';
+    if(c.freeYr==null) verdict='<span class="led-late">Not reaching it within 45 years yet — nudge a monthly figure or the return up.</span>';
     else{ var d=target-c.freeAge;
-      verdict = d>0 ? '<b>'+d+' year'+(d==1?'':'s')+'</b> ahead of your target of '+target
-              : d<0 ? '<b>'+(-d)+' year'+(d==-1?'':'s')+'</b> past your target of '+target+' — close the gap'
-              : 'right on your target of '+target; }
+      verdict= d>0?'<b>'+d+' year'+(d==1?'':'s')+'</b> ahead of your target of '+target
+             :d<0?'<b>'+(-d)+' year'+(d==-1?'':'s')+'</b> past your target of '+target+' — close the gap'
+             :'right on your target of '+target; }
+    var basis=c.real?'today’s money':'future money';
+    var caps=[];
+    if(c.lisaCapped)caps.push('LISA counted up to the £4,000/yr limit');
+    if(c.isaCapped)caps.push('ISA input counted up to the £20,000/yr allowance');
     out.innerHTML=
       '<div class="ledger-head">'+
         '<div class="ledger-big">'+(c.freeYr==null?'Keep going':'Free at '+c.freeAge)+'</div>'+
-        '<div class="ledger-sub">'+(c.freeYr==null?'':('in '+c.freeYr+' year'+(c.freeYr==1?'':'s')+' · '))+'target pot '+gbp(c.fireNum)+'</div>'+
+        '<div class="ledger-sub">'+(c.freeYr==null?'':('in '+c.freeYr+' year'+(c.freeYr==1?'':'s')+' · '))+'target pot '+gbp(c.fireNum)+' · '+basis+'</div>'+
         '<div class="ledger-verdict">'+verdict+'</div>'+
+        '<div class="led-break">'+
+          '<span class="lb"><span class="led-swatch" style="background:var(--accent)"></span>LISA <b>'+gbp(c.lisaAt)+'</b></span>'+
+          '<span class="lb"><span class="led-swatch" style="background:var(--violet)"></span>S&amp;S ISA <b>'+gbp(c.isaAt)+'</b></span>'+
+        '</div>'+
+        (c.bonusTot>0?'<div class="led-bonus">+ '+gbp(c.bonusTot)+' free LISA government bonus over the journey — 25% on the first £4,000/yr, until age 50 (today’s money).</div>':'')+
+        (caps.length?'<div class="led-cap">'+caps.join(' · ')+'.</div>':'')+
+        '<div class="led-note">'+(c.real?'Shown in today’s money — growth is net of '+c.infl+'% inflation.':'Shown in future pounds — the dashed freedom line climbs with '+c.infl+'% inflation.')+'</div>'+
       '</div>'+ ledgerChart(c);
   }
   function renderFinance(){
     var f=finState();
     var fireNum=(+f.fireAnnual||0)*25;
     var tot=finTotals(f);
+    var KINDS=['Account','LISA','ISA','Pot','Goal'];
     var goalsHtml=f.goals.map(function(g,i){
       var pct=(+g.target>0)?Math.min(100,Math.round((+g.saved||0)/(+g.target)*100)):0;
       var cls=GOALCOL[g.col]||'';
+      var rem=Math.max(0,(+g.target||0)-(+g.saved||0));
+      var opts=KINDS.map(function(k){return '<option'+(g.kind===k?' selected':'')+'>'+k+'</option>';}).join('');
       return '<div class="fin-goal">'+
-          '<div class="fin-goal-top"><span class="fin-goal-lbl">'+esc(g.label)+'</span>'+
-            '<button class="fin-del" data-gdel="'+i+'" title="Remove goal">×</button></div>'+
+          '<div class="fin-goal-top">'+
+            '<input class="fin-goal-name" data-gname="'+i+'" value="'+escA(g.label)+'" placeholder="Account / pot / goal name">'+
+            '<select class="fin-kind" data-gkind="'+i+'">'+opts+'</select>'+
+            '<button class="fin-del" data-gdel="'+i+'" title="Remove">×</button></div>'+
           '<div class="ptrack"><div class="pfill '+cls+'" id="fin-fill-'+i+'" style="width:'+pct+'%"></div></div>'+
           '<div class="fin-goal-fig">'+
             '<label>Saved <span class="fin-cur">£</span><input class="fin-in" type="number" min="0" step="100" data-gfield="saved" data-gi="'+i+'" value="'+(+g.saved||0)+'"></label>'+
             '<label>Target <span class="fin-cur">£</span><input class="fin-in" type="number" min="0" step="100" data-gfield="target" data-gi="'+i+'" value="'+(+g.target||0)+'"></label>'+
             '<span class="fin-pct" id="fin-pct-'+i+'">'+pct+'%</span>'+
           '</div>'+
+          '<div class="fin-goal-rem" id="fin-rem-'+i+'">'+(rem>0?gbp(rem)+' to go':'Complete ✓')+'</div>'+
         '</div>';
     }).join('');
     var incomeHtml=f.income.map(function(m,i){
@@ -2556,12 +2625,19 @@
       '<div class="panel ledger">'+
         '<div class="panel-h">'+ic('chart')+' The Freedom Ledger</div>'+
         '<p class="fin-star-cap">Your live scenario: what you put in, what it earns, and the age work becomes optional. Tweak any figure — the curve moves with you.</p>'+
+        '<div class="led-basis">'+
+          '<button class="led-tog'+(f.ledger.real!==false?' on':'')+'" data-basis="1">Today’s money</button>'+
+          '<button class="led-tog'+(f.ledger.real===false?' on':'')+'" data-basis="0">Future money</button>'+
+        '</div>'+
         '<div class="ledger-grid">'+
           '<label class="led-f"><span>Age now</span><input class="led-in" type="number" min="16" max="70" data-led="age" value="'+(+f.ledger.age||22)+'"></label>'+
-          '<label class="led-f"><span>Invested today £</span><input class="led-in" type="number" min="0" step="500" data-led="pot" value="'+(+f.ledger.pot||0)+'"></label>'+
-          '<label class="led-f"><span>Monthly in £</span><input class="led-in" type="number" min="0" step="50" data-led="monthly" value="'+(+f.ledger.monthly||0)+'"></label>'+
+          '<label class="led-f"><span>LISA today £</span><input class="led-in" type="number" min="0" step="500" data-led="lisaPot" value="'+(+f.ledger.lisaPot||0)+'"></label>'+
+          '<label class="led-f"><span>S&amp;S ISA today £</span><input class="led-in" type="number" min="0" step="500" data-led="isaPot" value="'+(+f.ledger.isaPot||0)+'"></label>'+
+          '<label class="led-f"><span>LISA / mo £</span><input class="led-in" type="number" min="0" max="334" step="10" data-led="lisaMonthly" value="'+(+f.ledger.lisaMonthly||0)+'"></label>'+
+          '<label class="led-f"><span>S&amp;S ISA / mo £</span><input class="led-in" type="number" min="0" step="50" data-led="isaMonthly" value="'+(+f.ledger.isaMonthly||0)+'"></label>'+
+          '<label class="led-f"><span>Extra lump / yr £</span><input class="led-in" type="number" min="0" step="500" data-led="lump" value="'+(+f.ledger.lump||0)+'"></label>'+
           '<label class="led-f"><span>Return / yr %</span><input class="led-in" type="number" min="0" max="20" step="0.5" data-led="ret" value="'+(+f.ledger.ret||0)+'"></label>'+
-          '<label class="led-f"><span>Lump sum / yr £</span><input class="led-in" type="number" min="0" step="500" data-led="lump" value="'+(+f.ledger.lump||0)+'"></label>'+
+          '<label class="led-f"><span>Inflation / yr %</span><input class="led-in" type="number" min="0" max="15" step="0.5" data-led="infl" value="'+(+f.ledger.infl||0)+'"></label>'+
           '<label class="led-f"><span>Withdrawal %</span><input class="led-in" type="number" min="2" max="8" step="0.5" data-led="swr" value="'+(+f.ledger.swr||4)+'"></label>'+
         '</div>'+
         '<div id="ledger-out"></div>'+
@@ -2588,15 +2664,20 @@
         var fill=$('fin-fill-'+i); if(fill)fill.style.width=pct+'%';
         var pc=$('fin-pct-'+i); if(pc)pc.textContent=pct+'%';
         var t=finTotals(f); $('fin-tot-saved').textContent=gbp(t.s); $('fin-tot-target').textContent=gbp(t.t);
+        var rm=$('fin-rem-'+i); if(rm){var rr=Math.max(0,(+g.target||0)-(+g.saved||0)); rm.textContent=rr>0?gbp(rr)+' to go':'Complete ✓';}
         save();
       };
     });
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-gdel]'),function(b){
       b.onclick=function(){f.goals.splice(+b.getAttribute('data-gdel'),1);save();renderFinance();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-gname]'),function(inp){
+      inp.oninput=function(){f.goals[+inp.getAttribute('data-gname')].label=this.value;save();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-gkind]'),function(sel){
+      sel.onchange=function(){f.goals[+sel.getAttribute('data-gkind')].kind=this.value;save();};});
     $('fin-addgoal').onclick=function(){
       var v=$('fin-newgoal').value.trim(); if(!v)return;
       var cols=['accent','mint','gold','violet'];
-      f.goals.push({label:v,target:1000,saved:0,col:cols[f.goals.length%4]});
+      f.goals.push({label:v,kind:'Goal',target:1000,saved:0,col:cols[f.goals.length%4]});
       save();renderFinance();};
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-mfield]'),function(inp){
       inp.oninput=function(){f.income[+inp.getAttribute('data-mi')][inp.getAttribute('data-mfield')]=this.value;save();};});
@@ -2605,6 +2686,8 @@
     $('fin-addinc').onclick=function(){f.income.push({src:($('fin-newinc').value.trim()||'New source'),note:''});save();renderFinance();};
     Array.prototype.forEach.call($('finance').querySelectorAll('.led-in'),function(inp){
       inp.oninput=function(){f.ledger[inp.getAttribute('data-led')]=+this.value;save();paintLedger();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('.led-tog'),function(b){
+      b.onclick=function(){f.ledger.real=(b.getAttribute('data-basis')==='1');save();renderFinance();};});
     paintLedger();
   }
 
