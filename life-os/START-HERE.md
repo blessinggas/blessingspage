@@ -1,78 +1,78 @@
-# Start here — Blessing's Life OS, first day
+# START HERE — dummy-proof, copy-paste setup
 
-Do these in order. ~1 focused hour, most of it waiting on signups. Everything runs
-on your Mac; nothing goes online. Deeper detail is in `ARCHITECTURE.md`,
-`MCP-SETUP.md` and `connectors/README.md` — this page is just the path.
+Your repo: **https://github.com/blessinggas/blessingspage**
+Your branch (where all the new stuff lives): **claude/design-system-integration-iym8oc**
 
----
-
-## 0. Before anything (5 min)
-- [ ] Turn on **FileVault**: System Settings → Privacy & Security → FileVault → On.
-      (This encrypts your whole disk — the foundation of the security story.)
-- [ ] Install **Node 18+**: download from nodejs.org, then check in Terminal:
-      `node --version`
-- [ ] Get the project on your Mac: `git clone <your repo URL>` then `cd blessingspage`
-
-## 1. See the dashboard (2 min)
-- [ ] Open `index.html` in your browser (double-click it). That's your Life OS —
-      it already works, saving to your device.
-
-## 2. Money: Trading 212 (10 min) — the quick first win
-- [ ] In the **Trading 212 app**: Settings → API (Beta) → generate a key
-      (leave it in **Practice** mode for now).
-- [ ] `cd life-os/connectors` → `cp .env.example .env` → paste the key as
-      `T212_API_KEY`.
-- [ ] Run `node trading212.mjs`.
-      ✅ Worked when it prints your total/free/invested.
-
-## 3. Money: your banks via TrueLayer (20 min)
-- [ ] Make a free app at <https://console.truelayer.com/> (Data API).
-      Add redirect URI **exactly**: `http://localhost:3000/callback`
-- [ ] Put `TL_CLIENT_ID` and `TL_CLIENT_SECRET` into the same `.env`
-      (keep `TL_ENV=sandbox` to test first).
-- [ ] `node truelayer.mjs link` → your browser opens → approve **Revolut,
-      NatWest, Halifax** (read-only).
-- [ ] `node truelayer.mjs fetch`.
-      ✅ Worked when it lists your bank balances.
-- [ ] Switch `TL_ENV=live` in `.env` when you're ready for real data, and
-      `link` again.
-
-## 4. Pull it all into the dashboard (2 min)
-- [ ] From `life-os/`: `node run/sync.mjs` → writes `dashboard-state.json`.
-- [ ] In the dashboard, click **Restore from backup** and choose that file.
-      ✅ Your real accounts + transactions now show in Finances.
-
-## 5. Claude Code as your manager (10 min)
-- [ ] Open the repo folder in **Claude Code**.
-- [ ] Try the commands: **`/sync`** (refresh money), **`/money`** (advice),
-      **`/checkin`** (daily check-in), **`/link-banks`** (redo bank consent).
-- [ ] It follows `CLAUDE.md` — your tone, cycle-aware days, ADHD step-by-step.
-
-## 6. iMessage + friendships (10 min)
-- [ ] `brew install --cask mattt/tap/iMCP` → open it → turn on Messages,
-      Contacts, Calendar (grant permissions).
-- [ ] Connect it to **Claude Desktop** (config in `MCP-SETUP.md`).
-- [ ] Ask Claude: "who have I left on read?" / "update life-os/friendships.md".
-
-## 7. Make it run itself (optional, 5 min)
-- [ ] Edit the paths in `run/com.blessing.lifeos.plist`, then:
-      `cp run/com.blessing.lifeos.plist ~/Library/LaunchAgents/`
-      `launchctl load ~/Library/LaunchAgents/com.blessing.lifeos.plist`
-      → syncs your money morning + evening automatically.
+Do it in order. Copy each grey block, paste into the app it names, press enter. If a
+step doesn't apply, skip it. You can stop anytime — nothing breaks.
 
 ---
 
-## Safety checklist (tick before going live)
-- [ ] FileVault on (step 0).
-- [ ] `.env` and `out/` are git-ignored (already set) — never commit keys.
-- [ ] 2FA on Trading 212, TrueLayer and each bank.
-- [ ] Bank scopes stay **read-only** (they are by default).
-- [ ] Mac has a login password + short auto-lock.
+## PART 1 — Just see your dashboard (5 min, no terminal)
+1. Open this link on your Mac: https://github.com/blessinggas/blessingspage/tree/claude/design-system-integration-iym8oc
+2. Click the green **Code** button → **Download ZIP**.
+3. Open the ZIP in Downloads → double-click **index.html**.
+4. That's your Life OS. It works and saves to your Mac. 🎉
 
-## When something breaks
-- Bank fetch fails after ~90 days → run `/link-banks` again (Open Banking rule).
-- T212 401 → regenerate the key in the app, update `.env`.
-- Lost the dashboard data → re-import your latest backup, or `node run/sync.mjs`.
+## PART 2 — Turn on security (2 min)
+System Settings → Privacy & Security → **FileVault** → **Turn On**.
 
-You never *have* to touch the terminal after setup — `/sync`, `/money` and
-`/checkin` in Claude Code do everything from here.
+## PART 3 — Install the tools (10 min)
+1. Install **Node**: open https://nodejs.org → click the big green **LTS** button →
+   open the download → click Continue/Install through it.
+2. Install **Homebrew** — open the **Terminal** app (Cmd+Space, type "Terminal"), paste this, press enter, follow prompts:
+   ```
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+3. Get the project properly (so Claude can use it). Paste this whole block into Terminal:
+   ```
+   cd ~ && git clone https://github.com/blessinggas/blessingspage && cd blessingspage && git checkout claude/design-system-integration-iym8oc
+   ```
+   ✅ Worked if it ends inside a folder called `blessingspage`.
+
+## PART 4 — Claude Code + your commands (5 min)
+1. Install Claude Code — paste into Terminal:
+   ```
+   npm install -g @anthropic-ai/claude-code
+   ```
+2. Open your project in it — paste:
+   ```
+   cd ~/blessingspage && claude
+   ```
+3. Now you can type these anytime (just type the word with a slash):
+   `/money`  `/credit`  `/career`  `/apply`  `/habits`  `/selfcare`  `/checkin`
+   `/sync`  `/link-banks`
+
+## PART 5 — Connect your banks, live (15 min)
+1. Go to https://console.truelayer.com → sign up (free) → make an app → **Data API**.
+2. In its settings, add this redirect URL exactly:
+   ```
+   http://localhost:3000/callback
+   ```
+3. Copy your **Client ID** and **Client Secret**. In Terminal, paste:
+   ```
+   cd ~/blessingspage/life-os/connectors && cp .env.example .env && open -e .env
+   ```
+   A text file opens — paste your Client ID after `TL_CLIENT_ID=` and the secret after
+   `TL_CLIENT_SECRET=`. Save (Cmd+S), close it.
+4. In Claude Code, type:  `/link-banks`  → your browser opens → approve **Revolut,
+   NatWest, Halifax**.
+5. Then type:  `/sync`  → your real balances appear. In the dashboard click
+   **Restore from backup** and pick `life-os/dashboard-state.json`.
+
+## PART 6 — iMessage & friendships (10 min, optional)
+```
+brew install --cask mattt/tap/iMCP
+```
+Open iMCP → turn on Messages, Contacts, Calendar (allow the pop-ups) → in Claude Desktop
+add it (see MCP-SETUP.md). Then ask Claude: "who have I left on read?"
+
+---
+
+## Safety (already handled / quick ticks)
+- Your keys sit in `.env`, which is git-ignored — they never leave your Mac.
+- Turn on 2FA in TrueLayer and each bank app.
+- Nothing you build is on the public internet.
+
+## If stuck
+Paste the error into Claude Code and say "fix this". That's literally what it's for.

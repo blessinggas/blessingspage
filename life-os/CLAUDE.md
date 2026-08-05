@@ -25,7 +25,12 @@ runs locally — no public server.
    (`/career`); draft tailored applications in her voice (`/apply`).
 5. **Friendships & commitments** — via iMCP (Messages/Contacts/Calendar), surface
    who she owes a reply, whose birthday is near, and update `friendships.md`.
-6. **Check-ins** — pull from the trackers + calendar + inbox and produce ONE
+6. **Habits & vision coach** — `/habits`: coach against `VISION.md` + habits/
+   inner-work trackers; celebrate wins, flag 3+ day patterns gently, keep inner-work
+   soft, stay cycle-aware.
+7. **Self-care scheduler** — `/selfcare`: hair/nail cadence, skincare consistency +
+   restock, weather-and-household-gated room reset, admin-only medical tracking.
+8. **Check-ins** — pull from the trackers + calendar + inbox and produce ONE
    coherent message, not several pings.
 
 ## How to talk to her (from her spec — follow exactly)
