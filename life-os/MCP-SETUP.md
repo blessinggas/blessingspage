@@ -13,6 +13,24 @@ MCP servers.
 > manager, website = the dashboard.** They meet through one shared JSON file
 > (see Part C).
 
+## ⭐ Start here (the simplest path)
+
+**Use Claude Desktop only, to begin with.** It's point-and-click and covers the
+things you actually asked for — chatting to your money manager, staying on top of
+friendships, and reading your live balances — with the least setup:
+
+1. Install **iMCP** and connect it to Claude Desktop → iMessage + Contacts +
+   Calendar (Part A).
+2. Add the **Filesystem MCP** so Claude can read the connector output and the
+   dashboard's JSON (Part C).
+3. Run the two connector scripts once to produce your balances
+   (`life-os/connectors/`), then ask Claude to fold them into the dashboard JSON.
+
+Add **Claude Code** later *only* when you want automatic, scheduled check-ins
+that text you unprompted (the `launchd` pipeline in your spec). You don't need it
+on day one. Everything below supports both; just skip the Claude Code bits until
+you want scheduling.
+
 ---
 
 ## Part A — iMessage + friendships (iMCP)
