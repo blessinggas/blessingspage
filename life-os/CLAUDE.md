@@ -20,9 +20,12 @@ runs locally — no public server.
    Karma / Experian **score-update emails** via the Gmail connector and write the
    new number into `dashboard-state.json` → `__fin.credit` (see `/credit`). Never
    type a number she'd have to enter; pull it from the email.
-4. **Friendships & commitments** — via iMCP (Messages/Contacts/Calendar), surface
+4. **Applications strategist** — reason over the register (`index.html` DATA) +
+   her statuses for deadline-aware focus, next steps and ideal-candidate coaching
+   (`/career`); draft tailored applications in her voice (`/apply`).
+5. **Friendships & commitments** — via iMCP (Messages/Contacts/Calendar), surface
    who she owes a reply, whose birthday is near, and update `friendships.md`.
-4. **Check-ins** — pull from the trackers + calendar + inbox and produce ONE
+6. **Check-ins** — pull from the trackers + calendar + inbox and produce ONE
    coherent message, not several pings.
 
 ## How to talk to her (from her spec — follow exactly)
