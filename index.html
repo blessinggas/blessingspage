@@ -729,6 +729,45 @@
   .cr-lv b{font-size:14px;color:var(--ink);font-weight:700;}
   .cr-lv span{font-size:13px;color:var(--ink-2);line-height:1.5;}
   .cr-plan li{cursor:pointer;}
+
+  /* ── inner work / foundation (soft lane) ── */
+  .inner-hero{background:linear-gradient(135deg,#eef5f0 0%,#e6f1ec 100%);border-radius:var(--w-lg);padding:26px 28px;margin-bottom:22px;}
+  .truth-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint-deep);font-weight:700;margin-bottom:12px;}
+  .truth-day{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(21px,3vw,28px);line-height:1.38;color:#2b6f5a;}
+  .prompt-card{background:var(--pink-2);border-radius:var(--w-sm);padding:16px 18px;margin-bottom:12px;}
+  .prompt-q{font-family:var(--display);font-style:italic;font-weight:500;font-size:18px;line-height:1.42;color:var(--ink);}
+  .reflect-count{font-size:12.5px;color:var(--ink-2);font-weight:500;}
+  .mini-log-wrap{margin-top:14px;}
+  .mini-log{font-size:12.5px;color:var(--ink-2);padding:7px 0;border-top:1px solid var(--rule-2);line-height:1.5;}
+  .mini-log span{color:var(--ink-3);font-variant-numeric:tabular-nums;margin-right:6px;}
+  .help-note{font-size:13px;color:var(--ink-2);line-height:1.55;margin:0 0 14px;}
+  .proof-item{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule-2);}
+  .proof-item:last-of-type{border-bottom:none;}
+  .pi-mark{color:var(--mint-deep);flex:0 0 auto;display:inline-flex;margin-top:1px;}
+  .pi-mark .ic{width:18px;height:18px;}
+  .pi-body{flex:1;font-size:14px;color:var(--ink);line-height:1.5;}
+  .reframe-item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule-2);}
+  .reframe-item:last-of-type{border-bottom:none;}
+  .rf-was{font-size:13px;color:var(--ink-3);text-decoration:line-through;line-height:1.45;}
+  .rf-now{font-size:14.5px;color:#2b6f5a;font-weight:600;margin-top:4px;line-height:1.5;}
+  .truth-list .tl-row{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule-2);}
+  .truth-list .tl-row:last-child{border-bottom:none;}
+  .truth-list .fin-line{flex:1;font-size:14px;}
+  .chk{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14.5px;color:var(--ink);cursor:pointer;}
+  .chk input{width:18px;height:18px;accent-color:var(--mint);}
+
+  /* ── friendships action inbox ── */
+  .act-card{background:var(--paper);border-radius:var(--w);padding:18px 20px;margin-bottom:14px;box-shadow:var(--sh-soft);}
+  .act-card.approved{background:var(--mint-2);box-shadow:none;}
+  .act-top{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+  .act-person{font-weight:700;font-size:16px;color:var(--ink);}
+  .act-kind{font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;padding:4px 10px;border-radius:var(--tag);}
+  .act-kind.reply{background:var(--gold-2);color:var(--gold-deep);}
+  .act-kind.reachout{background:var(--pink-2);color:var(--accent-deep);}
+  .act-status{margin-left:auto;font-size:12px;font-weight:700;color:var(--mint-deep);}
+  .act-why{font-size:13.5px;color:var(--ink-2);line-height:1.55;margin-bottom:11px;}
+  .act-draft{width:100%;min-height:66px;line-height:1.5;}
+  .act-btns{display:flex;gap:10px;margin-top:11px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -2785,67 +2824,140 @@
 
   function renderInner(){
     var l=lifeState(), inn=l.inner;
-    var plabels={affirmations:'Affirmations (written down)',journal:'Journaling what I&rsquo;m manifesting',prayer:'Prayer',bible:'Bible reading'};
+    inn.reflections=inn.reflections||[]; inn.proof=inn.proof||[]; inn.reframes=inn.reframes||[];
+    if(!inn.truths) inn.truths=[
+      'I was picked by DeepMind and rebuilt EMOS with real users — I belong in these rooms.',
+      'First-gen, state-school, and still here. That is strength, not something to hide.',
+      'People feel warmth around me. That is a real gift, not a given.',
+      'Confidence isn’t the absence of doubt — it’s doing it anyway. I do it anyway.'
+    ];
+    if(!inn.proof.length) inn.proof=['DeepMind Research Ready — selected.','Condé Nast interviewed me and made an offer.','Fluent in French — most people never get there.'];
+    var day=Math.floor(Date.now()/864e5);
+    var PROMPTS=[
+      'Where did you come across as confident today? That wasn’t a performance — that was you. Sit with it for a second.',
+      'What’s one thing you handled today that a younger you would’ve found really hard?',
+      'An insecurity spoke up today. Whose voice is it, really — and would you ever say it to someone you love?',
+      'What would your best friend say about how you showed up today?',
+      'Name something that went right that you’re tempted to brush off as “nothing”.',
+      'You’re allowed to be a work in progress AND enough right now. Both. Where did you forget that today?',
+      'What did you do today that was kind — to someone else, or to yourself?',
+      'If today was heavy, what would you say to a friend having the exact same day?',
+      'Everyone you admire has felt this unsure. What’s the fear saying — and is it a fact, or just a feeling?',
+      'What’s one small thing you’re quietly proud of that no one else would even notice?'
+    ];
+    var prompt=PROMPTS[day%PROMPTS.length];
+    var truth=inn.truths.length?inn.truths[day%inn.truths.length]:'';
+    var plabels={affirmations:'Affirmations — written down',journal:'Journaling what I’m manifesting',prayer:'Prayer',bible:'Bible reading'};
     var practiceHtml=['affirmations','journal','prayer','bible'].map(function(k){
-      return '<div class="chk"><input type="checkbox" data-practice="'+k+'"'+(inn.practice[k]?' checked':'')+'><span>'+plabels[k]+'</span></div>';
+      return '<label class="chk"><input type="checkbox" data-practice="'+k+'"'+(inn.practice[k]?' checked':'')+'><span>'+plabels[k]+'</span></label>';
     }).join('');
-    var gratHtml=inn.gratitude.slice().reverse().map(function(g,ri){
-      var i=inn.gratitude.length-1-ri;
-      return '<div class="listrow"><div class="lr-body">'+esc(g)+'</div><button class="fin-del" data-gratdel="'+i+'">×</button></div>';
-    }).join('');
+    var reflectHist=inn.reflections.slice(-2).reverse().map(function(r){return '<div class="mini-log"><span>'+esc(r.date||'')+'</span> '+esc((r.text||'').slice(0,120))+((r.text||'').length>120?'…':'')+'</div>';}).join('');
+    var proofHtml=inn.proof.slice().reverse().map(function(p,ri){var i=inn.proof.length-1-ri;return '<div class="proof-item"><span class="pi-mark">'+ic('check')+'</span><div class="pi-body">'+esc(p)+'</div><button class="fin-del" data-pfdel="'+i+'">×</button></div>';}).join('');
+    var reframeHtml=inn.reframes.slice(-4).reverse().map(function(r,ri){var i=inn.reframes.length-1-ri;return '<div class="reframe-item"><div style="flex:1"><div class="rf-was">'+esc(r.thought||'')+'</div><div class="rf-now">'+esc(r.reframe||'')+'</div></div><button class="fin-del" data-rfdel="'+i+'">×</button></div>';}).join('');
+    var truthHtml=inn.truths.map(function(t,i){return '<div class="tl-row"><input class="fin-line" data-truth="'+i+'" value="'+escA(t)+'"><button class="fin-del" data-trdel="'+i+'">×</button></div>';}).join('');
+    var gratHtml=inn.gratitude.slice().reverse().map(function(g,ri){var i=inn.gratitude.length-1-ri;return '<div class="listrow"><div class="lr-body">'+esc(g)+'</div><button class="fin-del" data-gratdel="'+i+'">×</button></div>';}).join('');
+
     $('inner').innerHTML=
-      '<div class="panel soft"><div class="panel-h">'+ic('star')+' Today&rsquo;s practice</div>'+practiceHtml+'</div>'+
-      '<div class="panel soft"><div class="panel-h">'+ic('heart')+' Gratitude — what&rsquo;s already landed</div>'+
-        (gratHtml||'<div class="bempty">Nothing logged yet — 2026 has been a year of opportunities, track it here.</div>')+
+      '<div class="inner-hero">'+
+        '<div class="truth-eyebrow">Your truth today</div>'+
+        '<div class="truth-day">'+esc(truth)+'</div>'+
+      '</div>'+
+      '<div class="panel soft">'+
+        '<div class="panel-h">'+ic('sparkle')+' Today’s reflection</div>'+
+        '<div class="prompt-card"><div class="prompt-q">'+esc(prompt)+'</div></div>'+
+        '<textarea id="inn-reflect" placeholder="Write freely — no one sees this but you."></textarea>'+
+        '<div class="fin-addrow" style="margin-top:12px"><button class="btn sm" id="inn-reflect-save">Save today’s reflection</button><span class="reflect-count">'+(inn.reflections.length?('You’ve reflected '+inn.reflections.length+' time'+(inn.reflections.length>1?'s':'')+' — that’s the work.'):'Your first one starts the streak.')+'</span></div>'+
+        (reflectHist?'<div class="mini-log-wrap">'+reflectHist+'</div>':'')+
+      '</div>'+
+      '<div class="panel soft">'+
+        '<div class="panel-h">'+ic('star')+' Your proof</div>'+
+        '<p class="help-note">Insecurity lies. This is your evidence drawer — wins, kind words, moments you showed up. Read it when the doubt gets loud.</p>'+
+        proofHtml+
+        '<div class="fin-addrow" style="margin-top:14px"><input id="pf-new" placeholder="Something that proves you’re capable…"><button class="btn sm" id="pf-add">Add proof</button></div>'+
+      '</div>'+
+      '<div class="panel soft">'+
+        '<div class="panel-h">'+ic('heart')+' Turn a hard thought around</div>'+
+        '<p class="help-note">Caught a cruel thought about yourself? Name it, then answer: what would you say to your best friend if she said this about herself?</p>'+
+        '<textarea id="rf-thought" placeholder="The thought, exactly as it sounded…" style="min-height:56px"></textarea>'+
+        '<textarea id="rf-reframe" placeholder="The kinder, truer version…" style="min-height:56px;margin-top:10px"></textarea>'+
+        '<div class="fin-addrow" style="margin-top:10px"><button class="btn sm" id="rf-save">Save the reframe</button></div>'+
+        (reframeHtml?'<div style="margin-top:14px">'+reframeHtml+'</div>':'')+
+      '</div>'+
+      '<div class="panel soft">'+
+        '<div class="panel-h">'+ic('sparkle')+' Truths worth repeating</div>'+
+        '<p class="help-note">Not empty affirmations — truths your evidence already backs up. Edit them into your own words.</p>'+
+        '<div class="truth-list">'+truthHtml+'</div>'+
+        '<div class="fin-addrow" style="margin-top:12px"><input id="tr-new" placeholder="A truth about you…"><button class="btn sm" id="tr-add">Add</button></div>'+
+      '</div>'+
+      '<div class="panel soft">'+
+        '<div class="panel-h">'+ic('heart')+' Gratitude — what’s already landed</div>'+
+        (gratHtml||'<div class="bempty">2026 has been a year of opportunities — start catching them here.</div>')+
         '<div class="fin-addrow" style="margin-top:14px"><input id="grat-new" placeholder="Something good that landed…"><button class="btn sm" id="grat-add">Add</button></div>'+
       '</div>'+
-      '<div class="panel soft"><div class="plabel">How are you actually feeling today</div>'+
+      '<div class="panel soft">'+
+        '<div class="panel-h">'+ic('check')+' Daily practice</div>'+practiceHtml+
+        '<div class="plabel" style="margin-top:16px">How are you actually feeling today?</div>'+
         '<textarea id="inn-feeling" placeholder="No pressure — just how it actually feels under the confident exterior.">'+esc(inn.feeling||'')+'</textarea>'+
       '</div>';
-    Array.prototype.forEach.call($('inner').querySelectorAll('[data-practice]'),function(inp){
-      inp.onchange=function(){ inn.practice[inp.getAttribute('data-practice')]=inp.checked; save(); };
-    });
-    $('grat-add').onclick=function(){
-      var v=$('grat-new').value.trim(); if(!v)return;
-      inn.gratitude.push(v); save(); renderInner();
-    };
-    Array.prototype.forEach.call($('inner').querySelectorAll('[data-gratdel]'),function(b){
-      b.onclick=function(){ inn.gratitude.splice(+b.getAttribute('data-gratdel'),1); save(); renderInner(); };
-    });
-    $('inn-feeling').oninput=function(){ inn.feeling=this.value; save(); };
+
+    $('inn-reflect-save').onclick=function(){var v=$('inn-reflect').value.trim(); if(!v)return; inn.reflections.push({date:new Date().toISOString().slice(0,10),prompt:prompt,text:v}); save(); renderInner();};
+    $('pf-add').onclick=function(){var v=$('pf-new').value.trim(); if(!v)return; inn.proof.push(v); save(); renderInner();};
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-pfdel]'),function(b){b.onclick=function(){inn.proof.splice(+b.getAttribute('data-pfdel'),1);save();renderInner();};});
+    $('rf-save').onclick=function(){var t=$('rf-thought').value.trim(),r=$('rf-reframe').value.trim(); if(!t&&!r)return; inn.reframes.push({date:new Date().toISOString().slice(0,10),thought:t,reframe:r}); save(); renderInner();};
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-rfdel]'),function(b){b.onclick=function(){inn.reframes.splice(+b.getAttribute('data-rfdel'),1);save();renderInner();};});
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-truth]'),function(inp){inp.oninput=function(){inn.truths[+inp.getAttribute('data-truth')]=this.value;save();};});
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-trdel]'),function(b){b.onclick=function(){inn.truths.splice(+b.getAttribute('data-trdel'),1);save();renderInner();};});
+    $('tr-add').onclick=function(){var v=$('tr-new').value.trim(); if(!v)return; inn.truths.push(v); save(); renderInner();};
+    $('grat-add').onclick=function(){var v=$('grat-new').value.trim(); if(!v)return; inn.gratitude.push(v); save(); renderInner();};
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-gratdel]'),function(b){b.onclick=function(){inn.gratitude.splice(+b.getAttribute('data-gratdel'),1);save();renderInner();};});
+    Array.prototype.forEach.call($('inner').querySelectorAll('[data-practice]'),function(inp){inp.onchange=function(){inn.practice[inp.getAttribute('data-practice')]=inp.checked;save();};});
+    $('inn-feeling').oninput=function(){inn.feeling=this.value;save();};
   }
 
   function renderFriends(){
     var l=lifeState(), fr=l.friends;
-    function listPanel(key,label,icon,placeholder){
-      var items=fr[key];
-      var rows=items.map(function(it,i){
-        return '<div class="listrow"><div class="lr-body">'+esc(it)+'</div><button class="fin-del" data-frdel="'+key+'.'+i+'">×</button></div>';
-      }).join('');
-      return '<div class="panel"><div class="panel-h">'+ic(icon)+' '+label+'</div>'+
-        (rows||'<div class="bempty">Nothing here yet.</div>')+
-        '<div class="fin-addrow"><input data-frnew="'+key+'" placeholder="'+placeholder+'"><button class="btn sm" data-fradd="'+key+'">Add</button></div>'+
+    fr.actions=fr.actions||[]; fr.upcoming=fr.upcoming||[]; fr.log=fr.log||[];
+    if(!fr._seeded){ fr._seeded=true; fr.actions=[
+      {person:'Steven Postlethwaite',kind:'reply',why:'He interviewed you at Condé Nast and made an offer — you haven’t confirmed. Leaving it risks it going cold.',draft:'Hi Steven! Thank you again for the offer — I’d really love to talk through the details. Are you free for a quick call this week?',status:'suggested'},
+      {person:'Chiara',kind:'reachout',why:'You wanted to ask how the Cambridge MPhil process really runs, and it’s been a while since you spoke.',draft:'Hey Chiara! Hope you’re good 🩷 I’m deep in master’s applications — could I pick your brain on how the Cambridge MPhil process actually went for you?',status:'suggested'},
+      {person:'Grace (Step UP mentor)',kind:'reachout',why:'A warm check-in keeps the mentor relationship alive before you ever need a referral.',draft:'Hi Grace! Just wanted to say thank you again for all your guidance — I’d love to update you on where I’ve got to. Free for a catch-up soon?',status:'suggested'}
+    ]; }
+    var inbox=fr.actions.map(function(a,i){return {a:a,i:i};}).filter(function(x){return x.a.status==='suggested';});
+    var queued=fr.actions.map(function(a,i){return {a:a,i:i};}).filter(function(x){return x.a.status==='approved';});
+    var inboxHtml=inbox.map(function(x){var a=x.a,i=x.i;
+      return '<div class="act-card">'+
+        '<div class="act-top"><span class="act-person">'+esc(a.person)+'</span><span class="act-kind '+(a.kind==='reply'?'reply':'reachout')+'">'+(a.kind==='reply'?'Owe a reply':'Reach out')+'</span></div>'+
+        '<div class="act-why">'+esc(a.why)+'</div>'+
+        '<textarea class="act-draft" data-adraft="'+i+'" placeholder="Your message — tweak it however you like…">'+esc(a.draft||'')+'</textarea>'+
+        '<div class="act-btns"><button class="btn sm act-send" data-asend="'+i+'">✓ Approve &amp; send</button><button class="minibtn" data-askip="'+i+'">Not now</button></div>'+
       '</div>';
-    }
+    }).join('');
+    var queuedHtml=queued.map(function(x){var a=x.a,i=x.i;
+      return '<div class="act-card approved"><div class="act-top"><span class="act-person">'+esc(a.person)+'</span><span class="act-status">Queued to send ✓</span></div><div class="act-why">“'+esc(a.draft)+'”</div><button class="minibtn" data-aunsend="'+i+'">Undo</button></div>';
+    }).join('');
+    var upHtml=fr.upcoming.slice().reverse().map(function(u,ri){var i=fr.upcoming.length-1-ri;return '<div class="listrow"><div class="lr-body">'+esc(u)+'</div><button class="fin-del" data-updel="'+i+'">×</button></div>';}).join('');
+    var logHtml=fr.log.slice(-8).reverse().map(function(e){return '<div class="mini-log"><span>'+esc(e.date||'')+'</span> '+esc(e.person||'')+' — '+esc((e.draft||'').slice(0,70))+'</div>';}).join('');
+
     $('friends').innerHTML=
-      listPanel('oweReply','Owe a reply / said I&rsquo;d follow up','next','e.g. Sarah — send the photos')+
-      listPanel('goingQuiet','Going quiet — reach out','clock','e.g. Priya — haven&rsquo;t spoken in a while')+
-      listPanel('upcoming','Coming up — birthdays, plans, events','star','e.g. Mum&rsquo;s birthday — 12 Sep')+
-      listPanel('lovely','Just did / lovely moments','heart','e.g. Coffee with Jade — so good')+
-      '<div class="cmd-note" style="margin-top:4px">Claude Code can keep this current from your Messages/Calendar (see life-os/friendships.md) — or just add to it yourself.</div>';
-    Array.prototype.forEach.call($('friends').querySelectorAll('[data-fradd]'),function(b){
-      b.onclick=function(){
-        var key=b.getAttribute('data-fradd'), inp=$('friends').querySelector('[data-frnew="'+key+'"]');
-        var v=inp.value.trim(); if(!v)return;
-        fr[key].push(v); save(); renderFriends();
-      };
-    });
-    Array.prototype.forEach.call($('friends').querySelectorAll('[data-frdel]'),function(b){
-      b.onclick=function(){
-        var parts=b.getAttribute('data-frdel').split('.'), key=parts[0], i=+parts[1];
-        fr[key].splice(i,1); save(); renderFriends();
-      };
-    });
+      '<div class="panel"><div class="panel-h">'+ic('people')+' Needs you</div>'+
+        '<p class="help-note">Your Mac Claude reads your Messages and drops the important ones here — who to reply to, who’s gone quiet — with a draft ready. Approve to send, or tweak first.</p>'+
+        (inboxHtml||'<div class="bempty">All caught up 🩷 Run <b>/reach-out</b> in Claude Code to refresh from your Messages.</div>')+
+      '</div>'+
+      (queuedHtml?'<div class="panel"><div class="panel-h">'+ic('next')+' Queued to send</div><p class="help-note">Approved — your Mac Claude sends these next time it runs (or say “send my queued messages”).</p>'+queuedHtml+'</div>':'')+
+      '<div class="panel"><div class="panel-h">'+ic('star')+' Coming up — birthdays &amp; plans</div>'+
+        (upHtml||'<div class="bempty">Nothing yet — birthdays and plans land here.</div>')+
+        '<div class="fin-addrow"><input id="up-new" placeholder="e.g. Mum’s birthday — 12 Sep"><button class="btn sm" id="up-add">Add</button></div>'+
+      '</div>'+
+      (logHtml?'<div class="panel"><div class="panel-h">'+ic('check')+' Recently reached out</div>'+logHtml+'</div>':'')+
+      '<div class="fin-addrow" style="margin-top:6px"><input id="act-newp" placeholder="Add someone — name"><input id="act-neww" placeholder="why / what to say"><button class="btn sm" id="act-add">Add</button></div>';
+
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-adraft]'),function(t){t.oninput=function(){fr.actions[+t.getAttribute('data-adraft')].draft=this.value;save();};});
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-asend]'),function(b){b.onclick=function(){var i=+b.getAttribute('data-asend');fr.actions[i].status='approved';save();renderFriends();};});
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-askip]'),function(b){b.onclick=function(){fr.actions.splice(+b.getAttribute('data-askip'),1);save();renderFriends();};});
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-aunsend]'),function(b){b.onclick=function(){fr.actions[+b.getAttribute('data-aunsend')].status='suggested';save();renderFriends();};});
+    $('up-add').onclick=function(){var v=$('up-new').value.trim();if(!v)return;fr.upcoming.push(v);save();renderFriends();};
+    Array.prototype.forEach.call($('friends').querySelectorAll('[data-updel]'),function(b){b.onclick=function(){fr.upcoming.splice(+b.getAttribute('data-updel'),1);save();renderFriends();};});
+    $('act-add').onclick=function(){var pn=$('act-newp').value.trim(),w=$('act-neww').value.trim();if(!pn)return;fr.actions.push({person:pn,kind:'reachout',why:w||'',draft:w||'',status:'suggested'});save();renderFriends();};
   }
 
   // ═══════════ FINANCES ═══════════
