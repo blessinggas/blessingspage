@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Scheduled Life OS sync (launchd, macOS). Runs the money sync twice a day.
+  This is the "wakes up on its own" mechanism from the spec — pair it with a
+  headless Claude Code run for proactive check-in texts.
+
+  Install:
+    1. Edit the paths below to your real locations (node + repo).
+    2. cp com.blessing.lifeos.plist ~/Library/LaunchAgents/
+    3. launchctl load ~/Library/LaunchAgents/com.blessing.lifeos.plist
+  Remove:  launchctl unload ~/Library/LaunchAgents/com.blessing.lifeos.plist
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.blessing.lifeos.sync</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-lc</string>
+    <!-- edit this path to your repo -->
+    <string>cd "$HOME/blessingspage/life-os" &amp;&amp; node connectors/trading212.mjs; node connectors/truelayer.mjs fetch; node run/sync.mjs</string>
+  </array>
+
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>18</integer><key>Minute</key><integer>0</integer></dict>
+  </array>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/lifeos-sync.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/lifeos-sync.err</string>
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>
