@@ -122,4 +122,5 @@ async function fetchData() {
 }
 
 const cmd = process.argv[2] || "fetch";
-({ link, fetch: fetchData }[cmd] || fetchData)().catch?.((e) => { console.error("Failed:", e.message); process.exit(1); });
+Promise.resolve(({ link, fetch: fetchData }[cmd] || fetchData)())
+  .catch((e) => { console.error("Failed:", e.message); process.exit(1); });
