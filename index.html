@@ -623,7 +623,7 @@
   /* ── per-item accounts / pots / goals ── */
   .fin-goal-name{flex:1;min-width:0;font-family:inherit;font-weight:700;font-size:15.5px;color:var(--ink);background:transparent;border:none;border-bottom:1.5px solid transparent;padding:2px 0;outline:none;}
   .fin-goal-name:focus{border-bottom-color:var(--accent);}
-  .fin-kind{flex:0 0 auto;font-family:inherit;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-deep);background:var(--pink-2);border:none;border-radius:var(--tag);padding:5px 10px;cursor:pointer;outline:none;}
+  .fin-kind{flex:0 0 auto;width:auto;font-family:inherit;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-deep);background:var(--pink-2);border:none;border-radius:var(--tag);padding:5px 10px;cursor:pointer;outline:none;}
   .fin-goal-rem{font-size:12.5px;color:var(--ink-2);margin-top:9px;font-weight:600;}
   /* ── ledger: basis toggle + breakdown ── */
   .led-basis{display:inline-flex;background:var(--muted);border-radius:var(--pill);padding:4px;margin:14px 0 4px;}
@@ -637,6 +637,33 @@
   .led-bonus{margin-top:10px;font-size:13px;color:var(--mint-deep);font-weight:700;}
   .led-cap{margin-top:8px;font-size:12px;color:var(--gold-deep);font-weight:600;}
   .led-note{margin-top:9px;font-size:12px;color:var(--ink-3);font-style:italic;}
+
+  /* ── manual money dashboard ── */
+  .money-hero .fin-num.neg{background:none;-webkit-background-clip:border-box;background-clip:border-box;-webkit-text-fill-color:var(--alarm-deep);color:var(--alarm-deep);}
+  .money-chips{display:flex;flex-wrap:wrap;gap:10px 26px;margin:12px 0 2px;}
+  .money-chip{font-size:12px;color:var(--ink-2);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+  .money-chip b{display:block;font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.02em;color:var(--ink);margin-top:3px;text-transform:none;letter-spacing:-.02em;}
+  .money-chip.neg b{color:var(--alarm-deep);}
+  .rec{margin-top:16px;padding:16px 18px;border-radius:var(--w-sm);background:linear-gradient(135deg,#fdeff4 0%,#fbe6ef 100%);}
+  .rec-line{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px;font-weight:700;color:var(--ink);}
+  .rec-line .amt{color:var(--accent-deep);font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.02em;}
+  .rec-why{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55;}
+  .mcap{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600;margin-bottom:10px;}
+  .mrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule-2);}
+  .mrow:last-of-type{border-bottom:none;}
+  .mrow .fin-line{flex:1;min-width:70px;}
+  .mnum{width:104px;text-align:right;}
+  .mapr{width:70px;text-align:right;}
+  .mkind{flex:0 0 auto;}
+  .cmd-box{display:flex;gap:11px;}
+  .cmd-box input{flex:1;font-family:inherit;font-size:15px;color:var(--ink);background:var(--muted);border:1.5px solid transparent;border-radius:var(--pill);padding:13px 16px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s;}
+  .cmd-box input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(203,90,134,.13);background:#fff;}
+  .cmd-resp{margin-top:14px;padding:14px 16px;border-radius:var(--w-sm);background:var(--mint-2);color:var(--mint-deep);font-size:14px;font-weight:600;line-height:1.5;}
+  .cmd-resp.warn{background:var(--gold-2);color:var(--gold-deep);}
+  .cmd-eg{font-size:12.5px;color:var(--ink-2);margin-top:12px;line-height:1.8;}
+  .cmd-eg b{color:var(--accent-deep);font-weight:600;}
+  .cmd-note{font-size:12px;color:var(--ink-3);font-style:italic;margin-top:10px;}
+  @media(max-width:560px){.mnum{width:88px;}.mapr{width:60px;}.mrow{flex-wrap:wrap;}}
 </style>
 </head>
 <body>
@@ -2482,6 +2509,10 @@
     if(lg.infl==null)lg.infl=2.5;
     if(lg.real==null)lg.real=true;
     f.goals.forEach(function(g){if(g.kind==null)g.kind='Goal';});
+    if(!f.accounts)f.accounts=[{name:'Current account',kind:'Current',bal:1200},{name:'Savings',kind:'Savings',bal:3200},{name:'Credit card',kind:'Credit',bal:0,apr:22}];
+    if(!f.debts)f.debts=[];
+    if(!f.bills)f.bills=[{name:'Phone',amt:20,day:1},{name:'Subscriptions',amt:30,day:1}];
+    if(f.takehome==null)f.takehome=0;
     return f;
   }
   var GOALCOL={accent:'',mint:'mint',gold:'gold',violet:'violet'};
@@ -2576,6 +2607,129 @@
         '<div class="led-note">'+(c.real?'Shown in today’s money — growth is net of '+c.infl+'% inflation.':'Shown in future pounds — the dashed freedom line climbs with '+c.infl+'% inflation.')+'</div>'+
       '</div>'+ ledgerChart(c);
   }
+  var lastCmdResp='', lastCmdWarn=false;
+  function num(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0;}
+  function cap(s){s=(s||'').trim();return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+  function firstCurrent(f){
+    var a=(f.accounts=f.accounts||[]);
+    for(var i=0;i<a.length;i++){ if(a[i].kind!=='Credit') return a[i]; }
+    var n={name:'Main',kind:'Current',bal:0}; a.push(n); return n;
+  }
+  function computeMoney(f){
+    var acc=f.accounts||[], debts=f.debts||[], bills=f.bills||[];
+    var cash=0, credit=0;
+    acc.forEach(function(a){ if(a.kind==='Credit') credit+=(+a.bal||0); else cash+=(+a.bal||0); });
+    var otherDebt=0, minPay=0;
+    debts.forEach(function(d){ otherDebt+=(+d.bal||0); minPay+=(+d.min||0); });
+    var totalDebt=credit+otherDebt, net=cash-totalDebt;
+    var monthlyBills=0; bills.forEach(function(b){ monthlyBills+=(+b.amt||0); });
+    var take=+f.takehome||0;
+    var ccMin= credit>0 ? Math.max(25,credit*0.025) : 0;
+    var disposable=Math.max(0, take-monthlyBills-minPay-ccMin);
+    var allDebts=debts.map(function(d){return {name:d.name,bal:+d.bal||0,apr:+d.apr||0};});
+    acc.forEach(function(a){ if(a.kind==='Credit'&&(+a.bal||0)>0) allDebts.push({name:a.name,bal:+a.bal,apr:(+a.apr||22)}); });
+    allDebts.sort(function(x,y){return y.apr-x.apr;});
+    var top=allDebts.length?allDebts[0]:null;
+    var emTarget=monthlyBills*3, priority, why, spend, toPriority, toInvest=0;
+    if(monthlyBills>0 && cash<emTarget){
+      priority='Emergency fund'; toPriority=Math.round(disposable*0.7); spend=disposable-toPriority; toInvest=0;
+      why='Your cash ('+gbp(cash)+') is under three months of bills ('+gbp(emTarget)+'). Build the safety net before investing.';
+    } else if(top && top.bal>0 && top.apr>=6){
+      priority='Overpay '+top.name; toPriority=Math.round(disposable*0.6); spend=disposable-toPriority; toInvest=0;
+      why='At '+top.apr+'% APR, clearing this beats what investing would earn — avalanche method, highest rate first.';
+    } else {
+      priority='Invest — LISA first'; spend=Math.round(disposable*0.5); toInvest=disposable-spend; toPriority=toInvest;
+      why='Cushioned and no costly debt — fill the LISA for the 25% bonus (up to £333/mo), then the S&S ISA.';
+    }
+    return {cash:cash,credit:credit,otherDebt:otherDebt,totalDebt:totalDebt,net:net,monthlyBills:monthlyBills,
+      take:take,disposable:disposable,priority:priority,why:why,
+      spend:Math.max(0,spend||0),toPriority:Math.max(0,toPriority||0),toInvest:Math.max(0,toInvest||0),top:top};
+  }
+  function moneyPanels(f){
+    var acc=f.accounts||[], debts=f.debts||[], bills=f.bills||[];
+    var KA=['Current','Savings','Credit'];
+    var accHtml=acc.map(function(a,i){
+      var opts=KA.map(function(k){return '<option'+(a.kind===k?' selected':'')+'>'+k+'</option>';}).join('');
+      return '<div class="mrow">'+
+        '<input class="fin-line" data-afield="name" data-ai="'+i+'" value="'+escA(a.name)+'" placeholder="Account">'+
+        '<select class="fin-kind mkind" data-akind="'+i+'">'+opts+'</select>'+
+        '<span class="fin-cur">£</span><input class="fin-in mnum" type="number" step="10" data-afield="bal" data-ai="'+i+'" value="'+(+a.bal||0)+'">'+
+        '<button class="fin-del" data-adel="'+i+'" title="Remove">×</button></div>';
+    }).join('');
+    var debtHtml=debts.map(function(d,i){
+      return '<div class="mrow">'+
+        '<input class="fin-line" data-dfield="name" data-di="'+i+'" value="'+escA(d.name)+'" placeholder="Debt">'+
+        '<span class="fin-cur">£</span><input class="fin-in mnum" type="number" step="50" data-dfield="bal" data-di="'+i+'" value="'+(+d.bal||0)+'">'+
+        '<input class="fin-in mapr" type="number" step="0.5" data-dfield="apr" data-di="'+i+'" value="'+(+d.apr||0)+'" title="APR %">'+
+        '<input class="fin-in mapr" type="number" step="5" data-dfield="min" data-di="'+i+'" value="'+(+d.min||0)+'" title="Min £/mo">'+
+        '<button class="fin-del" data-ddel="'+i+'" title="Remove">×</button></div>';
+    }).join('');
+    var billHtml=bills.map(function(b,i){
+      return '<div class="mrow">'+
+        '<input class="fin-line" data-bfield="name" data-bi="'+i+'" value="'+escA(b.name)+'" placeholder="Bill">'+
+        '<span class="fin-cur">£</span><input class="fin-in mnum" type="number" step="5" data-bfield="amt" data-bi="'+i+'" value="'+(+b.amt||0)+'">'+
+        '<button class="fin-del" data-bdel="'+i+'" title="Remove">×</button></div>';
+    }).join('');
+    return '<div class="panel money-hero">'+
+        '<div class="panel-h">'+ic('wallet')+' Where you stand today</div>'+
+        '<div id="money-out"></div>'+
+        '<div class="fin-star-controls" style="margin-top:16px"><label>Monthly take-home <span class="fin-cur">£</span><input class="fin-in" type="number" step="50" id="money-take" value="'+(+f.takehome||0)+'"></label></div>'+
+      '</div>'+
+      '<div class="panel">'+
+        '<div class="panel-h">'+ic('coin')+' Accounts &amp; cards</div>'+
+        '<div class="mcap">Name · type · balance (credit cards count as money owed)</div>'+
+        accHtml+
+        '<div class="fin-addrow"><input id="money-newacc" placeholder="New account — e.g. Monzo"><button class="btn sm" id="money-addacc">Add account</button></div>'+
+      '</div>'+
+      '<div class="panel">'+
+        '<div class="panel-h">'+ic('flag')+' Debts</div>'+
+        '<div class="mcap">Name · balance · APR % · min £/mo — cleared highest-APR first</div>'+
+        (debtHtml||'<div class="bempty">No debts logged. Lovely.</div>')+
+        '<div class="fin-addrow"><input id="money-newdebt" placeholder="New debt — e.g. Overdraft"><button class="btn sm" id="money-adddebt">Add debt</button></div>'+
+      '</div>'+
+      '<div class="panel">'+
+        '<div class="panel-h">'+ic('clock')+' Monthly bills</div>'+
+        '<div class="mcap">Name · amount per month</div>'+
+        (billHtml||'<div class="bempty">No bills yet.</div>')+
+        '<div class="fin-addrow"><input id="money-newbill" placeholder="New bill — e.g. Rent"><button class="btn sm" id="money-addbill">Add bill</button></div>'+
+      '</div>'+
+      '<div class="panel">'+
+        '<div class="panel-h">'+ic('sparkle')+' Tell your money manager</div>'+
+        '<div class="cmd-box"><input id="money-cmd" placeholder="e.g. got paid £2,000 · spent £40 on food"><button class="btn sm" id="money-cmdgo">Send</button></div>'+
+        (lastCmdResp?'<div class="cmd-resp'+(lastCmdWarn?' warn':'')+'">'+lastCmdResp+'</div>':'')+
+        '<div class="cmd-eg">Try: <b>got paid £2000</b> · <b>spent £40 on food</b> · <b>add account Monzo 1200</b> · <b>add card Amex 400</b> · <b>add debt Overdraft 500 at 39%</b> · <b>add bill Rent 800</b> · <b>how much can I invest?</b></div>'+
+        '<div class="cmd-note">Understands simple commands and updates your numbers instantly. For real back-and-forth advice, connect Claude on your Mac (see life-os/MCP-SETUP.md).</div>'+
+      '</div>';
+  }
+  function paintMoney(){
+    var out=$('money-out'); if(!out) return;
+    var f=finState(), m=computeMoney(f);
+    out.innerHTML=
+      '<div class="fin-num'+(m.net<0?' neg':'')+'">'+gbp(m.net)+'</div>'+
+      '<div class="money-chips">'+
+        '<span class="money-chip">Cash<b>'+gbp(m.cash)+'</b></span>'+
+        '<span class="money-chip'+(m.totalDebt>0?' neg':'')+'">Owed<b>'+gbp(m.totalDebt)+'</b></span>'+
+        '<span class="money-chip">Bills / mo<b>'+gbp(m.monthlyBills)+'</b></span>'+
+        '<span class="money-chip">After bills<b>'+gbp(Math.max(0,m.take-m.monthlyBills))+'</b></span>'+
+      '</div>'+
+      (m.take>0
+        ? '<div class="rec"><div class="rec-line"><span>Safe to spend <span class="amt">'+gbp(m.spend)+'</span></span><span>→ '+esc(m.priority)+' <span class="amt">'+gbp(m.toPriority)+'</span></span></div><div class="rec-why">'+m.why+'</div></div>'
+        : '<div class="rec"><div class="rec-why">Add your monthly take-home above and I’ll tell you what’s safe to spend, save and invest.</div></div>');
+  }
+  function runMoneyCmd(text){
+    var f=finState(), t=(text||'').trim(), tl=t.toLowerCase(), r='', warn=false, m;
+    if(!t) return;
+    if(/(safe to spend|how much.*spend|what can i spend)/.test(tl)){ var c=computeMoney(f); r= c.take>0? 'Safe to spend this month: '+gbp(c.spend)+'. Then '+gbp(c.toPriority)+' toward '+c.priority+'.' : 'Add your monthly take-home first and I’ll work it out.'; }
+    else if(/(how much.*invest|can i invest|spare to invest)/.test(tl)){ var c2=computeMoney(f); r= c2.toInvest>0? 'About '+gbp(c2.toInvest)+' spare to invest this month — LISA first for the 25% bonus.' : 'Nothing spare to invest yet once bills, debt and your safety net are covered.'; }
+    else if(m=t.match(/(?:got paid|payday|paid in|income|received)\D*([\d.,]+)/i)){ var amt=num(m[1]); var a=firstCurrent(f); a.bal=(+a.bal||0)+amt; var c3=computeMoney(f); r='Nice — added '+gbp(amt)+' to '+a.name+'. Safe to spend '+gbp(c3.spend)+'; '+gbp(c3.toPriority)+' toward '+c3.priority+'.'; }
+    else if(m=t.match(/spent\D*([\d.,]+)(?:\s*(?:on|for)\s+(.+))?/i)){ var amt2=num(m[1]); var a2=firstCurrent(f); a2.bal=(+a2.bal||0)-amt2; r='Logged '+gbp(amt2)+(m[2]?' on '+m[2].trim():'')+'. '+a2.name+' is now '+gbp(a2.bal)+'.'; if(a2.bal<0){warn=true; r+=' — heads up, that account is negative.';} }
+    else if(m=t.match(/add (?:card|credit(?:\s*card)?)\s+(.+?)\s+([\d.,]+)/i)){ (f.accounts=f.accounts||[]).push({name:cap(m[1]),kind:'Credit',bal:num(m[2]),apr:22}); r='Added credit card '+cap(m[1])+' owing '+gbp(num(m[2]))+'.'; }
+    else if(m=t.match(/add (?:account|bank|savings)\s+(.+?)\s+([\d.,]+)/i)){ var kind=/savings/i.test(t)?'Savings':'Current'; (f.accounts=f.accounts||[]).push({name:cap(m[1]),kind:kind,bal:num(m[2])}); r='Added '+kind.toLowerCase()+' account '+cap(m[1])+' with '+gbp(num(m[2]))+'.'; }
+    else if(m=t.match(/add debt\s+(.+?)\s+([\d.,]+)(?:\s*(?:at|@)\s*([\d.]+)\s*%?)?/i)){ (f.debts=f.debts||[]).push({name:cap(m[1]),bal:num(m[2]),apr:m[3]?num(m[3]):0,min:0}); r='Added debt '+cap(m[1])+' of '+gbp(num(m[2]))+(m[3]?' at '+num(m[3])+'% APR':'')+'.'; }
+    else if(m=t.match(/add bill\s+(.+?)\s+([\d.,]+)/i)){ (f.bills=f.bills||[]).push({name:cap(m[1]),amt:num(m[2]),day:1}); r='Added bill '+cap(m[1])+' at '+gbp(num(m[2]))+'/mo.'; }
+    else { r='Hmm, I didn’t catch that. Try "got paid £2000", "spent £40 on food", "add bill Rent 800", or "how much can I invest?"'; warn=true; }
+    lastCmdResp=r; lastCmdWarn=warn; save(); renderFinance();
+  }
   function renderFinance(){
     var f=finState();
     var fireNum=(+f.fireAnnual||0)*25;
@@ -2612,6 +2766,7 @@
     }).join('');
 
     $('finance').innerHTML=
+      moneyPanels(f)+
       '<div class="panel fin-star">'+
         '<div class="panel-h">'+ic('target')+' The North Star</div>'+
         '<div class="fin-num" id="fin-fire-num">'+gbp(fireNum)+'</div>'+
@@ -2688,6 +2843,27 @@
       inp.oninput=function(){f.ledger[inp.getAttribute('data-led')]=+this.value;save();paintLedger();};});
     Array.prototype.forEach.call($('finance').querySelectorAll('.led-tog'),function(b){
       b.onclick=function(){f.ledger.real=(b.getAttribute('data-basis')==='1');save();renderFinance();};});
+    $('money-take').oninput=function(){f.takehome=+this.value;save();paintMoney();};
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-afield]'),function(inp){
+      inp.oninput=function(){var i=+inp.getAttribute('data-ai'),k=inp.getAttribute('data-afield');f.accounts[i][k]=(k==='name'?this.value:+this.value);save();paintMoney();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-akind]'),function(sel){
+      sel.onchange=function(){f.accounts[+sel.getAttribute('data-akind')].kind=this.value;save();paintMoney();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-adel]'),function(b){
+      b.onclick=function(){f.accounts.splice(+b.getAttribute('data-adel'),1);save();renderFinance();};});
+    $('money-addacc').onclick=function(){var v=$('money-newacc').value.trim();f.accounts.push({name:v||'New account',kind:'Current',bal:0});save();renderFinance();};
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-dfield]'),function(inp){
+      inp.oninput=function(){var i=+inp.getAttribute('data-di'),k=inp.getAttribute('data-dfield');f.debts[i][k]=(k==='name'?this.value:+this.value);save();paintMoney();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-ddel]'),function(b){
+      b.onclick=function(){f.debts.splice(+b.getAttribute('data-ddel'),1);save();renderFinance();};});
+    $('money-adddebt').onclick=function(){var v=$('money-newdebt').value.trim();f.debts.push({name:v||'New debt',bal:0,apr:0,min:0});save();renderFinance();};
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-bfield]'),function(inp){
+      inp.oninput=function(){var i=+inp.getAttribute('data-bi'),k=inp.getAttribute('data-bfield');f.bills[i][k]=(k==='name'?this.value:+this.value);save();paintMoney();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-bdel]'),function(b){
+      b.onclick=function(){f.bills.splice(+b.getAttribute('data-bdel'),1);save();renderFinance();};});
+    $('money-addbill').onclick=function(){var v=$('money-newbill').value.trim();f.bills.push({name:v||'New bill',amt:0,day:1});save();renderFinance();};
+    $('money-cmdgo').onclick=function(){runMoneyCmd($('money-cmd').value);};
+    $('money-cmd').onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();runMoneyCmd(this.value);}};
+    paintMoney();
     paintLedger();
   }
 
