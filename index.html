@@ -664,6 +664,10 @@
   .cmd-eg b{color:var(--accent-deep);font-weight:600;}
   .cmd-note{font-size:12px;color:var(--ink-3);font-style:italic;margin-top:10px;}
   @media(max-width:560px){.mnum{width:88px;}.mapr{width:60px;}.mrow{flex-wrap:wrap;}}
+
+  .fin-suggest{display:inline-block;margin-top:11px;font-family:inherit;font-size:12px;font-weight:700;color:var(--accent-deep);background:var(--pink-2);border:none;border-radius:var(--pill);padding:7px 14px;cursor:pointer;transition:background .2s,color .2s;}
+  .fin-suggest:hover{background:var(--accent);color:#fff;}
+  .award-name{flex:1;min-width:70px;font-weight:700;color:var(--ink);padding:2px 0;}
 </style>
 </head>
 <body>
@@ -2630,10 +2634,13 @@
     acc.forEach(function(a){ if(a.kind==='Credit'&&(+a.bal||0)>0) allDebts.push({name:a.name,bal:+a.bal,apr:(+a.apr||22)}); });
     allDebts.sort(function(x,y){return y.apr-x.apr;});
     var top=allDebts.length?allDebts[0]:null;
-    var emTarget=monthlyBills*3, priority, why, spend, toPriority, toInvest=0;
-    if(monthlyBills>0 && cash<emTarget){
+    var emGoal=(f.goals||[]).filter(function(g){return g.kind==='Pot'||/emerg/i.test(g.label||'');})[0];
+    var emTarget=(emGoal&&+emGoal.target>0)?+emGoal.target:monthlyBills*3;
+    var emFund=emGoal?(+emGoal.saved||0):cash;
+    var priority, why, spend, toPriority, toInvest=0;
+    if(monthlyBills>0 && emFund<emTarget){
       priority='Emergency fund'; toPriority=Math.round(disposable*0.7); spend=disposable-toPriority; toInvest=0;
-      why='Your cash ('+gbp(cash)+') is under three months of bills ('+gbp(emTarget)+'). Build the safety net before investing.';
+      why='Your emergency fund ('+gbp(emFund)+') is under three months of bills ('+gbp(emTarget)+'). Top it up before investing.';
     } else if(top && top.bal>0 && top.apr>=6){
       priority='Overpay '+top.name; toPriority=Math.round(disposable*0.6); spend=disposable-toPriority; toInvest=0;
       why='At '+top.apr+'% APR, clearing this beats what investing would earn — avalanche method, highest rate first.';
@@ -2711,6 +2718,7 @@
         '<span class="money-chip'+(m.totalDebt>0?' neg':'')+'">Owed<b>'+gbp(m.totalDebt)+'</b></span>'+
         '<span class="money-chip">Bills / mo<b>'+gbp(m.monthlyBills)+'</b></span>'+
         '<span class="money-chip">After bills<b>'+gbp(Math.max(0,m.take-m.monthlyBills))+'</b></span>'+
+        (securedTotal(f)>0?'<span class="money-chip">Funding won<b>'+gbp(securedTotal(f))+'</b></span>':'')+
       '</div>'+
       (m.take>0
         ? '<div class="rec"><div class="rec-line"><span>Safe to spend <span class="amt">'+gbp(m.spend)+'</span></span><span>→ '+esc(m.priority)+' <span class="amt">'+gbp(m.toPriority)+'</span></span></div><div class="rec-why">'+m.why+'</div></div>'
@@ -2730,10 +2738,21 @@
     else { r='Hmm, I didn’t catch that. Try "got paid £2000", "spent £40 on food", "add bill Rent 800", or "how much can I invest?"'; warn=true; }
     lastCmdResp=r; lastCmdWarn=warn; save(); renderFinance();
   }
+  function securedList(f){
+    f.awards=f.awards||{};
+    var apps=DATA.concat(custom()||[]), out=[];
+    apps.forEach(function(x){
+      var st=(state[x.id]&&state[x.id].status)||'Not started';
+      if(st==='Offer') out.push({id:x.id, name:x.n, amt:(+f.awards[x.id]||0)});
+    });
+    return out;
+  }
+  function securedTotal(f){ var t=0; securedList(f).forEach(function(a){t+=a.amt;}); return t; }
   function renderFinance(){
     var f=finState();
     var fireNum=(+f.fireAnnual||0)*25;
     var tot=finTotals(f);
+    var mBills=(f.bills||[]).reduce(function(s,b){return s+(+b.amt||0);},0);
     var KINDS=['Account','LISA','ISA','Pot','Goal'];
     var goalsHtml=f.goals.map(function(g,i){
       var pct=(+g.target>0)?Math.min(100,Math.round((+g.saved||0)/(+g.target)*100)):0;
@@ -2752,6 +2771,7 @@
             '<span class="fin-pct" id="fin-pct-'+i+'">'+pct+'%</span>'+
           '</div>'+
           '<div class="fin-goal-rem" id="fin-rem-'+i+'">'+(rem>0?gbp(rem)+' to go':'Complete ✓')+'</div>'+
+          (((g.kind==='Pot'||/emerg/i.test(g.label||''))&&mBills>0&&Math.round(+g.target||0)!==mBills*3)?'<button class="fin-suggest" data-esuggest="'+i+'" data-eval="'+(mBills*3)+'">Set 3-month buffer · '+gbp(mBills*3)+'</button>':'')+
         '</div>';
     }).join('');
     var incomeHtml=f.income.map(function(m,i){
@@ -2765,6 +2785,9 @@
         '</div>';
     }).join('');
 
+    var _sec=securedList(f);
+    var securedBlock = _sec.length ? ('<div class="mcap">Secured funding — offers logged in your Register (add the award amount)</div>'+
+      _sec.map(function(a){return '<div class="mrow"><span class="fin-line award-name">'+esc(a.name)+'</span><span class="fin-cur">£</span><input class="fin-in mnum" type="number" step="100" data-award="'+a.id+'" value="'+a.amt+'"></div>';}).join('')) : '';
     $('finance').innerHTML=
       moneyPanels(f)+
       '<div class="panel fin-star">'+
@@ -2805,6 +2828,7 @@
       '</div>'+
       '<div class="panel">'+
         '<div class="panel-h">'+ic('wallet')+' Money coming in</div>'+
+        securedBlock+
         incomeHtml+
         '<div class="fin-addrow"><input id="fin-newinc" placeholder="New income source" aria-label="New income source"><button class="btn sm" id="fin-addinc">Add source</button></div>'+
       '</div>';
@@ -2861,6 +2885,10 @@
     Array.prototype.forEach.call($('finance').querySelectorAll('[data-bdel]'),function(b){
       b.onclick=function(){f.bills.splice(+b.getAttribute('data-bdel'),1);save();renderFinance();};});
     $('money-addbill').onclick=function(){var v=$('money-newbill').value.trim();f.bills.push({name:v||'New bill',amt:0,day:1});save();renderFinance();};
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-award]'),function(inp){
+      inp.oninput=function(){f.awards=f.awards||{};f.awards[inp.getAttribute('data-award')]=+this.value;save();paintMoney();};});
+    Array.prototype.forEach.call($('finance').querySelectorAll('[data-esuggest]'),function(b){
+      b.onclick=function(){f.goals[+b.getAttribute('data-esuggest')].target=+b.getAttribute('data-eval');save();renderFinance();};});
     $('money-cmdgo').onclick=function(){runMoneyCmd($('money-cmd').value);};
     $('money-cmd').onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();runMoneyCmd(this.value);}};
     paintMoney();

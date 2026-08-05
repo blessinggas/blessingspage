@@ -2,5 +2,7 @@
 life-os/secrets*
 life-os/*.local.*
 life-os/dashboard-state.json
+life-os/connectors/.env
+life-os/connectors/out/
 .env
 *.key
